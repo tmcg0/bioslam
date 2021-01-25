@@ -1,0 +1,26 @@
+# - Config file for the bioslam package
+# It defines the following variables
+#  BIOSLAM_INCLUDE_DIR - include directories for bioslam
+#  BIOSLAM_LIBRARIES    - libraries to link against
+#  BIOSLAM_EXECUTABLE   - any executables (not used right now, set as empty.)
+
+# Compute paths
+get_filename_component(BIOSLAM_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+if(EXISTS "${BIOSLAM_CMAKE_DIR}/CMakeCache.txt")
+  # In build tree
+  set(BIOSLAM_INCLUDE_DIR @CMAKE_SOURCE_DIR@ CACHE PATH "bioslam include directory")
+  set(BIOSLAM_LIBRARIES "${CMAKE_BINARY_DIR}/libbioslam.so" CACHE FILEPATH "bioslam library")
+else()
+  # Find installed library
+  set(BIOSLAM_INCLUDE_DIR "${BIOSLAM_CMAKE_DIR}/@CONF_REL_INCLUDE_DIR@" CACHE PATH "bioslam include directory")
+  set(BIOSLAM_LIBRARIES "${BIOSLAM_CMAKE_DIR}/@CONF_REL_LIB_DIR@/libbioslam.so" CACHE FILEPATH "bioslam library")
+endif()
+
+# Our library dependencies (contains definitions for IMPORTED targets)
+if(NOT TARGET bioslam AND NOT BIOSLAM_BINARY_DIR)
+  include("${BIOSLAM_CMAKE_DIR}/BioslamTargets.cmake")
+endif()
+
+
+message(STATUS "bioslam include directory: " ${BIOSLAM_INCLUDE_DIR})
+message(STATUS "bioslam library: ${BIOSLAM_LIBRARIES}")

@@ -1,0 +1,5 @@
+# make example executables in this folder
+add_executable(exampleImuPoseEstimation exampleImuPoseEstimation.cpp)
+target_link_libraries(exampleImuPoseEstimation bioslam ${BIOSLAMLIBS})
+add_executable(exampleLowerBodyEstimation exampleLowerBodyEstimation.cpp)
+target_link_libraries(exampleLowerBodyEstimation bioslam ${BIOSLAMLIBS})
