@@ -53,8 +53,8 @@ classdef lowerBodyPoseEstimator < handle
         m_usePriorsOnImuToJointCtrVectors=0; % if you intend to add calibration, recommended to turn this off (the cal will add the priors)
         priorAxisRThigh=gtsam.Unit3(gtsam.Point3(0.,0.,1.)), priorAxisRShank=gtsam.Unit3(gtsam.Point3(0.,0.,1.)), priorAxisLThigh=gtsam.Unit3(gtsam.Point3(0.,0.,-1.)), priorAxisLShank=gtsam.Unit3(gtsam.Point3(0.,0.,-1.)); % default values for knee axis prior means
         rkneeHingeAxisThighPriorStd=[0.5,0.5]', rkneeHingeAxisShankPriorStd=[0.5,0.5]', lkneeHingeAxisThighPriorStd=[0.5,0.5]', lkneeHingeAxisShankPriorStd=[0.5,0.5]'; % if m_usePriorsOnImuToJointCtrVectors=true, this is the noise std on the prior Unit3, assume they all use the same std
-        priorHipAxisSacrum=gtsam.Unit3(gtsam.Point3(0.,1.,0.)); priorRHipAxisThigh=gtsam.Unit3(0.,0.,1.), priorLHipAxisThigh=gtsam.Unit3(0.,0.,-1.); % default values for hip axis prior means (only relevant if m_assumeHipHinge=true)
-        hipHingeAxisSacrumPriorStd=[0.5,0.5]'; rhipHingeAxisThighPriorStd=gtsam.Vector2(0.5,0.5), lhipHingeAxisThighPriorStd=gtsam.Vector2(0.5,0.5);
+        priorHipAxisSacrum=gtsam.Unit3(gtsam.Point3(0.,1.,0.)); priorRHipAxisThigh=gtsam.Unit3(gtsam.Point3(0.,0.,1.)), priorLHipAxisThigh=gtsam.Unit3(gtsam.Point3(0.,0.,-1.)); % default values for hip axis prior means (only relevant if m_assumeHipHinge=true)
+        hipHingeAxisSacrumPriorStd=[0.5,0.5]'; rhipHingeAxisThighPriorStd=[0.5,0.5]', lhipHingeAxisThighPriorStd=[0.5,0.5]';
         priorAnkleAxisRFoot=gtsam.Unit3(gtsam.Point3(0,-1,0)); priorAnkleAxisLFoot=gtsam.Unit3(gtsam.Point3(0,-1,0)); priorAnkleAxisRShank=gtsam.Unit3(gtsam.Point3(0.0,0.0,1.0)); priorAnkleAxisLShank=gtsam.Unit3(gtsam.Point3(0.0,0.0,-1.0));
         rankleHingeAxisFootPriorStd=[0.5,0.5]'; lankleHingeAxisFootPriorStd=[0.5,0.5]'; rankleHingeAxisShankPriorStd=[0.5,0.5]'; lankleHingeAxisShankPriorStd=[0.5,0.5]'; 
         priorSacrumImuToRHipCtr=gtsam.Point3(.16,.135,-.215);
