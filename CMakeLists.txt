@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # Set the version number for the library
-set (BIOSLAM_VERSION_MAJOR 0)
+set (BIOSLAM_VERSION_MAJOR 1)
 set (BIOSLAM_VERSION_MINOR 0)
 set (BIOSLAM_VERSION_PATCH 0)
 math (EXPR BIOSLAM_VERSION_NUMERIC "10000 * ${BIOSLAM_VERSION_MAJOR} + 100 * ${BIOSLAM_VERSION_MINOR} + ${BIOSLAM_VERSION_PATCH}")
@@ -20,8 +20,6 @@ if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
   message(FATAL_ERROR "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there. You may need to remove CMakeCache.txt. ")
 endif()
 # -------------------------------------- #
-
-message(STATUS "+++++++++++++++++++   Beginning CMake of bioslam ${BIOSLAM_VERSION_STRING}  ++++++++++++++++++++")
 
 set(PROJECT_DESCRIPTION "IMU + biomechanics estimation toolbox") # for compatibility with CMake 3.8.2
 set(CMAKE_CXX_STANDARD 14) # C++ version
@@ -51,8 +49,8 @@ if(BIOSLAM_BUILD_WITH_MARCH_NATIVE)
   else() # don't add flag, tell user compiler doesn't support it
     message(STATUS "You requested build with -march=native, but detected compiler does not support it. Leaving this flag out.")
   endif()
-else() # clear -march=native (in case it was passed by compiler defaults) (todo: figure out how to remove flags in cmake)
-  message(STATUS "TODO figure out how to remove flags in cmake. current cmake_cxx_flags = ${CMAKE_CXX_FLAGS}. let's hope -march=native isn't in this list.")
+else() # clear -march=native (in case it was passed by compiler defaults)
+  message(STATUS "TODO: remove flags in cmake. current cmake_cxx_flags = ${CMAKE_CXX_FLAGS}. let's hope -march=native isn't in this list.")
 endif()
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
@@ -237,13 +235,13 @@ install(EXPORT bioslam-export
 
 ################################################################################
 # Print configuration
-message(STATUS "===============================================================")
-message(STATUS "==================  Bioslam Library Options  ==================")
+message(STATUS "======================================================================")
+message(STATUS "==================  Bioslam v${BIOSLAM_VERSION_STRING} Library Options  ==================")
 message(STATUS "Build tests?                              : ${BIOSLAM_BUILD_TESTS}")
 message(STATUS "Build examples?                           : ${BIOSLAM_BUILD_EXAMPLES}")
 message(STATUS "Build MATLAB wrapper?                     : ${BIOSLAM_BUILD_MATLAB_WRAPPER}")
 message(STATUS "Use TBB?                                  : ${BIOSLAM_USE_TBB}")
-message(STATUS "===================  Configuration Options  ===================")
+message(STATUS "======================  Configuration Options  =======================")
 message(STATUS "System                                    : ${CMAKE_SYSTEM_NAME}")
 message(STATUS "Processer architecture                    : ${CMAKE_HOST_SYSTEM_PROCESSOR}")
 message(STATUS "CMAKE_CXX_COMPILER_ID type                : ${CMAKE_CXX_COMPILER_ID}")
@@ -265,5 +263,4 @@ if(NOT MSVC AND NOT XCODE_VERSION)
     message(STATUS "  C++ compilation flags (Debug)           : ${CMAKE_CXX_FLAGS_DEBUG}")
   endif()
 endif()
-message(STATUS "===============================================================")
-message(STATUS "+++++++++++++++++++   End CMake of bioslam   ++++++++++++++++++++")
+message(STATUS "======================================================================")
