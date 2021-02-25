@@ -11,9 +11,14 @@ Bioslam is a C++/MATLAB toolbox for estimation of human skeletal pose from IMU d
   <img width="430" height="430" src="https://github.com/tmcg0/bioslam/blob/dev/doc/media/subj_cal_partial.gif">
 </p>
 
-## Publications
+## Citing Bioslam
+
+If using this software repository, please cite bioslam through the following Zenodo DOI: 
+[![DOI](https://zenodo.org/badge/321773016.svg)](https://zenodo.org/badge/latestdoi/321773016)
+
+### Core publications
 <!-- For now I'm putting all of these in IEEE style without ref numbers and without DOI numbers since I'll provide direct links -->
-If using bioslam, please cite the following publication:
+If using bioslam, also please cite the following publication:
 
 - T. McGrath and L. Stirling, “Body-Worn IMU Human Skeletal Pose Estimation Using a Factor Graph-Based Optimization Framework,” *Sensors*, vol. 20, no. 23, p. 6887, Dec. 2020. [[link]](https://www.mdpi.com/1424-8220/20/23/6887)
 
