@@ -5,10 +5,11 @@
 % -------------------------------------------------------------------- %
 
 % example usage of the MATLAB implementation of the imuPoseEstimator class
+
 clc; clear; close all;
 
-addpath('/home/tmcgrath/bioslam/matlab/src');
-addpath(genpath('/home/tmcgrath/bioslam/matlab/utils'));
+addpath(fullfile(fileparts(matlab.desktop.editor.getActiveFilename),'..','..','matlab','src')) % add src/ directory
+addpath(fullfile(fileparts(matlab.desktop.editor.getActiveFilename),'..','..','matlab','utils')) % add utils/ directory
 
 VarStrToCharMap.clear();
 
@@ -17,18 +18,18 @@ VarStrToCharMap.clear();
 testDataDir=fullfile(filepath,'..','..','test','data');
 
 % construct a data file
-imus=OpalIMUData(fullfile(testDataDir,'20170412-162455-Y2_TUG_5.h5'));
-% imus=OpalIMUData(fullfile(dropboxpath,'Research','treadmill_study','data','imu','20190923-124627-S330MinWalk.h5'));
-% imus=cutOpalIMU(imus,400,451);
-% rightThighImu=imus(strcmp('Right Thigh',{imus.label}));
-% rightShankImu=imus(strcmp('Right Tibia',{imus.label}));
+imus=ImuData(fullfile(testDataDir,'20170411-154746-Y1_TUG_6.h5'));
+% imus=ImuData(fullfile(dropboxpath,'Research','treadmill_study','data','imu','20190923-124627-S330MinWalk.h5'));
 myImu=imus(strcmp('Sternum',{imus.label}));
 figure('units','normalized','position',[0.1300 0.5500 0.250 0.250]);
-quatplot(myImu.qAPDM); title('APDM Quaternion'); drawnow;
+% plot quaternion from manufacturer's onboard filter:
+figure;
+lh=plot(repmat(myImu.time,[1 4]),myImu.qAPDM);
+set(lh,{'color'},{[0 0 0]; [1 0 0]; [0 1 0]; [0 0 1]});
+legend('q_s','q_x','q_y','q_z');
+grid on; xlabel('time (sec)'); ylabel('quaternion component');
 
 % construct imuposeestimator
-doOnlinePlot=1;
-
 ipe=imuPoseEstimator(myImu,1,'test');
 % --- add settings ---
 ipe.accG=[0 0 -9.81];
@@ -44,7 +45,7 @@ ipe.m_priorRotNoise=[1e-2 1e3 1e3];
 ipe.m_magnetometerNoise=[1e3 1e3 1e3];
 % --------------------
 ipe.setup();
-% ipe.robustOptimize(doOnlinePlot);
+% ipe.robustOptimize(1);
 ipe.fastOptimize();
 % ipe.defaultOptimize();
 % ipe.plotImuFactorErrors();

@@ -20,7 +20,7 @@ VarStrToCharMap.clear();
 testDataDir=fullfile(filepath,'..','..','test','data');
 
 % construct a data file
-imus=OpalIMUData(fullfile(testDataDir,'20170411-154746-Y1_TUG_6.h5'));
+imus=ImuData(fullfile(testDataDir,'20170411-154746-Y1_TUG_6.h5'));
 rightThighImu=imus(strcmp('Right Thigh',{imus.label}));
 rightShankImu=imus(strcmp('Right Tibia',{imus.label}));
 sacrumImu=imus(strcmp('Sacrum',{imus.label}));
@@ -28,8 +28,6 @@ rightFootImu=imus(strcmp('Right Foot',{imus.label}));
 leftThighImu=imus(strcmp('Left Thigh',{imus.label}));
 leftShankImu=imus(strcmp('Left Tibia',{imus.label}));
 leftFootImu=imus(strcmp('Left Foot',{imus.label}));
-% figure('units','normalized','position',[0.1300 0.5500 0.250 0.250]);
-% quatplot(myImu.qAPDM); drawnow;
 
 % construct imuposeestimators
 sacrumIpe=imuPoseEstimator(sacrumImu,1,'sacrum');
