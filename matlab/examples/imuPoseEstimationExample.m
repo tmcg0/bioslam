@@ -5,10 +5,11 @@
 % -------------------------------------------------------------------- %
 
 % example usage of the MATLAB implementation of the imuPoseEstimator class
+
 clc; clear; close all;
 
-addpath('/home/tmcgrath/bioslam/matlab/src');
-addpath(genpath('/home/tmcgrath/bioslam/matlab/utils'));
+addpath(fullfile(fileparts(matlab.desktop.editor.getActiveFilename),'..','..','matlab','src')) % add src/ directory
+addpath(fullfile(fileparts(matlab.desktop.editor.getActiveFilename),'..','..','matlab','utils')) % add utils/ directory
 
 VarStrToCharMap.clear();
 

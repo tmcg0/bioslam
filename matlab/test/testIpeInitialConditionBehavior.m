@@ -7,9 +7,12 @@
 % unit test the MATLAB implementation of the imuPoseEstimator class
 clc; clear; close all;
 
-addpath('/home/tmcgrath/bioslam/matlab/src');
-addpath('/home/tmcgrath/bioslam/matlab/utils');
-testDataDir=fullfile(strcat(filesep,'home'),'tmcgrath','bioslam','test','data');
+addpath(fullfile(fileparts(matlab.desktop.editor.getActiveFilename),'..','..','matlab','src')) % add src/ directory
+addpath(fullfile(fileparts(matlab.desktop.editor.getActiveFilename),'..','..','matlab','utils')) % add utils/ directory
+
+% get test data directory
+[filepath,name,ext] = fileparts(matlab.desktop.editor.getActiveFilename);
+testDataDir=fullfile(filepath,'..','..','test','data');
 
 % construct a data file
 imus=ImuData(fullfile(testDataDir,'20170411-154746-Y1_TUG_6.h5'));

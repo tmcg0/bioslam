@@ -85,8 +85,8 @@ classdef imuPoseEstimator < handle
             %IMUPOSEESTIMATOR Construct an instance of this class
             %   imuPoseEstimator(imu,id)
             if nargin==0
-                % if no arguments were passed in, simply run the associated unit test for this class.
-                run('/home/tmcgrath/bioslam/matlab/test/imuPoseEstimatorUnitTest.m')
+                % constructs empty copy of class
+                return
             elseif nargin==3 % normal usage
                 if isa(varargin{1},'ImuData') && isa(varargin{2},'numeric') && isa(varargin{3},'char')
                     obj.m_imu=varargin{1}; obj.m_imuBiasModelMode=varargin{2}; obj.id = varargin{3};
