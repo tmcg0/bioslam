@@ -62,6 +62,7 @@ classdef imuPoseEstimator < handle
         accG=[0 0 -9.81];
         magG=[30.5, 14.91, -56.3];
         % opt params
+        m_optType=1
         m_maxIterations=5000
         m_relErrDecreaseLimit=1e-5;
         m_absErrDecreaseLimit=1e-8;
@@ -87,7 +88,7 @@ classdef imuPoseEstimator < handle
                 % if no arguments were passed in, simply run the associated unit test for this class.
                 run('/home/tmcgrath/bioslam/matlab/test/imuPoseEstimatorUnitTest.m')
             elseif nargin==3 % normal usage
-                if isa(varargin{1},'OpalIMUData') && isa(varargin{2},'numeric') && isa(varargin{3},'char')
+                if isa(varargin{1},'ImuData') && isa(varargin{2},'numeric') && isa(varargin{3},'char')
                     obj.m_imu=varargin{1}; obj.m_imuBiasModelMode=varargin{2}; obj.id = varargin{3};
                     %m_magnetometerNoise=gtsam::noiseModel::Isotropic::Sigmas(magNoiseVec);
                     % now, from m_strId, set the variable names and add them to the VarStrToCharMap
