@@ -150,6 +150,9 @@ classdef imuPoseEstimator < handle
             end
         end
         function setupCombinedImuFactorDynamicBias(obj)
+            warning('bug: using dynamic bias estimation is currently broken functionality, using static bias for now. See issue on GitHub at https://github.com/tmcg0/bioslam/issues/4');
+            setupImuFactorStaticBias(obj);
+            return
             %setupCombinedImuFactorDynamicBias Setup factor graph with dynamic bias (gtsam's CombinedImuFactor)
             %   Detailed explanation goes here
             dt=obj.m_imu.time(2)-obj.m_imu.time(1);
