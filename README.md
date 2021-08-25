@@ -35,10 +35,20 @@ The optimization backend ([GTSAM 4.0+](https://github.com/borglab/gtsam)) and IM
  
 # Installation
 
+### Supported systems
+Bioslam is tested on the following systems
+
+- Ubuntu 18.04 with GCC 5, GCC 9, and Clang 9
+- Ubuntu 20.04 with GCC 7, GCC 9, and Clang 9
+
+using Boost 1.67, GTSAM 4.0.3, and Eigen 3.3.9.
+
+On other systems, a bioslam-installed Ubuntu image can be spun up in a Docker container using the provided [Dockerfile](docker/Dockerfile).
+
 ## Required Dependencies
 
 * CMake (>= 3.17, _working through older versions now. Can confirm 3.10.2 doesn't work_)
-* boost (>= 1.58)
+* boost (>= 1.65)
   * Ubuntu: `sudo apt-get install libboost-all-dev`
 * [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page)
   * `git clone https://github.com/eigenteam/eigen-git-mirror`
