@@ -1,4 +1,4 @@
-# Bioslam: IMU-Based Human Skeletal Pose Estimation
+# Bioslam: IMU-Based Human Skeletal Pose Estimation ![Built, Test CI](https://github.com/tmcg0/bioslam/actions/workflows/build-test-linux.yml/badge.svg)
 
 **Author:** [Tim McGrath](https://www.researchgate.net/profile/Tim_Mcgrath9)
 

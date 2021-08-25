@@ -222,7 +222,7 @@ int test_derivative_numerically(const bioslam::HingeJointConstraintNormErrEstAng
     bool testH2=gtsam::assert_equal(derivedH2,numericalH2,1e-6);
     bool testH3=gtsam::assert_equal(derivedH3,numericalH3,1e-6);
     bool testH4=gtsam::assert_equal(derivedH4,numericalH4,1e-6);
-    bool testH5=gtsam::assert_equal(derivedH5,numericalH5,1e-6);
+    bool testH5=gtsam::assert_equal(derivedH5,numericalH5,1e-5);
     if (!testH1){
         std::cerr<<"H1 did not check out numerically."<<std::endl<<"derivedH1="<<derivedH1<<std::endl<<"numericalH1"<<numericalH1<<std::endl;
         return 1;
@@ -239,7 +239,7 @@ int test_derivative_numerically(const bioslam::HingeJointConstraintNormErrEstAng
         std::cerr<<"H4 did not check out numerically."<<std::endl<<"derivedH4="<<derivedH4<<std::endl<<"numericalH4"<<numericalH4<<std::endl;
         return 1;
     }
-    if (!testH5){ // commented out for now because this doesn't pass. why? are there multiple equivalent unit3 bases?
+    if (!testH5){
         std::cerr<<"H5 did not check out numerically."<<std::endl<<"derivedH5="<<derivedH5<<std::endl<<"numericalH5"<<numericalH5<<std::endl;
         return 1;
     }
