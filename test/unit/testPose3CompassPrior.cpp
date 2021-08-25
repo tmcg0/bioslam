@@ -66,15 +66,23 @@ int random_factor_tests(uint nTests){
     // (note: when sigma=1, then optimizer error = 0.5*(factor error^2)
     for(uint i=0;i<nTests;i++) {
         gtsam::Pose3 x=testutils::randomPose3();
-        double prior=testutils::dRand(-M_PI,M_PI);
+        double prior=testutils::dRand(-M_PI*0.75,M_PI*0.75);
+        gtsam::Vector3 refVecLocal=gtsam::Vector3(1.0,0.0,0.0);
+        gtsam::Vector3 refVecNav=gtsam::Vector3(0.0,0.0,1.0);
+        gtsam::Vector3 upVecNav=gtsam::Vector3(0.0,0.0,1.0);
         if (!myVals.exists(xKey)) {
             myVals.insert(xKey, x);
         } else {
             myVals.update(xKey, x);
         }
-        bioslam::Pose3CompassPrior testFac=bioslam::Pose3CompassPrior(xKey,gtsam::Vector3(0.0,0.0,1.0),gtsam::Vector3(1.0,0.0,0.0),gtsam::Vector3(0.0,0.0,1.0),prior,myNoiseModel);
+        bioslam::Pose3CompassPrior testFac=bioslam::Pose3CompassPrior(xKey,refVecLocal,refVecNav,upVecNav,prior,myNoiseModel);
         // test derivative numerically
-        test_derivative_numerically(testFac, x);
+        if (!bioslam::Pose3CompassPrior::isCompassVertical(x.rotation(),refVecLocal,upVecNav)){
+            // only run test if this random system isn't at the gimbal lock condition
+            test_derivative_numerically(testFac, x);
+        }else{
+            std::cout<<"randomly generated compass system was at gimbal lock condition; skipping numerical testing of jacobian."<<std::endl;
+        }
     }
     return 0;
 }
@@ -90,14 +98,13 @@ int test_derivative_numerically(const bioslam::Pose3CompassPrior& fac, const gts
     //    templates are: <output type (typically gtsam::Vector), then the input argument types in order)
     gtsam::Matrix numericalH1=gtsam::numericalDerivative11<gtsam::Vector,gtsam::Pose3>(
             boost::function<gtsam::Vector(const gtsam::Pose3&)>
-                    (boost::bind(&bioslam::Pose3CompassPrior::evaluateError,fac,_1,boost::none)),x,1e-5);
+                    (boost::bind(&bioslam::Pose3CompassPrior::evaluateError,fac,_1,boost::none)),x,1e-8);
 
     // now test using gtsam::assert_equal()
     bool testH1=gtsam::assert_equal(derivedH1,numericalH1,5.0e-3);
     if (!testH1){
         std::cerr<<"H1 did not check out numerically."<<std::endl<<"derivedH1="<<derivedH1<<std::endl<<"numericalH1"<<numericalH1<<std::endl;
         throw std::runtime_error("Jacobian did not check out numerically");
-        return 1;
     }
     return 0;
 }

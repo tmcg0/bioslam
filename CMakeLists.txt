@@ -28,7 +28,7 @@ set(CMAKE_CXX_STANDARD 14) # C++ version
 option(BIOSLAM_BUILD_WITH_MARCH_NATIVE "Build with -march=native (this should match the gtsam build option GTSAM_BUILD_WITH_MARCH_NATIVE)" ON)
 option(BIOSLAM_BUILD_TESTS "Should I build these tests?" ON)
 option(GTSAM_USE_MKL "Does GTSAM require MKL?" OFF)
-option(BIOSLAM_BUILD_MATLAB_WRAPPER "Build the MATLAB interface for bioslam?" ON)
+option(BIOSLAM_BUILD_MATLAB_WRAPPER "Build the MATLAB interface for bioslam?" OFF)
 option(BIOSLAM_BUILD_EXAMPLES "Build examples?" ON)
 option(BIOSLAM_USE_TBB "Include Intel's TBB library?" ON) # if GTSAM uses TBB, you need to set this to 'ON'
 ### ------------------------ ###
