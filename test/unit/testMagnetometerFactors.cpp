@@ -23,7 +23,7 @@ std::vector<gtsam::Rot3> MagFactor1_only_estimation(gtsam::Point3 B_global, gtsa
 std::vector<gtsam::Rot3> MagPose3Factor_only_estimation(gtsam::Point3 B_global, gtsam::SharedNoiseModel magNoiseModel, std::vector<gtsam::Point3> magMeas);
 uint random_factor_tests(uint nTests=1000);
 int test_derivative_numerically(const bioslam::MagPose3Factor& fac, const gtsam::Pose3 &x);
-void print_test_results(ouble err, uint iterations, const gtsam::Pose3& initPose, const gtsam::Pose3& finalPose, const gtsam::Vector3& measB, const gtsam::Vector3& bN);
+void print_test_results(double err, uint iterations, const gtsam::Pose3& initPose, const gtsam::Pose3& finalPose, const gtsam::Vector3& measB, const gtsam::Vector3& bN);
 
 int main(){
     // ----------
