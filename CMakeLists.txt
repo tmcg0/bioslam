@@ -90,7 +90,7 @@ if(GTSAM_USE_MKL)
   message(STATUS "including MKL from ${MKL_INCLUDE_DIRS}")
 endif()
 # --- Require Boost ---
-find_package(Boost 1.58 COMPONENTS filesystem REQUIRED)
+find_package(Boost 1.65 COMPONENTS filesystem REQUIRED)
 if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
   list(APPEND BIOSLAMLIBS  ${Boost_LIBRARIES})
