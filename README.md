@@ -20,7 +20,9 @@ If using this software repository, please cite bioslam through the following Zen
 <!-- For now I'm putting all of these in IEEE style without ref numbers and without DOI numbers since I'll provide direct links -->
 If using bioslam, also please cite the following publication:
 
-- T. McGrath and L. Stirling, “Body-Worn IMU Human Skeletal Pose Estimation Using a Factor Graph-Based Optimization Framework,” *Sensors*, vol. 20, no. 23, p. 6887, Dec. 2020. [[link]](https://www.mdpi.com/1424-8220/20/23/6887)
+- T. McGrath and L. Stirling, “Body-Worn IMU Human Skeletal Pose Estimation Using a Factor Graph-Based Optimization Framework,” *Sensors*, vol. 20, no. 23, p. 6887, Dec. 2020. [[link]](https://doi.org/10.3390/s20236887)
+
+- T. McGrath and L. Stirling, “Body-Worn IMU-Based Human Hip and Knee Kinematics Estimation during Treadmill Walking,” *Sensors*, vol. 22, no. 7, p. 2544, Mar. 2022. [[link]](https://doi.org/10.3390/s22072544)
 
 ### Related publications
 The novel hinge joint kinematic model is based on:
