@@ -117,11 +117,12 @@ jobs:
       - name: Install hdf5
         run: sudo apt-get -y install libhdf5-serial-dev
 
-      - name: Install HighFive
+      - name: Install HighFive v2.3.1
         run: |
           cd ${{runner.workspace}} # cd to runner home
-          git clone --depth 1 --branch master https://github.com/BlueBrain/HighFive HighFive # clone HighFive
-          cd HighFive && mkdir build && cd build # move into build dir for HighFive
+          git clone https://github.com/BlueBrain/HighFive HighFive && cd HighFive # clone HighFive
+          git checkout a01ee6be4d4a75aeeb9fd962c3b415ea8cd395f6 # checkout v2.3.1 release
+          mkdir build && cd build # move into build dir for HighFive
           cmake -DHIGHFIVE_USE_BOOST=OFF ..
           sudo make -j$(nproc) install
       - name: Install imuDataUtils
