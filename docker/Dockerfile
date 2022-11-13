@@ -28,7 +28,7 @@ WORKDIR /usr/src/
 RUN git clone --single-branch --branch 3.3.9 https://gitlab.com/libeigen/eigen eigen3
 WORKDIR /usr/src/eigen3/build/
 RUN cmake ..
-RUN make install -j4
+RUN make install -j2
 
 # Install TBB
 RUN apt-get -y install libtbb-dev
@@ -50,7 +50,7 @@ RUN cmake \
     ..
 
 # Build gtsam
-RUN make -j4 install && make clean
+RUN make -j2 install && make clean
 
 # Needed to link with GTSAM
 RUN echo 'export LD_LIBRARY_PATH=/usr/local/lib:LD_LIBRARY_PATH' >> /root/.bashrc
@@ -58,26 +58,26 @@ RUN echo 'export LD_LIBRARY_PATH=/usr/local/lib:LD_LIBRARY_PATH' >> /root/.bashr
 # install hdf5
 RUN apt-get -y install libhdf5-serial-dev
 
-# install highfive libraries
+# install HighFive v2.3.1
 WORKDIR /usr/src/
-RUN git clone --depth 1 --branch master https://github.com/BlueBrain/HighFive
+RUN git clone --depth 1 --branch v2.3.1 https://github.com/BlueBrain/HighFive
 WORKDIR /usr/src/HighFive/build/
 RUN cmake ..
-RUN make install -j4
+RUN make install -j2
 
 # install imuDataUtils
 WORKDIR /usr/src/
 RUN git clone --depth 1 --branch master https://github.com/tmcg0/imuDataUtils
 WORKDIR /usr/src/imuDataUtils/build/
 RUN cmake ..
-RUN make install -j4
+RUN make install -j2
 
 # install bioslam
 WORKDIR /usr/src/
 RUN git clone --depth 1 --branch dev https://github.com/tmcg0/bioslam
 WORKDIR /usr/src/bioslam/build/
 RUN cmake -DBIOSLAM_BUILD_MATLAB_WRAPPER=OFF ..
-RUN make install -j4
+RUN make install -j2
 
-# Run bash
-CMD ["bash"]
+# keep container running indefinitely
+ENTRYPOINT ["tail", "-f", "/dev/null"]
