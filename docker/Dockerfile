@@ -79,5 +79,4 @@ WORKDIR /usr/src/bioslam/build/
 RUN cmake -DBIOSLAM_BUILD_MATLAB_WRAPPER=OFF ..
 RUN make install -j2
 
-# keep container running indefinitely
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+ENTRYPOINT ["/bin/bash"]
