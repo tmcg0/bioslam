@@ -1,6 +1,7 @@
 <h1 align="center">
   Bioslam: IMU-Based Human Skeletal Pose Estimation<br>
-  <a href="https://github.com/tmcg0/bioslam/actions/workflows/build-test-linux.yml/badge.svg"><img src="https://github.com/tmcg0/bioslam/actions/workflows/build-test-linux.yml/badge.svg"/></a> <a href="https://github.com/tmcg0/bioslam/actions/workflows/dockerfile-build.yml/badge.svg"><img src="https://github.com/tmcg0/bioslam/actions/workflows/dockerfile-build.yml/badge.svg"/></a>
+  <a href="https://github.com/tmcg0/bioslam/actions/workflows/build-test-linux.yml/badge.svg"><img src="https://github.com/tmcg0/bioslam/actions/workflows/build-test-linux.yml/badge.svg"/></a> <a href="https://github.com/tmcg0/bioslam/actions/workflows/dockerfile-build.yml/badge.svg"><img src="https://github.com/tmcg0/bioslam/actions/workflows/dockerfile-build.yml/badge.svg"/></a> <a href="https://github.com/tmcg0/bioslam/blob/dev/LICENSE.txt"><img src="https://img.shields.io/badge/License-MIT-maroon.svg"/></a>
+  
 </h1>
 
 ## What is Bioslam?
