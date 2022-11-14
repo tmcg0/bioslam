@@ -8,8 +8,8 @@
 Bioslam is a C++/MATLAB toolbox for estimation of human skeletal pose from IMU data, using robust factor-graph based global optimization techniques.
 
 <p align="center">
-  <img width="400" height="400" src="https://github.com/tmcg0/bioslam/blob/dev/doc/media/bioslam-gait.gif">
-  <img width="430" height="430" src="https://github.com/tmcg0/bioslam/blob/dev/doc/media/subj_cal_partial.gif">
+  <img width="380" height="380" src="https://github.com/tmcg0/bioslam/blob/dev/doc/media/bioslam-gait.gif">
+  <img width="410" height="410" src="https://github.com/tmcg0/bioslam/blob/dev/doc/media/subj_cal_partial.gif">
 </p>
 
 ## Citing Bioslam
