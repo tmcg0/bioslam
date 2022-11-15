@@ -17,9 +17,6 @@ jobs:
       fail-fast: false
       matrix:
         name: [
-            ubuntu-18.04-gcc-5,
-            ubuntu-18.04-gcc-9,
-            ubuntu-18.04-clang-9,
             ubuntu-20.04-gcc-7,
             ubuntu-20.04-gcc-9,
             ubuntu-20.04-clang-9,
@@ -27,21 +24,6 @@ jobs:
 
         build_type: [Debug, Release]
         include:
-          - name: ubuntu-18.04-gcc-5
-            os: ubuntu-18.04
-            compiler: gcc
-            version: "5"
-
-          - name: ubuntu-18.04-gcc-9
-            os: ubuntu-18.04
-            compiler: gcc
-            version: "9"
-
-          - name: ubuntu-18.04-clang-9
-            os: ubuntu-18.04
-            compiler: clang
-            version: "9"
-
           - name: ubuntu-20.04-gcc-7
             os: ubuntu-20.04
             compiler: gcc

@@ -40,9 +40,8 @@ The optimization backend ([GTSAM 4.0+](https://github.com/borglab/gtsam)) and IM
 # Installation
 
 ### Supported systems
-Bioslam is tested on the following systems
+Bioslam is tested on the following systems:
 
-- Ubuntu 18.04 with GCC 5, GCC 9, and Clang 9
 - Ubuntu 20.04 with GCC 7, GCC 9, and Clang 9
 
 using Boost 1.67, GTSAM 4.0.3, and Eigen 3.3.9.
