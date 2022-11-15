@@ -61,6 +61,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Print job details
+        run: |
+          echo "Job ${{ env.GITHUB_JOB }}"
+          echo "compiler: '${{matrix.compiler}}'"
+          echo "matrix name: '${{matrix.name}}"
+          echo "build type: '${{ matrix.build_type }}'"
+
       - name: Install Eigen 3.3.9
         run: |
           cd ${{runner.workspace}} # cd to runner home
@@ -68,6 +75,7 @@ jobs:
           cd eigen3 && mkdir build && cd build # move into build dir for eigen3
           cmake ..
           sudo make -j$(nproc) install
+
       - name: Install Python 3.9
         run: |
           if ["${{matrix.os}}"="ubuntu-18.04"]; then
@@ -75,6 +83,7 @@ jobs:
           else # Ubuntu 20.04
             sudo apt-get -y install libpython3-dev python-numpy
           fi
+
       - name: Install build tools
         run: |
           # LLVM (clang) 9 is not in Bionic's repositories so we add the official LLVM repository.
@@ -99,6 +108,7 @@ jobs:
             echo "CC=clang-${{ matrix.version }}" >> $GITHUB_ENV
             echo "CXX=clang++-${{ matrix.version }}" >> $GITHUB_ENV
           fi
+
       - name: Install Boost
         run: |
           BOOST_FOLDER=boost_${BOOST_VERSION//./_}
@@ -107,6 +117,7 @@ jobs:
           cd ${BOOST_FOLDER}/
           ./bootstrap.sh --with-libraries=serialization,filesystem,thread,system,atomic,date_time,timer,chrono,program_options,regex
           sudo ./b2 -j$(nproc) install
+
       - name: Install GTSAM 4.0.3
         run: |
           cd ${{runner.workspace}} # cd to runner home
@@ -114,6 +125,7 @@ jobs:
           cd gtsam && mkdir build && cd build # move into build dir for gtsam
           cmake -DCMAKE_BUILD_TYPE=Release -DGTSAM_WITH_EIGEN_MKL=OFF -DGTSAM_BUILD_EXAMPLES_ALWAYS=OFF -DGTSAM_BUILD_TIMING_ALWAYS=OFF -DGTSAM_BUILD_TESTS=OFF -DGTSAM_BUILD_UNSTABLE=ON ..
           sudo make -j$(nproc) install
+
       - name: Install hdf5
         run: sudo apt-get -y install libhdf5-serial-dev
 
@@ -125,6 +137,7 @@ jobs:
           mkdir build && cd build # move into build dir for HighFive
           cmake -DHIGHFIVE_USE_BOOST=OFF ..
           sudo make -j$(nproc) install
+
       - name: Install imuDataUtils
         run: |
           cd ${{runner.workspace}} # cd to runner home
@@ -132,10 +145,29 @@ jobs:
           cd imuDataUtils && mkdir build && cd build # move into build dir for imuDataUtils
           cmake ..
           sudo make -j$(nproc) install
-      - name: Build and test bioslam
+
+      - name: Install LCov
+        if: matrix.name == 'ubuntu-20.04-gcc-9' && matrix.build_type == 'Debug'
+        run: sudo apt-get update -q && sudo apt-get install lcov -q -y
+
+      - name: Build bioslam
         run: |
           cd ${{github.workspace}} # cd to repo root
           mkdir build && cd build # move into bioslam build dir
           cmake -DBIOSLAM_BUILD_MATLAB_WRAPPER=OFF ..
           sudo make -j$(nproc) install
-          make -j$(nproc) test
+
+      - name: Test bioslam
+        run: make -j$(nproc) test
+
+      - name: Run LCov
+        if: matrix.name == 'ubuntu-20.04-gcc-9' && matrix.build_type == 'Debug'
+        run: |
+          cd ${{github.workspace}}/build # cd to build folder
+          lcov -c -d . --include '*bioslam*' -o main_coverage.info
+
+      - name: Submit to codecov.io
+        if: matrix.name == 'ubuntu-20.04-gcc-9' && matrix.build_type == 'Debug'
+        uses: codecov/codecov-action@v3
+        with:
+          file: ${{github.workspace}}/build/main_coverage.info
