@@ -152,4 +152,16 @@ jobs:
         if: matrix.name == 'ubuntu-20.04-gcc-9' && matrix.build_type == 'Debug'
         uses: codecov/codecov-action@v3
         with:
-          file: ${{github.workspace}}/build/main_coverage.info
+          files: ${{github.workspace}}/build/main_coverage.info
+          token: ${{ secrets.CODECOV_TOKEN }} # supposedly not required for public repos, but codecov fails otherwise
+          name: bioslam-codecov # optional
+          fail_ci_if_error: true # optional (default = false)
+          verbose: true # optional (default = false)
+
+      - name: Archive code coverage results
+        if: matrix.name == 'ubuntu-20.04-gcc-9' && matrix.build_type == 'Debug'
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage-report
+          path: ${{github.workspace}}/build/main_coverage.info
+          retention-days: 30
