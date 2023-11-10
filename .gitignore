@@ -36,12 +36,12 @@ cmake-build-minsizerel/
 wrap/build/
 build*/
 
-
-# ide files
+# IDEs and editors
 *.idea
 .idea/
 .idea/*
 .idea/
+.vscode/
 
 # ignore Latex stuff
 *.aux
