@@ -9,6 +9,10 @@ set (BIOSLAM_VERSION_STRING "${BIOSLAM_VERSION_MAJOR}.${BIOSLAM_VERSION_MINOR}.$
 
 project(bioslam VERSION ${BIOSLAM_VERSION_STRING} LANGUAGES CXX C) # added C because some HDF5 tests were .c
 
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 # Introduce variables:
 # * CMAKE_INSTALL_LIBDIR
 # * CMAKE_INSTALL_BINDIR
@@ -22,7 +26,6 @@ endif()
 # -------------------------------------- #
 
 set(PROJECT_DESCRIPTION "IMU + biomechanics estimation toolbox") # for compatibility with CMake 3.8.2
-set(CMAKE_CXX_STANDARD 14) # C++ version
 
 ### ----- User options ----- ###
 option(BIOSLAM_BUILD_WITH_MARCH_NATIVE "Build with -march=native (this should match the gtsam build option GTSAM_BUILD_WITH_MARCH_NATIVE)" ON)
@@ -155,6 +158,11 @@ list(APPEND SOURCES_BIOSLAM ${PROJECT_SOURCE_DIR}/src/factors/MagPose3Factor.cpp
 message(STATUS "Libs that we have for bioslam are ${BIOSLAMLIBS} ")
 message("bioslam sources are ${SOURCES_BIOSLAM}")
 add_library(bioslam SHARED ${SOURCES_BIOSLAM})
+set_target_properties(bioslam PROPERTIES
+  CXX_STANDARD 11
+  CXX_STANDARD_REQUIRED ON
+  CXX_EXTENSIONS OFF
+)
 target_link_libraries(bioslam ${BIOSLAMLIBS})
 target_link_libraries(bioslam gtsam)
 target_link_libraries(bioslam HighFive)
