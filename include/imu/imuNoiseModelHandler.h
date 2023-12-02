@@ -1,3 +1,9 @@
+// -------------------------------------------------------------------- //
+//    (c) Copyright 2021 Massachusetts Institute of Technology          //
+//    Author: Tim McGrath                                               //
+//    All rights reserved. See LICENSE file for license information.    //
+// -------------------------------------------------------------------- //
+
 // class to hold noise parameters for a physical IMU sensor
 // some relevant links on how these should be defined/calculated:
 //    - https://github.com/borglab/gtsam/issues/213

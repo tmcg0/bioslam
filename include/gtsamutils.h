@@ -14,7 +14,7 @@
 #include <gtsam/geometry/Pose3.h>
 #include <gtsam/nonlinear/Values.h>
 #include <gtsam/nonlinear/NonlinearFactorGraph.h>
-#include "imuDataUtils/imu.h"
+#include "imu/imu.h"
 #include <gtsam/base/numericalDerivative.h>
 
 namespace gtsamutils{

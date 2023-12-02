@@ -141,13 +141,14 @@ endif(GTSAM_FOUND)
 message(STATUS "proj source dir is ${PROJECT_SOURCE_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}/include") # bioslam headers
 include_directories("${PROJECT_SOURCE_DIR}/include/factors") # bioslam headers for factors
+include_directories("${PROJECT_SOURCE_DIR}/include/imu") # bioslam headers for imu
 #file(GLOB SOURCES_BIOSLAM "${PROJECT_SOURCE_DIR}/src/*.cpp" "${PROJECT_SOURCE_DIR}/src/factors/*.cpp" "${PROJECT_SOURCE_DIR}/include/*.h" "${PROJECT_SOURCE_DIR}/include/factors/*.h" "imuDataUtils/include/*.h" "imuDataUtils/src/*.cpp" "wrap/example/*.h" "wrap/example/*.cpp")
 # --- add sources --- #
 # glob all stuff from imuDataUtils
 # glob headers. do I need to do this? doesn't help. what's the prob?
 file(GLOB SOURCES_BIOSLAM "${PROJECT_SOURCE_DIR}/include/*.h" "${PROJECT_SOURCE_DIR}/include/factors/*.h" "${PROJECT_SOURCE_DIR}/include/imu/*.h")
 # base stuff
-list(APPEND SOURCES_BIOSLAM ${PROJECT_SOURCE_DIR}/src/lowerBodyPoseEstimator.cpp ${PROJECT_SOURCE_DIR}/src/imuPoseEstimator.cpp ${PROJECT_SOURCE_DIR}/src/imu/imuNoiseModelHandler.cpp ${PROJECT_SOURCE_DIR}/src/VarStrToCharMap.cpp)
+list(APPEND SOURCES_BIOSLAM ${PROJECT_SOURCE_DIR}/src/lowerBodyPoseEstimator.cpp ${PROJECT_SOURCE_DIR}/src/imuPoseEstimator.cpp ${PROJECT_SOURCE_DIR}/src/imu/imuNoiseModelHandler.cpp ${PROJECT_SOURCE_DIR}/src/imu/imu.cpp ${PROJECT_SOURCE_DIR}/src/VarStrToCharMap.cpp)
 # add utilities
 list(APPEND SOURCES_BIOSLAM ${PROJECT_SOURCE_DIR}/src/gtsamutils.cpp ${PROJECT_SOURCE_DIR}/src/mathutils.cpp ${PROJECT_SOURCE_DIR}/src/testutils.cpp ${PROJECT_SOURCE_DIR}/src/bioutils.cpp)
 # add custom factors

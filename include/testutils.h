@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "imuDataUtils/imu.h"
+#include "imu/imu.h"
 #include <random>
 #include <gtsam/geometry/Pose3.h>
 #include "gtsam/base/Vector.h"

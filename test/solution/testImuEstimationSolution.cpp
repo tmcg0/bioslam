@@ -6,7 +6,7 @@
 
 // a solution test for IMU pose estimation algorithms
 
-#include "imuDataUtils/imu.h"
+#include "imu/imu.h"
 #include "imuPoseEstimator.h"
 #include <string>
 #include <VarStrToCharMap.h>

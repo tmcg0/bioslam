@@ -6,7 +6,7 @@
 
 // example usage of imuPoseEstimator
 
-#include "imuDataUtils/imu.h"
+#include "imu/imu.h"
 #include "imuPoseEstimator.h"
 #include <string>
 #include <gtsam/navigation/NavState.h>

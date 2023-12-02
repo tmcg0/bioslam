@@ -7,7 +7,7 @@
 // test the setup of an IMU and its pose estimation via imuPoseEstimator
 
 #include <vector>
-#include "imuDataUtils/imu.h"
+#include "imu/imu.h"
 #include "imuDataUtils/datapkgr.h"
 #include "imuPoseEstimator.h"
 #include <string>

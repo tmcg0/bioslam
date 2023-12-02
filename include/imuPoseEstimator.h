@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "imuDataUtils/imu.h"
+#include "imu/imu.h"
 #include <string>
 #include <vector>
 #include <gtsam/geometry/Rot3.h>

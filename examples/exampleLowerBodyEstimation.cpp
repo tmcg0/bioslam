@@ -6,7 +6,7 @@
 
 // example usage of lowerBodyPoseEstimator
 
-#include "imuDataUtils/imu.h"
+#include "imu/imu.h"
 #include "lowerBodyPoseEstimator.h"
 #include <string>
 #include <boost/filesystem.hpp>
