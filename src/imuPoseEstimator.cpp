@@ -13,7 +13,7 @@
 #include "VarStrToCharMap.h" // includes gtsam::Values
 #include <gtsam/inference/Symbol.h>
 #include <gtsam/navigation/ImuFactor.h>
-#include "imuNoiseModelHandler.h"
+#include "imu/imuNoiseModelHandler.h"
 #include <numeric>
 #include <iostream>
 #include <gtsam/nonlinear/GaussNewtonOptimizer.h>

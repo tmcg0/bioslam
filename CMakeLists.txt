@@ -145,9 +145,9 @@ include_directories("${PROJECT_SOURCE_DIR}/include/factors") # bioslam headers f
 # --- add sources --- #
 # glob all stuff from imuDataUtils
 # glob headers. do I need to do this? doesn't help. what's the prob?
-file(GLOB SOURCES_BIOSLAM" ${PROJECT_SOURCE_DIR}/include/*.h" "${PROJECT_SOURCE_DIR}/include/factors/*.h")
+file(GLOB SOURCES_BIOSLAM "${PROJECT_SOURCE_DIR}/include/*.h" "${PROJECT_SOURCE_DIR}/include/factors/*.h" "${PROJECT_SOURCE_DIR}/include/imu/*.h")
 # base stuff
-list(APPEND SOURCES_BIOSLAM ${PROJECT_SOURCE_DIR}/src/lowerBodyPoseEstimator.cpp ${PROJECT_SOURCE_DIR}/src/imuPoseEstimator.cpp ${PROJECT_SOURCE_DIR}/src/imuNoiseModelHandler.cpp ${PROJECT_SOURCE_DIR}/src/VarStrToCharMap.cpp)
+list(APPEND SOURCES_BIOSLAM ${PROJECT_SOURCE_DIR}/src/lowerBodyPoseEstimator.cpp ${PROJECT_SOURCE_DIR}/src/imuPoseEstimator.cpp ${PROJECT_SOURCE_DIR}/src/imu/imuNoiseModelHandler.cpp ${PROJECT_SOURCE_DIR}/src/VarStrToCharMap.cpp)
 # add utilities
 list(APPEND SOURCES_BIOSLAM ${PROJECT_SOURCE_DIR}/src/gtsamutils.cpp ${PROJECT_SOURCE_DIR}/src/mathutils.cpp ${PROJECT_SOURCE_DIR}/src/testutils.cpp ${PROJECT_SOURCE_DIR}/src/bioutils.cpp)
 # add custom factors

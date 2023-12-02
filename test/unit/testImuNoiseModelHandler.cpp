@@ -6,7 +6,7 @@
 
 // unit test of imuNoiseModelHandler
 
-#include "imuNoiseModelHandler.h"
+#include "imu/imuNoiseModelHandler.h"
 
 int main(){
     Eigen::Vector3d acc_G(0.0,0.0,9.81);
@@ -15,7 +15,8 @@ int main(){
     sensorBiasModel.Opalv2();
     gtsam::Matrix33 oldAccelCov=p->accelerometerCovariance;
     std::cout<<"preintegratedcombinedmeasurements before application of bias model:"<<oldAccelCov<<std::endl;
-    sensorBiasModel.applyModelToPreintMeasParams(p,true);
+    sensorBiasModel.applyModelToPreintMeasParams(p);
+    sensorBiasModel.print();
     gtsam::Matrix33 newAccelCov=p->accelerometerCovariance;
     std::cout<<"preintegratedcombinedmeasurements after application of bias model:"<<newAccelCov<<std::endl;
     // test: assert that it changes
@@ -26,7 +27,8 @@ int main(){
     // also test with normal preintegrated imu measurements (not combined)
     boost::shared_ptr<gtsam::PreintegrationParams> p2 =boost::shared_ptr<gtsam::PreintegrationParams>(new gtsam::PreintegrationParams(acc_G));
     oldAccelCov=p2->accelerometerCovariance;
-    sensorBiasModel.applyModelToPreintMeasParams(p2,true);
+    sensorBiasModel.applyModelToPreintMeasParams(p2);
+    sensorBiasModel.print();
     newAccelCov=p2->accelerometerCovariance;
     // test: assert that it changes
     bool didChange2=!gtsam::assert_equal(oldAccelCov,newAccelCov,1.0e-1);
