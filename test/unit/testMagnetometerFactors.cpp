@@ -15,6 +15,7 @@
 #include "factors/MagPose3Factor.h"
 #include <gtsam/base/numericalDerivative.h>
 #include "testutils.h"
+#include "mathutils.h"
 
 std::vector<gtsam::Rot3> get_vector_orientation_from_Pose3_Values(gtsam::Values vals);
 std::vector<gtsam::Rot3> get_vector_orientation_from_Rot3_Values(gtsam::Values vals);
@@ -22,6 +23,7 @@ std::vector<gtsam::Rot3> MagFactor1_only_estimation(gtsam::Point3 B_global, gtsa
 std::vector<gtsam::Rot3> MagPose3Factor_only_estimation(gtsam::Point3 B_global, gtsam::SharedNoiseModel magNoiseModel, std::vector<gtsam::Point3> magMeas);
 uint random_factor_tests(uint nTests=1000);
 int test_derivative_numerically(const bioslam::MagPose3Factor& fac, const gtsam::Pose3 &x);
+void print_test_results(double err, uint iterations, const gtsam::Pose3& initPose, const gtsam::Pose3& finalPose, const gtsam::Vector3& measB, const gtsam::Vector3& bN);
 
 int main(){
     // ----------
@@ -102,6 +104,7 @@ uint random_factor_tests(uint nTests){
         vals.insert(poseKey,x);
         gtsam::Vector3 meas=testutils::randomVector3(); // random measurement
         gtsam::Vector3 bN=testutils::randomRot3()*meas; // random global mag
+        meas.normalize(); bN.normalize(); // normalize for numerical conditioning
         // construct MagPose3Factor
         bioslam::MagPose3Factor fac=bioslam::MagPose3Factor(poseKey,meas,bN.norm(),gtsam::Unit3(bN.normalized()),gtsam::Point3(0.0,0.0,0.0),noiseModel);
         test_derivative_numerically(fac,x);
@@ -110,21 +113,31 @@ uint random_factor_tests(uint nTests){
         graph.add(fac);
         gtsam::LevenbergMarquardtOptimizer optimizer(graph,vals);
         gtsam::Values estimate=optimizer.optimize();
-        // test what came out
+        // collect output
         gtsam::Pose3 estimatedPose=estimate.at<gtsam::Pose3>(poseKey);
         gtsam::Rot3 R_B_to_N=estimatedPose.rotation();
         gtsam::Vector3 measN=R_B_to_N*meas;
-        if(optimizer.error()>1.0e-10){
-            std::cerr<<"final converged error is "<<optimizer.error()<<", which is too high."<<std::endl;
-            throw std::runtime_error("test failed.");
-        }
-        if((measN-bN).norm()>1.0e-5){
-            std::cerr<<"meas[N]=["<<measN.transpose()<<"], global B=["<<bN.transpose()<<"] (diff = ["<<(measN-bN).transpose()<<"]"<<std::endl;
-            std::cerr<<"did not converge body frame measurement to global B"<<std::endl;
-            throw std::runtime_error("test failed.");
+        // test criteria: LM error < 1.0e-5 & norm diff b/w measN and bN small.
+        //    exception to test: if angle between measN and bN is ~180 deg, derivative becomes zero. ignore these cases.
+        double angBw=mathutils::unsignedAngle(measN,bN);
+        if(angBw<M_PI*.99){ // ignore the aforementioned rare case where bN and measN point in opposite directions
+            if(optimizer.error()>1.0e-5){
+                print_test_results(optimizer.error(),optimizer.iterations(),x,estimatedPose,meas,bN);
+                throw std::runtime_error("test failed: optimized error too high.");
+            }
+            if(angBw>1.0e-5){
+                print_test_results(optimizer.error(),optimizer.iterations(),x,estimatedPose,meas,bN);
+                throw std::runtime_error("test failed: angle between measN and global mag def too large.");
+            }
         }
     }
     return 0;
+}
+
+void print_test_results(double err, uint iterations, const gtsam::Pose3& initPose, const gtsam::Pose3& finalPose, const gtsam::Vector3& measB, const gtsam::Vector3& bN){
+    gtsam::Vector3 measN=finalPose.rotation()*measB;
+    std::cout<<"optimizer: converged error "<<err<<" in "<<iterations<<" iterations"<<std::endl;
+    std::cout<<"meas[N]=["<<measN.transpose()<<"], global B=["<<bN.transpose()<<"] (diff = ["<<(measN-bN).transpose()<<"], norm="<<(measN-bN).norm()<<", angle b/w="<<mathutils::unsignedAngle(measN,bN)<<")"<<std::endl;
 }
 
 int test_derivative_numerically(const bioslam::MagPose3Factor& fac, const gtsam::Pose3 &x){

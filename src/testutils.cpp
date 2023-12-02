@@ -10,9 +10,13 @@ namespace testutils
 {
 
     std::string getTestDataDir(){
-        // assumes test data is at bioslamroot/test/data
+        // assumes test data is at bioslamroot/test/data. throws error if directory doesn't exist.
         boost::filesystem::path testdatadir=boost::filesystem::path(getBioslamRootDir()+"/test/data");
-        return testdatadir.string();
+        if(boost::filesystem::exists(testdatadir)){ // exists, all is well
+            return testdatadir.string();
+        }else{ // bad
+            throw std::runtime_error("Error: assumed test data directory location \""+testdatadir.string()+"\" does not exist.");
+        }
     }
 
     void runtime_assert(bool condition){
@@ -23,26 +27,15 @@ namespace testutils
     }
 
     std::string getBioslamRootDir(){
-        // iterates down to current path until it finds directory including 'bioslam'
-        boost::filesystem::path bioslamroot;
-        bool foundBioslamRoot=false;
-        for(auto& part : boost::filesystem::current_path()) {
-            bioslamroot /= part.c_str();
-            if((part.string()).find("bioslam") != std::string::npos){ // you found it. exit.
-                foundBioslamRoot=true;
-                break;
-            }
-        }
-        if(!foundBioslamRoot){
-            throw std::runtime_error("EXCEPTION: could not bioslam root directory! (searched for directory in tree named 'bioslam')");
-        }
-        return bioslamroot.string();
+        // hardcodes location of repo root as two directories above this testutils.cpp file
+        // TODO: move data location to a cmake config file
+        return boost::filesystem::path(std::string(__FILE__)).parent_path().parent_path().string();
     }
 
     std::string getTestDataFile(const std::string& filename){
         // before returning string to full path of file, checks to make sure it exists
         std::string proposedFile=getTestDataDir()+"/"+filename;
-        if(boost::filesystem::exists(proposedFile)){//file exists, all is well
+        if(boost::filesystem::exists(proposedFile)){ //file exists, all is well
             return proposedFile;
         }else{ // bad
             throw std::runtime_error("Error: file \""+filename+"\" does not exist.");

@@ -1,0 +1,167 @@
+name: Linux CI
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  build:
+    name: ${{ matrix.name }} ${{ matrix.build_type }}
+    runs-on: ${{ matrix.os }}
+
+    env:
+      CTEST_OUTPUT_ON_FAILURE: ON
+      CTEST_PARALLEL_LEVEL: 2
+      CMAKE_BUILD_TYPE: ${{ matrix.build_type }}
+      BOOST_VERSION: 1.67.0
+
+    strategy:
+      fail-fast: false
+      matrix:
+        name: [
+            ubuntu-20.04-gcc-7,
+            ubuntu-20.04-gcc-9,
+            ubuntu-20.04-clang-9,
+        ]
+
+        build_type: [Debug, Release]
+        include:
+          - name: ubuntu-20.04-gcc-7
+            os: ubuntu-20.04
+            compiler: gcc
+            version: "7"
+
+          - name: ubuntu-20.04-gcc-9
+            os: ubuntu-20.04
+            compiler: gcc
+            version: "9"
+
+          - name: ubuntu-20.04-clang-9
+            os: ubuntu-20.04
+            compiler: clang
+            version: "9"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Print job details
+        run: |
+          echo "Job ${{ env.GITHUB_JOB }}"
+          echo "compiler: '${{matrix.compiler}}'"
+          echo "matrix name: '${{matrix.name}}"
+          echo "build type: '${{ matrix.build_type }}'"
+
+      - name: Install Eigen 3.3.9
+        run: |
+          cd ${{runner.workspace}} # cd to runner home
+          git clone --depth 1 --branch 3.3.9 https://gitlab.com/libeigen/eigen eigen3 # clone Eigen
+          cd eigen3 && mkdir build && cd build # move into build dir for eigen3
+          cmake ..
+          sudo make -j$(nproc) install
+
+      - name: Install Python 3.9
+        run: |
+          if ["${{matrix.os}}"="ubuntu-18.04"]; then
+            sudo apt-get -y install libpython-dev python-numpy
+          else # Ubuntu 20.04
+            sudo apt-get -y install libpython3-dev python-numpy
+          fi
+
+      - name: Install build tools
+        run: |
+          # LLVM (clang) 9 is not in Bionic's repositories so we add the official LLVM repository.
+          if [ "${{ matrix.compiler }}" = "clang" ] && [ "${{ matrix.version }}" = "9" ] && [ "${{matrix.os}}"="ubuntu-18.04" ]; then
+            # (ipv4|ha).pool.sks-keyservers.net is the SKS GPG global keyserver pool
+            # ipv4 avoids potential timeouts because of crappy IPv6 infrastructure
+            # 15CF4D18AF4F7421 is the GPG key for the LLVM apt repository
+            # This key is not in the keystore by default for Ubuntu so we need to add it.
+            LLVM_KEY=15CF4D18AF4F7421
+            gpg --keyserver keyserver.ubuntu.com --recv-key $LLVM_KEY || gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key $LLVM_KEY
+            gpg -a --export $LLVM_KEY | sudo apt-key add -
+            sudo add-apt-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main"
+          fi
+          sudo apt-get -y update
+          sudo apt-get -y install cmake build-essential pkg-config libicu-dev
+          if [ "${{ matrix.compiler }}" = "gcc" ]; then
+            sudo apt-get install -y g++-${{ matrix.version }} g++-${{ matrix.version }}-multilib
+            echo "CC=gcc-${{ matrix.version }}" >> $GITHUB_ENV
+            echo "CXX=g++-${{ matrix.version }}" >> $GITHUB_ENV
+          else
+            sudo apt-get install -y clang-${{ matrix.version }} g++-multilib
+            echo "CC=clang-${{ matrix.version }}" >> $GITHUB_ENV
+            echo "CXX=clang++-${{ matrix.version }}" >> $GITHUB_ENV
+          fi
+
+      - name: Install Boost
+        run: |
+          BOOST_FOLDER=boost_${BOOST_VERSION//./_}
+          wget https://boostorg.jfrog.io/artifactory/main/release/${BOOST_VERSION}/source/${BOOST_FOLDER}.tar.gz
+          tar -zxf ${BOOST_FOLDER}.tar.gz
+          cd ${BOOST_FOLDER}/
+          ./bootstrap.sh --with-libraries=serialization,filesystem,thread,system,atomic,date_time,timer,chrono,program_options,regex
+          sudo ./b2 -j$(nproc) install
+
+      - name: Install GTSAM 4.0.3
+        run: |
+          cd ${{runner.workspace}} # cd to runner home
+          git clone --depth 1 --branch 4.0.3 https://github.com/borglab/gtsam.git gtsam # clone latest from dev branch. switch to GTSAM 4.1 once it's tagged.
+          cd gtsam && mkdir build && cd build # move into build dir for gtsam
+          cmake -DCMAKE_BUILD_TYPE=Release -DGTSAM_WITH_EIGEN_MKL=OFF -DGTSAM_BUILD_EXAMPLES_ALWAYS=OFF -DGTSAM_BUILD_TIMING_ALWAYS=OFF -DGTSAM_BUILD_TESTS=OFF -DGTSAM_BUILD_UNSTABLE=ON ..
+          sudo make -j$(nproc) install
+
+      - name: Install hdf5
+        run: sudo apt-get -y install libhdf5-serial-dev
+
+      - name: Install HighFive v2.3.1
+        run: |
+          cd ${{runner.workspace}} # cd to runner home
+          git clone https://github.com/BlueBrain/HighFive HighFive && cd HighFive # clone HighFive
+          git checkout a01ee6be4d4a75aeeb9fd962c3b415ea8cd395f6 # checkout v2.3.1 release
+          mkdir build && cd build # move into build dir for HighFive
+          cmake -DHIGHFIVE_USE_BOOST=OFF ..
+          sudo make -j$(nproc) install
+
+      - name: Install imuDataUtils
+        run: |
+          cd ${{runner.workspace}} # cd to runner home
+          git clone --depth 1 --branch master https://github.com/tmcg0/imuDataUtils imuDataUtils # clone imuDataUtils
+          cd imuDataUtils && mkdir build && cd build # move into build dir for imuDataUtils
+          cmake ..
+          sudo make -j$(nproc) install
+
+      - name: Install LCov
+        if: matrix.name == 'ubuntu-20.04-gcc-9' && matrix.build_type == 'Debug'
+        run: sudo apt-get update -q && sudo apt-get install lcov -q -y
+
+      - name: Build bioslam
+        run: |
+          cd ${{github.workspace}} # cd to repo root
+          mkdir build && cd build # move into bioslam build dir
+          cmake -DBIOSLAM_BUILD_MATLAB_WRAPPER=OFF ..
+          sudo make -j$(nproc) install
+
+      - name: Test bioslam
+        run: make -j$(nproc) test
+
+      - name: Run LCov
+        if: matrix.name == 'ubuntu-20.04-gcc-9' && matrix.build_type == 'Debug'
+        run: |
+          cd ${{github.workspace}}/build # cd to build folder
+          lcov -c -d . --include '*bioslam*' -o main_coverage.info
+
+      - name: Submit to codecov.io
+        if: matrix.name == 'ubuntu-20.04-gcc-9' && matrix.build_type == 'Debug'
+        uses: codecov/codecov-action@v3
+        with:
+          files: ${{github.workspace}}/build/main_coverage.info
+          token: ${{ secrets.CODECOV_TOKEN }} # supposedly not required for public repos, but codecov fails otherwise
+          name: bioslam-codecov # optional
+          fail_ci_if_error: true # optional (default = false)
+          verbose: true # optional (default = false)
+
+      - name: Archive code coverage results
+        if: matrix.name == 'ubuntu-20.04-gcc-9' && matrix.build_type == 'Debug'
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage-report
+          path: ${{github.workspace}}/build/main_coverage.info
+          retention-days: 30

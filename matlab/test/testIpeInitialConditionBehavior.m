@@ -7,16 +7,23 @@
 % unit test the MATLAB implementation of the imuPoseEstimator class
 clc; clear; close all;
 
-addpath('/home/tmcgrath/bioslam/matlab/src');
-addpath('/home/tmcgrath/bioslam/matlab/utils');
-testDataDir=fullfile(strcat(filesep,'home'),'tmcgrath','bioslam','test','data');
+addpath(fullfile(fileparts(matlab.desktop.editor.getActiveFilename),'..','..','matlab','src')) % add src/ directory
+addpath(fullfile(fileparts(matlab.desktop.editor.getActiveFilename),'..','..','matlab','utils')) % add utils/ directory
+
+% get test data directory
+[filepath,name,ext] = fileparts(matlab.desktop.editor.getActiveFilename);
+testDataDir=fullfile(filepath,'..','..','test','data');
 
 % construct a data file
-imus=OpalIMUData(fullfile(testDataDir,'20170411-154746-Y1_TUG_6.h5'));
+imus=ImuData(fullfile(testDataDir,'20170411-154746-Y1_TUG_6.h5'));
 myImu=imus(strcmp('Right Thigh',{imus.label}));
 
+% plot quaternion from manufacturer's onboard filter:
 figure('units','normalized','position',[0.1300 0.5500 0.250 0.250]);
-quatplot(myImu.qAPDM); drawnow;
+lh=plot(repmat(myImu.time,[1 4]),myImu.qAPDM);
+set(lh,{'color'},{[0 0 0]; [1 0 0]; [0 1 0]; [0 0 1]});
+legend('q_s','q_x','q_y','q_z');
+grid on; xlabel('time (sec)'); ylabel('quaternion component');
 
 % first clear varstrtocharmap
 VarStrToCharMap.clear();
@@ -28,14 +35,14 @@ debugSingleImuFactor([myImu.ax(measToUse) myImu.ay(measToUse) myImu.az(measToUse
 
 
 % construct imuposeestimator
-ipe=imuPoseEstimator(myImu,'test');
+ipe=imuPoseEstimator(myImu,1,'test');
 
 ipe.setupImuFactorStaticBias();
 
 % () now that it's setup, you can inspect the error of the imufactor at the initial condition
 getFirstImuFactor(ipe.m_graph,ipe.m_initialValues);
 
-ipe.robustOptimize(0);
+ipe.fastOptimize();
 % ipe.plotEstimatedValues();
 % ipe.plotAccelDebug();
 

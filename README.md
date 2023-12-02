@@ -1,14 +1,16 @@
-# Bioslam: IMU-Based Human Skeletal Pose Estimation
-
-**Author:** [Tim McGrath](https://www.researchgate.net/profile/Tim_Mcgrath9)
+<h1 align="center">
+  Bioslam: IMU-Based Human Skeletal Pose Estimation<br>
+  <a href="https://github.com/tmcg0/bioslam/actions/workflows/build-test-linux.yml/badge.svg"><img src="https://github.com/tmcg0/bioslam/actions/workflows/build-test-linux.yml/badge.svg"/></a> <a href="https://github.com/tmcg0/bioslam/actions/workflows/dockerfile-build.yml/badge.svg"><img src="https://github.com/tmcg0/bioslam/actions/workflows/dockerfile-build.yml/badge.svg"/></a> <a href="https://github.com/tmcg0/bioslam/actions/workflows/cpp-linter.yml/badge.svg"><img src="https://github.com/tmcg0/bioslam/actions/workflows/cpp-linter.yml/badge.svg"/></a> <a href="https://codecov.io/gh/tmcg0/bioslam" ><img src="https://codecov.io/gh/tmcg0/bioslam/branch/dev/graph/badge.svg?token=7YN205FLRJ"/></a> <a href="https://github.com/tmcg0/bioslam/blob/dev/LICENSE.txt"><img src="https://img.shields.io/badge/License-MIT-maroon.svg"/></a>
+  
+</h1>
 
 ## What is Bioslam?
 
 Bioslam is a C++/MATLAB toolbox for estimation of human skeletal pose from IMU data, using robust factor-graph based global optimization techniques.
 
 <p align="center">
-  <img width="400" height="400" src="https://github.com/tmcg0/bioslam/blob/dev/doc/media/bioslam-gait.gif">
-  <img width="430" height="430" src="https://github.com/tmcg0/bioslam/blob/dev/doc/media/subj_cal_partial.gif">
+  <img width="380" height="380" src="https://github.com/tmcg0/bioslam/blob/dev/doc/media/bioslam-gait.gif">
+  <img width="410" height="410" src="https://github.com/tmcg0/bioslam/blob/dev/doc/media/subj_cal_partial.gif">
 </p>
 
 ## Citing Bioslam
@@ -20,7 +22,9 @@ If using this software repository, please cite bioslam through the following Zen
 <!-- For now I'm putting all of these in IEEE style without ref numbers and without DOI numbers since I'll provide direct links -->
 If using bioslam, also please cite the following publication:
 
-- T. McGrath and L. Stirling, “Body-Worn IMU Human Skeletal Pose Estimation Using a Factor Graph-Based Optimization Framework,” *Sensors*, vol. 20, no. 23, p. 6887, Dec. 2020. [[link]](https://www.mdpi.com/1424-8220/20/23/6887)
+- T. McGrath and L. Stirling, “Body-Worn IMU Human Skeletal Pose Estimation Using a Factor Graph-Based Optimization Framework,” *Sensors*, vol. 20, no. 23, p. 6887, Dec. 2020. [[link]](https://doi.org/10.3390/s20236887)
+
+- T. McGrath and L. Stirling, “Body-Worn IMU-Based Human Hip and Knee Kinematics Estimation during Treadmill Walking,” *Sensors*, vol. 22, no. 7, p. 2544, Mar. 2022. [[link]](https://doi.org/10.3390/s22072544)
 
 ### Related publications
 The novel hinge joint kinematic model is based on:
@@ -35,10 +39,19 @@ The optimization backend ([GTSAM 4.0+](https://github.com/borglab/gtsam)) and IM
  
 # Installation
 
+### Supported systems
+Bioslam is tested on the following systems:
+
+- Ubuntu 20.04 with GCC 7, GCC 9, and Clang 9
+
+using Boost 1.67, GTSAM 4.0.3, and Eigen 3.3.9.
+
+On other systems, a bioslam-installed Ubuntu image can be spun up in a Docker container using the provided [Dockerfile](docker/Dockerfile).
+
 ## Required Dependencies
 
 * CMake (>= 3.17, _working through older versions now. Can confirm 3.10.2 doesn't work_)
-* boost (>= 1.58)
+* boost (>= 1.65)
   * Ubuntu: `sudo apt-get install libboost-all-dev`
 * [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page)
   * `git clone https://github.com/eigenteam/eigen-git-mirror`

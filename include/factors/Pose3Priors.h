@@ -71,6 +71,8 @@ namespace bioslam {
 
         static gtsam::Vector1 errorModel(const gtsam::Pose3& pose,const gtsam::Vector3& refVecLocal, const gtsam::Vector3& refVecNav, const gtsam::Vector3& upVecNav, double expectedAng, boost::optional<gtsam::Matrix16&> Hx = boost::none);
         static double compassAngle(const gtsam::Rot3& r, const gtsam::Vector3& refVecLocal, const gtsam::Vector3& refVecNav, const gtsam::Vector3& upVecNav, boost::optional<gtsam::Matrix13&> Hr = boost::none);
+        static double compassAngleFromVertical(const gtsam::Rot3& r, const gtsam::Vector3& refVecLocal, const gtsam::Vector3& upVecNav); // returns how far compass is from being vertical (radians)
+        static bool isCompassVertical(const gtsam::Rot3& r, const gtsam::Vector3& refVecLocal, const gtsam::Vector3& upVecNav, double verticalAngTolRadians=10.0*M_PI/180.0); // returns true/false decision on if compass is held vertically
 
         gtsam::Vector evaluateError(const gtsam::Pose3& pose, boost::optional<gtsam::Matrix &> H1 = boost::none) const;
 

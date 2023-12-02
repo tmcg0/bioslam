@@ -9,6 +9,10 @@ set (BIOSLAM_VERSION_STRING "${BIOSLAM_VERSION_MAJOR}.${BIOSLAM_VERSION_MINOR}.$
 
 project(bioslam VERSION ${BIOSLAM_VERSION_STRING} LANGUAGES CXX C) # added C because some HDF5 tests were .c
 
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 # Introduce variables:
 # * CMAKE_INSTALL_LIBDIR
 # * CMAKE_INSTALL_BINDIR
@@ -22,13 +26,12 @@ endif()
 # -------------------------------------- #
 
 set(PROJECT_DESCRIPTION "IMU + biomechanics estimation toolbox") # for compatibility with CMake 3.8.2
-set(CMAKE_CXX_STANDARD 14) # C++ version
 
 ### ----- User options ----- ###
 option(BIOSLAM_BUILD_WITH_MARCH_NATIVE "Build with -march=native (this should match the gtsam build option GTSAM_BUILD_WITH_MARCH_NATIVE)" ON)
 option(BIOSLAM_BUILD_TESTS "Should I build these tests?" ON)
 option(GTSAM_USE_MKL "Does GTSAM require MKL?" OFF)
-option(BIOSLAM_BUILD_MATLAB_WRAPPER "Build the MATLAB interface for bioslam?" ON)
+option(BIOSLAM_BUILD_MATLAB_WRAPPER "Build the MATLAB interface for bioslam?" OFF)
 option(BIOSLAM_BUILD_EXAMPLES "Build examples?" ON)
 option(BIOSLAM_USE_TBB "Include Intel's TBB library?" ON) # if GTSAM uses TBB, you need to set this to 'ON'
 ### ------------------------ ###
@@ -55,6 +58,9 @@ endif()
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ #
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/Modules/") # include the modules subfolder
+
+include(CodeCoverage)
+append_coverage_compiler_flags()
 
 # Offer the user the choice of overriding the installation directories
 set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
@@ -90,7 +96,7 @@ if(GTSAM_USE_MKL)
   message(STATUS "including MKL from ${MKL_INCLUDE_DIRS}")
 endif()
 # --- Require Boost ---
-find_package(Boost 1.58 COMPONENTS filesystem REQUIRED)
+find_package(Boost 1.65 COMPONENTS filesystem REQUIRED)
 if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
   list(APPEND BIOSLAMLIBS  ${Boost_LIBRARIES})
@@ -152,6 +158,11 @@ list(APPEND SOURCES_BIOSLAM ${PROJECT_SOURCE_DIR}/src/factors/MagPose3Factor.cpp
 message(STATUS "Libs that we have for bioslam are ${BIOSLAMLIBS} ")
 message("bioslam sources are ${SOURCES_BIOSLAM}")
 add_library(bioslam SHARED ${SOURCES_BIOSLAM})
+set_target_properties(bioslam PROPERTIES
+  CXX_STANDARD 11
+  CXX_STANDARD_REQUIRED ON
+  CXX_EXTENSIONS OFF
+)
 target_link_libraries(bioslam ${BIOSLAMLIBS})
 target_link_libraries(bioslam gtsam)
 target_link_libraries(bioslam HighFive)
