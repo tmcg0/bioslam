@@ -250,6 +250,16 @@ std::string get_sensor_label_from_apdm_v5_by_sensor_number(const std::string& fi
     }
 }
 
+double imu::getDeltaT() const {
+    // loop through and find average delta T (seconds)
+    std::vector<double> timeDiff(this->length()-1);
+    for(uint i=0; i<timeDiff.size(); i++){
+        timeDiff[i]=this->relTimeSec[i+1]-this->relTimeSec[i];
+    }
+    double averageDeltaT = accumulate( timeDiff.begin(), timeDiff.end(), 0.0)/timeDiff.size();
+    return averageDeltaT;
+}
+
 std::vector<std::string> getAllImuLabelsInDataFile(const std::string& filestr){
     std::vector<std::string> allLabels;
     if (is_apdm_h5_version5(filestr)){

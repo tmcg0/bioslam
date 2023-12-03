@@ -36,6 +36,7 @@ class imu {
         gtsam::Vector3 magVec(const uint idx) const;
         Eigen::MatrixXd gyroMat() const; // return Nx3 matrix of all gyro values
         Eigen::MatrixXd accelMat() const; // return Nx3 matrix of all accel values
+        double getDeltaT() const;
         imu cutImuByIdx(uint startIdx, uint stopIdx);
 };
 
