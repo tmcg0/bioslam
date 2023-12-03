@@ -43,10 +43,10 @@ int main(){
         gtsam::Values estimate=optimizer.optimize();
         gtsam::Point3 v1est=estimate.at<gtsam::Point3>(v1key);
         gtsam::Point3 v2est=estimate.at<gtsam::Point3>(v2key);
-        std::cout << "initial v1: [" << v1init.vector().transpose() << "] (norm=" << v1init.norm() << ")  -->  ";
-        std::cout << "optimized v1: [" << v1est.vector().transpose() <<"] (norm=" << v1est.norm() << "). iterations=" << optimizer.iterations() << std::endl;
-        std::cout << "initial v2: [" << v2init.vector().transpose() << "] (norm=" << v2init.norm() << ")  -->  ";
-        std::cout << "optimized v2: [" << v2est.vector().transpose() <<"] (norm=" << v2est.norm() << "). iterations=" << optimizer.iterations() << std::endl;
+        std::cout << "initial v1: [" << v1init.transpose() << "] (norm=" << v1init.norm() << ")  -->  ";
+        std::cout << "optimized v1: [" << v1est.transpose() <<"] (norm=" << v1est.norm() << "). iterations=" << optimizer.iterations() << std::endl;
+        std::cout << "initial v2: [" << v2init.transpose() << "] (norm=" << v2init.norm() << ")  -->  ";
+        std::cout << "optimized v2: [" << v2est.transpose() <<"] (norm=" << v2est.norm() << "). iterations=" << optimizer.iterations() << std::endl;
         if(abs(v1est.norm() - v2est.norm())>tol){ // if greater than tol, throw error
             std::cerr<<"error: estimated mag diff is greater than tol!"<<std::endl;
             return 1;

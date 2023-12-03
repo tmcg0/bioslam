@@ -38,8 +38,8 @@ int main(){
         gtsam::LevenbergMarquardtOptimizer optimizer(mygraph,myVals);
         gtsam::Values estimate=optimizer.optimize();
         gtsam::Point3 optimizedPoint=estimate.at<gtsam::Point3>(mykey);
-        std::cout<<"initial Point3: ["<<testPoint.vector().transpose()<<"] (norm="<<testPoint.norm()<<")  -->  ";
-        std::cout<<"optimized Point3:"<<optimizedPoint.vector().transpose()<<" (norm="<<optimizedPoint.norm()<<"). iterations="<<optimizer.iterations()<<std::endl;
+        std::cout<<"initial Point3: ["<<testPoint.transpose()<<"] (norm="<<testPoint.norm()<<")  -->  ";
+        std::cout<<"optimized Point3:"<<optimizedPoint.transpose()<<" (norm="<<optimizedPoint.norm()<<"). iterations="<<optimizer.iterations()<<std::endl;
         if(optimizedPoint.norm()>maxNorm*1.1){ // if greater than 10% more than maxnorm, throw error
             std::cerr<<"error: estimated norm is greater than 10% larger than set max norm!"<<std::endl;
             return 1;

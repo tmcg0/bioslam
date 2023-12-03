@@ -617,7 +617,7 @@ namespace mathutils
         Eigen::VectorXd angles(R_B_to_N.size());
         // find an orthogonal vector to vB using the cross product and seedStartVec
         Eigen::Vector3d seedStartVecB=seedStartVec.normalized();
-        Eigen::Vector3d vproxBnorm=vproxB.vector().normalized();
+        Eigen::Vector3d vproxBnorm=vproxB.normalized();
         Eigen::Vector3d orthoVecB=vproxBnorm.cross(seedStartVecB); // so, orthoVec is orthogonal to vB
         orthoVecB.normalize(); // normalize! vproxB and seedStartVec are not in general orthogonal
         Eigen::Vector3d orthoVecNavInit=R_B_to_N[0]*orthoVecB;
@@ -743,7 +743,7 @@ namespace mathutils
         if(H_sA){ *H_sA=de_dpA*dpA_dsA; }
         if(H_xB){ *H_xB=de_dpB*dpB_dxB; }
         if(H_sB){ *H_sB=de_dpB*dpB_dsB; }
-        return e.vector();
+        return e;
     }
 
     double ptSeparationNorm(const gtsam::Pose3& xA, const gtsam::Point3& sA, const gtsam::Pose3& xB, const gtsam::Point3& sB, boost::optional<gtsam::Matrix16 &> H_xA, boost::optional<gtsam::Matrix13 &> H_sA, boost::optional<gtsam::Matrix16 &> H_xB, boost::optional<gtsam::Matrix13 &> H_sB){
@@ -777,7 +777,7 @@ namespace mathutils
         gtsam::Point3 h=((gtsam::Point3) t).cross(n,dh_dt,dh_dn); // h = cross(t,n) => the projection of v into the plane whose normal is n
         if(H_v){ *H_v=dh_dt*dt_dv; } // dh/dv
         if(H_n){ *H_n=dh_dn + dh_dt*dt_dn;} // dh/dn
-        return h.vector();
+        return h;
     }
 
     std::string distributionInfoString(const std::vector<double>& x) {

@@ -60,8 +60,8 @@ int solver_test(uint tests, double errorTol){
         gtsam::Point3 est_v1=estimate.at<gtsam::Point3>(v1Key);
         gtsam::Point3 est_v2=estimate.at<gtsam::Point3>(v2Key);
         double estSegLength=(est_v1-est_v2).norm();
-        std::cout<<"initial: v1=["<<v1.vector().transpose()<<"], v2=["<<v2.vector().transpose()<<"] (seg length="<<initialSegLength<<") -->  ";
-        std::cout<<"optimizec: v1=["<<est_v1.vector().transpose()<<"], v2=["<<est_v2.vector().transpose()<<"] (seg length="<<estSegLength<<"), optimizer error: "<<initialError<<" --> "<<finalError<<")  iterations="<<optimizer.iterations()<<std::endl;
+        std::cout<<"initial: v1=["<<v1.transpose()<<"], v2=["<<v2.transpose()<<"] (seg length="<<initialSegLength<<") -->  ";
+        std::cout<<"optimizec: v1=["<<est_v1.transpose()<<"], v2=["<<est_v2.transpose()<<"] (seg length="<<estSegLength<<"), optimizer error: "<<initialError<<" --> "<<finalError<<")  iterations="<<optimizer.iterations()<<std::endl;
         if((estSegLength-segLengthMax)>errorTol){ // if greater than 1% more than maxnorm, throw error
             throw std::runtime_error("error: estimated seg length is too large");
             return 1;

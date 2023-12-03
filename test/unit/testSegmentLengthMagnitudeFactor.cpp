@@ -48,8 +48,8 @@ int main(){
         gtsam::Point3 est_v1=estimate.at<gtsam::Point3>(v1Key);
         gtsam::Point3 est_v2=estimate.at<gtsam::Point3>(v2Key);
         double estSegLength=(est_v1-est_v2).norm();
-        std::cout<<"initial: v1=["<<v1.vector().transpose()<<"], v2=["<<v2.vector().transpose()<<"] (seg length="<<initialSegLength<<") -->  ";
-        std::cout<<"optimized: v1=["<<est_v1.vector().transpose()<<"], v2=["<<est_v2.vector().transpose()<<"] (seg length="<<estSegLength<<", target length = "<<segLengthMean<<", error = "<<abs(estSegLength-segLengthMean)<<"), optimizer error: "<<initialError<<" --> "<<finalError<<")  iterations="<<optimizer.iterations()<<std::endl;
+        std::cout<<"initial: v1=["<<v1.transpose()<<"], v2=["<<v2.transpose()<<"] (seg length="<<initialSegLength<<") -->  ";
+        std::cout<<"optimized: v1=["<<est_v1.transpose()<<"], v2=["<<est_v2.transpose()<<"] (seg length="<<estSegLength<<", target length = "<<segLengthMean<<", error = "<<abs(estSegLength-segLengthMean)<<"), optimizer error: "<<initialError<<" --> "<<finalError<<")  iterations="<<optimizer.iterations()<<std::endl;
         if(abs(segLengthMean-estSegLength)>segLengthMean*0.01){ // if greater than 10% more than maxnorm, throw error
             std::cerr<<"error: estimated seg length is greater than 1% larger than the target length"<<std::endl;
             return 1;

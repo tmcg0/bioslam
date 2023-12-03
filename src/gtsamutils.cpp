@@ -31,7 +31,7 @@ namespace gtsamutils{
         // vector<Rot3> => Nx4 Eigen::MatrixXd
         Eigen::MatrixXd M(p.size(),3);
         for(uint i=0; i<p.size(); i++){
-            gtsam::Vector3 pos=p[i].vector();
+            gtsam::Vector3 pos=p[i];
             M(i,0)=pos[0]; M(i,1)=pos[1]; M(i,2)=pos[2];
         }
         return M;

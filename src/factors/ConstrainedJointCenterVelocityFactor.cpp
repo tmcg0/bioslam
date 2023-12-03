@@ -97,7 +97,7 @@ namespace bioslam {
             if(H_vB){ *H_vB=derr_dtB*dtB_dvB; }
             if(H_wB){ *H_wB=derr_dtB*dtB_dwB; }
             if(H_sB){ *H_sB=derr_dtB*dtB_dsB; }
-            return err.vector();
+            return err;
         }
 
         gtsam::Vector3 ConstrainedJointCenterVelocityFactor::linearVelocity(const gtsam::Pose3& x, const gtsam::Vector3& v, const gtsam::Vector3& w, const gtsam::Vector3& p,
@@ -127,7 +127,7 @@ namespace bioslam {
             if(H_v){ *H_v=dt_dv; }
             if(H_w){ *H_w=dt_dcN*dcN_dc*dc_dw; }
             if(H_p){ *H_p=dt_dcN*dcN_dc*dc_dp; }
-            return t.vector();
+            return t;
         }
 
         gtsam::Vector ConstrainedJointCenterVelocityFactor::evaluateErrorNoJacCall(const gtsam::Pose3& poseA, const gtsam::Vector3& linVelA, const gtsam::Vector3& angVelA, const gtsam::Point3& sA, const gtsam::Pose3& poseB, const gtsam::Vector3& linVelB, const gtsam::Vector3& angVelB, const gtsam::Point3& sB) const {
