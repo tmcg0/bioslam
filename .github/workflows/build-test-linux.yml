@@ -126,7 +126,7 @@ jobs:
 
       - name: Install Boost ${{ matrix.boost-version }}
         run: |
-          BOOST_FOLDER=boost_${${{ matrix.boost-version }}//./_}
+          BOOST_FOLDER=$(echo "boost_${{ matrix.boost-version }}" | tr '.' '_')
           wget https://boostorg.jfrog.io/artifactory/main/release/${BOOST_VERSION}/source/${BOOST_FOLDER}.tar.gz
           tar -zxf ${BOOST_FOLDER}.tar.gz
           cd ${BOOST_FOLDER}/
