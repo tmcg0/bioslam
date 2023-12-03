@@ -65,11 +65,11 @@ int test_derivative_numerically(const bioslam::Point3MagnitudeDifferenceFactor& 
     //    I think to call it it's numericalDerivativeXY where X=number of input variables and Y=which Jacobian you want to test
     //    templates are: <output type (typically gtsam::Vector), then the input argument types in order)
     gtsam::Matrix numericalH1=gtsam::numericalDerivative21<gtsam::Vector,gtsam::Point3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Point3&,const gtsam::Point3&)>
-                    (boost::bind(&bioslam::Point3MagnitudeDifferenceFactor::evaluateError,fac,_1,_2,boost::none,boost::none)), v1, v2, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Point3&,const gtsam::Point3&)>
+                    (std::bind(&bioslam::Point3MagnitudeDifferenceFactor::evaluateError,fac,_1,_2,boost::none,boost::none)), v1, v2, 1e-5);
     gtsam::Matrix numericalH2=gtsam::numericalDerivative22<gtsam::Vector,gtsam::Point3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Point3&,const gtsam::Point3&)>
-                    (boost::bind(&bioslam::Point3MagnitudeDifferenceFactor::evaluateError,fac,_1,_2,boost::none,boost::none)), v1, v2, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Point3&,const gtsam::Point3&)>
+                    (std::bind(&bioslam::Point3MagnitudeDifferenceFactor::evaluateError,fac,_1,_2,boost::none,boost::none)), v1, v2, 1e-5);
     // now test using gtsam::assert_equal()
     bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-7);
     bool testH2=gtsam::assert_equal(derivedH2,numericalH2,1e-7);

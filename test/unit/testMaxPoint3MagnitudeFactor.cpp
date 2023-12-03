@@ -58,8 +58,8 @@ int test_derivative_numerically(const bioslam::MaxPoint3MagnitudeFactor& fac, co
     //    I think to call it it's numericalDerivativeXY where X=number of input variables and Y=which Jacobian you want to test
     //    templates are: <output type (typically gtsam::Vector), then the input argument types in order)
     gtsam::Matrix numericalH1=gtsam::numericalDerivative11<gtsam::Vector,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Point3&)>
-                    (boost::bind(&bioslam::MaxPoint3MagnitudeFactor::evaluateError,fac,_1,boost::none)),p,1e-5);
+            std::function<gtsam::Vector(const gtsam::Point3&)>
+                    (std::bind(&bioslam::MaxPoint3MagnitudeFactor::evaluateError,fac,_1,boost::none)),p,1e-5);
     // now test using gtsam::assert_equal()
     bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-7);
     if (!testH1){

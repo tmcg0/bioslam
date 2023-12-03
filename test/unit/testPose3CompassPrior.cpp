@@ -97,8 +97,8 @@ int test_derivative_numerically(const bioslam::Pose3CompassPrior& fac, const gts
     //    I think to call it it's numericalDerivativeXY where X=number of input variables and Y=which Jacobian you want to test
     //    templates are: <output type (typically gtsam::Vector), then the input argument types in order)
     gtsam::Matrix numericalH1=gtsam::numericalDerivative11<gtsam::Vector,gtsam::Pose3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&)>
-                    (boost::bind(&bioslam::Pose3CompassPrior::evaluateError,fac,_1,boost::none)),x,1e-8);
+            std::function<gtsam::Vector(const gtsam::Pose3&)>
+                    (std::bind(&bioslam::Pose3CompassPrior::evaluateError,fac,_1,boost::none)),x,1e-8);
 
     // now test using gtsam::assert_equal()
     bool testH1=gtsam::assert_equal(derivedH1,numericalH1,5.0e-3);

@@ -81,17 +81,17 @@ int test_derivative_numerically(const bioslam::ConstrainedJointCenterPositionFac
     //    I think to call it it's numericalDerivativeXY where X=number of input variables and Y=which Jacobian you want to test
     //    templates are: <output type (typically gtsam::Vector), then the input argument types in order)
     gtsam::Matrix numericalH1=gtsam::numericalDerivative41<gtsam::Vector,gtsam::Pose3,gtsam::Pose3,gtsam::Point3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Pose3&, const gtsam::Point3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::ConstrainedJointCenterPositionFactor::evaluateError, fac, _1, _2, _3, _4, boost::none, boost::none, boost::none, boost::none)), xA, xB, L_A_to_ctr, L_B_to_ctr, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Pose3&, const gtsam::Point3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::ConstrainedJointCenterPositionFactor::evaluateError, fac, _1, _2, _3, _4, boost::none, boost::none, boost::none, boost::none)), xA, xB, L_A_to_ctr, L_B_to_ctr, 1e-5);
     gtsam::Matrix numericalH2=gtsam::numericalDerivative42<gtsam::Vector,gtsam::Pose3,gtsam::Pose3,gtsam::Point3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Pose3&, const gtsam::Point3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::ConstrainedJointCenterPositionFactor::evaluateError, fac, _1, _2, _3, _4, boost::none, boost::none, boost::none, boost::none)), xA, xB, L_A_to_ctr, L_B_to_ctr, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Pose3&, const gtsam::Point3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::ConstrainedJointCenterPositionFactor::evaluateError, fac, _1, _2, _3, _4, boost::none, boost::none, boost::none, boost::none)), xA, xB, L_A_to_ctr, L_B_to_ctr, 1e-5);
     gtsam::Matrix numericalH3=gtsam::numericalDerivative43<gtsam::Vector,gtsam::Pose3,gtsam::Pose3,gtsam::Point3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Pose3&, const gtsam::Point3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::ConstrainedJointCenterPositionFactor::evaluateError, fac, _1, _2, _3, _4, boost::none, boost::none, boost::none, boost::none)), xA, xB, L_A_to_ctr, L_B_to_ctr, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Pose3&, const gtsam::Point3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::ConstrainedJointCenterPositionFactor::evaluateError, fac, _1, _2, _3, _4, boost::none, boost::none, boost::none, boost::none)), xA, xB, L_A_to_ctr, L_B_to_ctr, 1e-5);
     gtsam::Matrix numericalH4=gtsam::numericalDerivative44<gtsam::Vector,gtsam::Pose3,gtsam::Pose3,gtsam::Point3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Pose3&, const gtsam::Point3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::ConstrainedJointCenterPositionFactor::evaluateError, fac, _1, _2, _3, _4, boost::none, boost::none, boost::none, boost::none)), xA, xB, L_A_to_ctr, L_B_to_ctr, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Pose3&, const gtsam::Point3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::ConstrainedJointCenterPositionFactor::evaluateError, fac, _1, _2, _3, _4, boost::none, boost::none, boost::none, boost::none)), xA, xB, L_A_to_ctr, L_B_to_ctr, 1e-5);
     // now test using gtsam::assert_equal()
     bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-9);
     bool testH2=gtsam::assert_equal(derivedH2,numericalH2,1e-9);

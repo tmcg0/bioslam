@@ -331,29 +331,29 @@ int test_derivative_numerically(const bioslam::ConstrainedJointCenterNormVelocit
     //    I think to call it it's numericalDerivativeXY where X=number of input variables and Y=which Jacobian you want to test
     //    templates are: <output type (typically gtsam::Vector), then the input argument types in order)
     gtsam::Matrix numericalH1=gtsamutils::numericalDerivative81<gtsam::Vector,gtsam::Pose3,gtsam::Vector3,gtsam::Vector3,gtsam::Point3,gtsam::Pose3,gtsam::Vector3,gtsam::Vector3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::ConstrainedJointCenterNormVelocityFactor::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5, _6, _7, _8)), poseA, linVelA, angVelA, sA, poseB, linVelB, angVelB, sB, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::ConstrainedJointCenterNormVelocityFactor::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5, _6, _7, _8)), poseA, linVelA, angVelA, sA, poseB, linVelB, angVelB, sB, 1e-5);
     gtsam::Matrix numericalH2=gtsamutils::numericalDerivative82<gtsam::Vector,gtsam::Pose3,gtsam::Vector3,gtsam::Vector3,gtsam::Point3,gtsam::Pose3,gtsam::Vector3,gtsam::Vector3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::ConstrainedJointCenterNormVelocityFactor::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5, _6, _7, _8)), poseA, linVelA, angVelA, sA, poseB, linVelB, angVelB, sB, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::ConstrainedJointCenterNormVelocityFactor::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5, _6, _7, _8)), poseA, linVelA, angVelA, sA, poseB, linVelB, angVelB, sB, 1e-5);
     gtsam::Matrix numericalH3=gtsamutils::numericalDerivative83<gtsam::Vector,gtsam::Pose3,gtsam::Vector3,gtsam::Vector3,gtsam::Point3,gtsam::Pose3,gtsam::Vector3,gtsam::Vector3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::ConstrainedJointCenterNormVelocityFactor::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5, _6, _7, _8)), poseA, linVelA, angVelA, sA, poseB, linVelB, angVelB, sB, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::ConstrainedJointCenterNormVelocityFactor::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5, _6, _7, _8)), poseA, linVelA, angVelA, sA, poseB, linVelB, angVelB, sB, 1e-5);
     gtsam::Matrix numericalH4=gtsamutils::numericalDerivative84<gtsam::Vector,gtsam::Pose3,gtsam::Vector3,gtsam::Vector3,gtsam::Point3,gtsam::Pose3,gtsam::Vector3,gtsam::Vector3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::ConstrainedJointCenterNormVelocityFactor::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5, _6, _7, _8)), poseA, linVelA, angVelA, sA, poseB, linVelB, angVelB, sB, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::ConstrainedJointCenterNormVelocityFactor::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5, _6, _7, _8)), poseA, linVelA, angVelA, sA, poseB, linVelB, angVelB, sB, 1e-5);
     gtsam::Matrix numericalH5=gtsamutils::numericalDerivative85<gtsam::Vector,gtsam::Pose3,gtsam::Vector3,gtsam::Vector3,gtsam::Point3,gtsam::Pose3,gtsam::Vector3,gtsam::Vector3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::ConstrainedJointCenterNormVelocityFactor::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5, _6, _7, _8)), poseA, linVelA, angVelA, sA, poseB, linVelB, angVelB, sB, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::ConstrainedJointCenterNormVelocityFactor::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5, _6, _7, _8)), poseA, linVelA, angVelA, sA, poseB, linVelB, angVelB, sB, 1e-5);
     gtsam::Matrix numericalH6=gtsamutils::numericalDerivative86<gtsam::Vector,gtsam::Pose3,gtsam::Vector3,gtsam::Vector3,gtsam::Point3,gtsam::Pose3,gtsam::Vector3,gtsam::Vector3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::ConstrainedJointCenterNormVelocityFactor::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5, _6, _7, _8)), poseA, linVelA, angVelA, sA, poseB, linVelB, angVelB, sB, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::ConstrainedJointCenterNormVelocityFactor::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5, _6, _7, _8)), poseA, linVelA, angVelA, sA, poseB, linVelB, angVelB, sB, 1e-5);
     gtsam::Matrix numericalH7=gtsamutils::numericalDerivative87<gtsam::Vector,gtsam::Pose3,gtsam::Vector3,gtsam::Vector3,gtsam::Point3,gtsam::Pose3,gtsam::Vector3,gtsam::Vector3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::ConstrainedJointCenterNormVelocityFactor::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5, _6, _7, _8)), poseA, linVelA, angVelA, sA, poseB, linVelB, angVelB, sB, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::ConstrainedJointCenterNormVelocityFactor::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5, _6, _7, _8)), poseA, linVelA, angVelA, sA, poseB, linVelB, angVelB, sB, 1e-5);
     gtsam::Matrix numericalH8=gtsamutils::numericalDerivative88<gtsam::Vector,gtsam::Pose3,gtsam::Vector3,gtsam::Vector3,gtsam::Point3,gtsam::Pose3,gtsam::Vector3,gtsam::Vector3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::ConstrainedJointCenterNormVelocityFactor::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5, _6, _7, _8)), poseA, linVelA, angVelA, sA, poseB, linVelB, angVelB, sB, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Vector3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::ConstrainedJointCenterNormVelocityFactor::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5, _6, _7, _8)), poseA, linVelA, angVelA, sA, poseB, linVelB, angVelB, sB, 1e-5);
 
     // now test using gtsam::assert_equal()
     bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-7);
