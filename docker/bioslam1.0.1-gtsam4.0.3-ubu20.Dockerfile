@@ -1,5 +1,5 @@
 # --------------------------------------------------------------------------- #
-#           bioslam (latest) Dockerfile for Ubuntu 20.04 base image          
+#           bioslam v1.0.1 Dockerfile for Ubuntu 20.04 base image          
 # with dependencies:
 #   boost: 1.71.0 (https://packages.ubuntu.com/focal/libboost1.71-all-dev)
 #   TBB: 2020.1 (https://packages.ubuntu.com/focal/libtbb-dev)
@@ -7,6 +7,7 @@
 #   Eigen: 3.3.9 (https://gitlab.com/libeigen/eigen)
 #   GTSAM: 4.0.3 (https://github.com/borglab/gtsam/releases/4.0.3)
 #   HighFive: 2.3.1 (https://github.com/BlueBrain/HighFive/releases/v2.3.1)
+#   imuDataUtils: 0.0-alpha (https://github.com/tmcg0/imuDataUtils)
 # build environment:
 #   git: 2.25.1 (https://packages.ubuntu.com/focal/git)
 #   cmake: 3.16.3 (https://packages.ubuntu.com/focal/cmake)
@@ -15,6 +16,7 @@
 # notes:
 # - only builds the C++ library and executables, no Python/MATLAB wrappers
 # - internet connection required to download dependencies
+# - note: prior to v1.1, imuDataUtils is required
 # --------------------------------------------------------------------------- #
 
 FROM ubuntu:20.04
@@ -74,14 +76,14 @@ RUN make install -j${N_JOBS}
 
 # install imuDataUtils
 WORKDIR /usr/src/
-RUN git clone --depth 1 --branch master https://github.com/tmcg0/imuDataUtils
+RUN git clone --depth 1 --branch v0.0-alpha https://github.com/tmcg0/imuDataUtils
 WORKDIR /usr/src/imuDataUtils/build/
 RUN cmake ..
 RUN make install -j${N_JOBS}
 
 # install bioslam
 WORKDIR /usr/src/
-RUN git clone --depth 1 --branch dev https://github.com/tmcg0/bioslam
+RUN git clone --depth 1 --branch v1.0.1 https://github.com/tmcg0/bioslam
 WORKDIR /usr/src/bioslam/build/
 RUN cmake -DBIOSLAM_BUILD_MATLAB_WRAPPER=OFF ..
 RUN make install -j${N_JOBS}

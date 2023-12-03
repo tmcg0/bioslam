@@ -13,7 +13,7 @@ jobs:
 
     - name: Build and run docker image
       run: |
-        docker build -t bioslam -f ./docker/ubu-20.Dockerfile ./docker
+        docker build -t bioslam -f ./docker/bioslam1.0.1-gtsam4.0.3-ubu20.Dockerfile ./docker
         docker run -id --name bioslam bioslam
 
     - name: Run tests
