@@ -28,16 +28,22 @@ jobs:
             os: ubuntu-20.04
             compiler: gcc
             version: "7"
+            gtsam-version: "4.0.3"
+            highfive-version: "v2.8.0"
 
           - name: ubuntu-20.04-gcc-9
             os: ubuntu-20.04
             compiler: gcc
             version: "9"
+            gtsam-version: "4.0.3"
+            highfive-version: "v2.8.0"
 
           - name: ubuntu-20.04-clang-9
             os: ubuntu-20.04
             compiler: clang
             version: "9"
+            gtsam-version: "4.0.3"
+            highfive-version: "v2.8.0"
 
     steps:
       - name: Checkout
@@ -100,10 +106,10 @@ jobs:
           ./bootstrap.sh --with-libraries=serialization,filesystem,thread,system,atomic,date_time,timer,chrono,program_options,regex
           sudo ./b2 -j$(nproc) install
 
-      - name: Install GTSAM 4.0.3
+      - name: Install GTSAM ${{ matrix.gtsam-version }}
         run: |
           cd ${{runner.workspace}} # cd to runner home
-          git clone --depth 1 --branch 4.0.3 https://github.com/borglab/gtsam.git gtsam # clone latest from dev branch. switch to GTSAM 4.1 once it's tagged.
+          git clone --depth 1 --branch ${{ matrix.gtsam-version }} https://github.com/borglab/gtsam.git gtsam
           cd gtsam && mkdir build && cd build # move into build dir for gtsam
           cmake -DCMAKE_BUILD_TYPE=Release -DGTSAM_WITH_EIGEN_MKL=OFF -DGTSAM_BUILD_EXAMPLES_ALWAYS=OFF -DGTSAM_BUILD_TIMING_ALWAYS=OFF -DGTSAM_BUILD_TESTS=OFF -DGTSAM_BUILD_UNSTABLE=ON ..
           sudo make -j$(nproc) install
@@ -111,10 +117,10 @@ jobs:
       - name: Install hdf5
         run: sudo apt-get -y install libhdf5-serial-dev
 
-      - name: Install HighFive v2.8.0
+      - name: Install HighFive ${{ matrix.highfive-version }}
         run: |
           cd ${{runner.workspace}} # cd to runner home
-          git clone --depth 1 --branch v2.8.0 https://github.com/BlueBrain/HighFive HighFive # clone HighFive
+          git clone --depth 1 --branch ${{ matrix.highfive-version }} https://github.com/BlueBrain/HighFive HighFive
           mkdir build && cd build # move into build dir for HighFive
           cmake -DHIGHFIVE_USE_BOOST=OFF ..
           sudo make -j$(nproc) install
