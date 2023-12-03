@@ -8,7 +8,6 @@
 
 #include <vector>
 #include "imu/imu.h"
-#include "imuDataUtils/datapkgr.h"
 #include "imuPoseEstimator.h"
 #include <string>
 #include <gtsam/navigation/NavState.h>
@@ -36,7 +35,6 @@ int main(){
 
 imuPoseEstimator test_posthoc_smoother(const std::string& dataFileToUse, const std::string& imuLabel){
     std::map<std::string,imu> ImuMap=imu::getImuMapFromDataFile(dataFileToUse);
-    std::vector<std::string> allLabels=datapkgr::getAllImuLabelsInDataFile(dataFileToUse);
     imu testImu=ImuMap[imuLabel];
     std::cout<<"found imu! no. of measurements= "<<testImu.length()<<std::endl;
     std::vector<gtsam::Rot3> qAPDM=gtsamutils::imuOrientation(testImu);
