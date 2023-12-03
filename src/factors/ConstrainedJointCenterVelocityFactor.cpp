@@ -118,7 +118,7 @@ namespace bioslam {
             gtsam::Matrix36 dr_dx;
             gtsam::Rot3 r=x.rotation(dr_dx); // R[B->N]
             gtsam::Matrix33 dc_dw, dc_dp;
-            gtsam::Point3 c=((gtsam::Point3) w).cross((gtsam::Point3) p,dc_dw,dc_dp); // c=cross(w,p)
+            gtsam::Point3 c=gtsam::cross(w,p,dc_dw,dc_dp); // c=cross(w,p)
             gtsam::Matrix33 dcN_dr, dcN_dc;
             gtsam::Point3 cN=r.rotate(c,dcN_dr,dcN_dc); // c in nav frame (lin vel component due to rotation)
             gtsam::Matrix33 dt_dv=gtsam::Matrix33::Identity(), dt_dcN=gtsam::Matrix33::Identity();

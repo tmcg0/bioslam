@@ -150,14 +150,14 @@ int testCross(uint nTests){
     for(uint i=0; i<nTests; i++){
         gtsam::Point3 a=testutils::randomPoint3(), b=testutils::randomPoint3();
         gtsam::Matrix derivedH1, derivedH2;
-        a.cross(b,derivedH1,derivedH2);
+        gtsam::cross(a,b,derivedH1,derivedH2);
         // test derivative numerically
         gtsam::Matrix numericalH1=gtsam::numericalDerivative21<gtsam::Point3,gtsam::Point3,gtsam::Point3>(
                 std::function<gtsam::Point3(const gtsam::Point3&, const gtsam::Point3&)>
-                        (std::bind(&gtsam::Point3::cross,_1,_2,boost::none,boost::none)),a,b,1e-5);
+                        (std::bind(&gtsam::cross,std::placeholders::_1,std::placeholders::_2,boost::none,boost::none)),a,b,1e-5);
         gtsam::Matrix numericalH2=gtsam::numericalDerivative22<gtsam::Point3,gtsam::Point3,gtsam::Point3>(
                 std::function<gtsam::Point3(const gtsam::Point3&, const gtsam::Point3&)>
-                        (std::bind(&gtsam::Point3::cross,_1,_2,boost::none,boost::none)),a,b,1e-5);
+                        (std::bind(&gtsam::cross,std::placeholders::_1,std::placeholders::_2,boost::none,boost::none)),a,b,1e-5);
         bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-9);
         bool testH2=gtsam::assert_equal(derivedH2,numericalH2,1e-9);
         if (!testH1){
@@ -352,10 +352,10 @@ int testSignedAngleCalc(uint nTests, bool testNumericalDerivative){
                 double numDerCoeffMax=10000.0;
                 gtsam::Matrix numericalH1=gtsam::numericalDerivative21<double,gtsam::Vector3,gtsam::Vector3>(
                         std::function<double(const gtsam::Vector3&, const gtsam::Vector3&)>
-                                (std::bind(&mathutils::signedAngle, _1, _2, refVec, boost::none, boost::none)), v1, v2, 1e-5);
+                                (std::bind(&mathutils::signedAngle, std::placeholders::_1, std::placeholders::_2, refVec, boost::none, boost::none)), v1, v2, 1e-5);
                 gtsam::Matrix numericalH2=gtsam::numericalDerivative22<double,gtsam::Vector3,gtsam::Vector3>(
                         std::function<double(const gtsam::Vector3&, const gtsam::Vector3&)>
-                                (std::bind(&mathutils::signedAngle, _1, _2, refVec, boost::none, boost::none)), v1, v2, 1e-5);
+                                (std::bind(&mathutils::signedAngle, std::placeholders::_1, std::placeholders::_2, refVec, boost::none, boost::none)), v1, v2, 1e-5);
                 double derivTol=1.0e-6;
                 bool testH1=gtsam::assert_equal(derivedH1,numericalH1,derivTol);
                 bool testH2=gtsam::assert_equal(derivedH2,numericalH2,derivTol);
@@ -395,10 +395,10 @@ int testUnsignedAngleCalc(uint nTests, bool testNumericalDerivative){
                 // test numerical derivative
                 gtsam::Matrix numericalH1=gtsam::numericalDerivative21<double,gtsam::Vector3,gtsam::Vector3>(
                         std::function<double(const gtsam::Vector3&, const gtsam::Vector3&)>
-                                (std::bind(&mathutils::unsignedAngle, _1, _2, boost::none, boost::none)), v1, v2, 1e-5);
+                                (std::bind(&mathutils::unsignedAngle, std::placeholders::_1, std::placeholders::_2, boost::none, boost::none)), v1, v2, 1e-5);
                 gtsam::Matrix numericalH2=gtsam::numericalDerivative22<double,gtsam::Vector3,gtsam::Vector3>(
                         std::function<double(const gtsam::Vector3&, const gtsam::Vector3&)>
-                                (std::bind(&mathutils::unsignedAngle, _1, _2, boost::none, boost::none)), v1, v2, 1e-5);
+                                (std::bind(&mathutils::unsignedAngle, std::placeholders::_1, std::placeholders::_2, boost::none, boost::none)), v1, v2, 1e-5);
                 double derivTol=1.0e-5;
                 bool testH1=gtsam::assert_equal(derivedH1,numericalH1,derivTol);
                 bool testH2=gtsam::assert_equal(derivedH2,numericalH2,derivTol);

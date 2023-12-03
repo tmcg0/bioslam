@@ -70,7 +70,7 @@ namespace mathutils
             gtsam::Point3 a=static_cast<gtsam::Point3>(av);
             gtsam::Point3 b=static_cast<gtsam::Point3>(bv);
             gtsam::Matrix33 dc_da, dc_db;
-            gtsam::Point3 c=a.cross(b,dc_da,dc_db);
+            gtsam::Point3 c=gtsam::cross(a,b,dc_da,dc_db);
             gtsam::Matrix13 dy_dc;
             double y=c.norm(dy_dc); // y = norm(cross(a,b))
             gtsam::Matrix13 dx_da,dx_db;
@@ -772,9 +772,9 @@ namespace mathutils
         // project vector v into plane whose normal is n, and optionally return derivative w.r.t. v and/or n
         // assumes v and n are in same coordinate frame
         gtsam::Matrix33 dt_dv, dt_dn;
-        gtsam::Point3 t=((gtsam::Point3) v).cross(n,dt_dv,dt_dn); // t = cross(n,v) => temp vector for cross product below
+        gtsam::Point3 t=gtsam::cross(v,n,dt_dv,dt_dn); // t = cross(n,v) => temp vector for cross product below
         gtsam::Matrix33 dh_dt ,dh_dn;
-        gtsam::Point3 h=((gtsam::Point3) t).cross(n,dh_dt,dh_dn); // h = cross(t,n) => the projection of v into the plane whose normal is n
+        gtsam::Point3 h=gtsam::cross(t,n,dh_dt,dh_dn); // h = cross(t,n) => the projection of v into the plane whose normal is n
         if(H_v){ *H_v=dh_dt*dt_dv; } // dh/dv
         if(H_n){ *H_n=dh_dn + dh_dt*dt_dn;} // dh/dn
         return h;
