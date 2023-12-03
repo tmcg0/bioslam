@@ -160,7 +160,7 @@ namespace gtsamutils{
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7>
     inline typename internal::FixedSizeMatrix<Y,X1>::type numericalDerivative71(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&),
                                                                                 const X1& x1, const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, double delta = 1e-5) {
-        return numericalDerivative71<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, _1, _2, _3, _4, _5, _6, _7), x1, x2, x3, x4, x5, x6, x7);
+        return numericalDerivative71<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7), x1, x2, x3, x4, x5, x6, x7);
     }
 
     // 7 argument derivative, argument #2
@@ -177,7 +177,7 @@ namespace gtsamutils{
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7>
     inline typename internal::FixedSizeMatrix<Y,X2>::type numericalDerivative72(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&),
                                                                                 const X1& x1, const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, double delta = 1e-5) {
-        return numericalDerivative72<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, _1, _2, _3, _4, _5, _6, _7), x1, x2, x3, x4, x5, x6, x7);
+        return numericalDerivative72<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7), x1, x2, x3, x4, x5, x6, x7);
     }
 
     // 7 argument derivative, argument #3
@@ -194,7 +194,7 @@ namespace gtsamutils{
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7>
     inline typename internal::FixedSizeMatrix<Y,X3>::type numericalDerivative73(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&),
                                                                                 const X1& x1, const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, double delta = 1e-5) {
-        return numericalDerivative73<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, _1, _2, _3, _4, _5, _6, _7), x1, x2, x3, x4, x5, x6, x7);
+        return numericalDerivative73<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7), x1, x2, x3, x4, x5, x6, x7);
     }
 
     // 7 argument derivative, argument #4
@@ -211,7 +211,7 @@ namespace gtsamutils{
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7>
     inline typename internal::FixedSizeMatrix<Y,X4>::type numericalDerivative74(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&),
                                                                                 const X1& x1, const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, double delta = 1e-5) {
-        return numericalDerivative74<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, _1, _2, _3, _4, _5, _6, _7), x1, x2, x3, x4, x5, x6, x7);
+        return numericalDerivative74<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7), x1, x2, x3, x4, x5, x6, x7);
     }
 
     // 7 argument derivative, argument #5
@@ -228,7 +228,7 @@ namespace gtsamutils{
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7>
     inline typename internal::FixedSizeMatrix<Y,X5>::type numericalDerivative75(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&),
                                                                                 const X1& x1, const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, double delta = 1e-5) {
-        return numericalDerivative75<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, _1, _2, _3, _4, _5, _6, _7), x1, x2, x3, x4, x5, x6, x7);
+        return numericalDerivative75<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7), x1, x2, x3, x4, x5, x6, x7);
     }
 
     // 7 argument derivative, argument #6
@@ -245,7 +245,7 @@ namespace gtsamutils{
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7>
     inline typename internal::FixedSizeMatrix<Y,X6>::type numericalDerivative76(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&),
                                                                                 const X1& x1, const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, double delta = 1e-5) {
-        return numericalDerivative76<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, _1, _2, _3, _4, _5, _6, _7), x1, x2, x3, x4, x5, x6, x7);
+        return numericalDerivative76<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7), x1, x2, x3, x4, x5, x6, x7);
     }
 
     // 7 argument derivative, argument #7
@@ -262,7 +262,7 @@ namespace gtsamutils{
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7>
     inline typename internal::FixedSizeMatrix<Y,X7>::type numericalDerivative77(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&),
                                                                                 const X1& x1, const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, double delta = 1e-5) {
-        return numericalDerivative77<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, _1, _2, _3, _4, _5, _6, _7), x1, x2, x3, x4, x5, x6, x7);
+        return numericalDerivative77<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7), x1, x2, x3, x4, x5, x6, x7);
     }
 
 // --- end numericalDerivative7
@@ -282,7 +282,7 @@ namespace gtsamutils{
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
     inline typename internal::FixedSizeMatrix<Y,X1>::type numericalDerivative81(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&),
                                                                                 const X1& x1, const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, const X8& x8, double delta = 1e-5) {
-        return numericalDerivative81<Y, X1, X2, X3, X4, X5, X6, X7, X8>(std::bind(h, _1, _2, _3, _4, _5, _6, _7, _8), x1, x2, x3, x4, x5, x6, x7, x8);
+        return numericalDerivative81<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8), x1, x2, x3, x4, x5, x6, x7, x8);
     }
 
     // 8 argument derivative, argument #2
@@ -299,7 +299,7 @@ namespace gtsamutils{
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
     inline typename internal::FixedSizeMatrix<Y,X2>::type numericalDerivative82(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&),
                                                                                 const X1& x1, const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, const X8& x8, double delta = 1e-5) {
-        return numericalDerivative82<Y, X1, X2, X3, X4, X5, X6, X7, X8>(std::bind(h, _1, _2, _3, _4, _5, _6, _7, _8), x1, x2, x3, x4, x5, x6, x7, x8);
+        return numericalDerivative82<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8), x1, x2, x3, x4, x5, x6, x7, x8);
     }
 
     // 8 argument derivative, argument #3
@@ -316,7 +316,7 @@ namespace gtsamutils{
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
     inline typename internal::FixedSizeMatrix<Y,X3>::type numericalDerivative83(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&),
                                                                                 const X1& x1, const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, const X8& x8, double delta = 1e-5) {
-        return numericalDerivative83<Y, X1, X2, X3, X4, X5, X6, X7, X8>(std::bind(h, _1, _2, _3, _4, _5, _6, _7, _8), x1, x2, x3, x4, x5, x6, x7, x8);
+        return numericalDerivative83<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8), x1, x2, x3, x4, x5, x6, x7, x8);
     }
 
     // 8 argument derivative, argument #4
@@ -333,7 +333,7 @@ namespace gtsamutils{
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
     inline typename internal::FixedSizeMatrix<Y,X4>::type numericalDerivative84(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&),
                                                                                 const X1& x1, const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, const X8& x8, double delta = 1e-5) {
-        return numericalDerivative84<Y, X1, X2, X3, X4, X5, X6, X7, X8>(std::bind(h, _1, _2, _3, _4, _5, _6, _7, _8), x1, x2, x3, x4, x5, x6, x7, x8);
+        return numericalDerivative84<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8), x1, x2, x3, x4, x5, x6, x7, x8);
     }
 
     // 8 argument derivative, argument #5
@@ -350,7 +350,7 @@ namespace gtsamutils{
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
     inline typename internal::FixedSizeMatrix<Y,X5>::type numericalDerivative85(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&),
                                                                                 const X1& x1, const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, const X8& x8, double delta = 1e-5) {
-        return numericalDerivative85<Y, X1, X2, X3, X4, X5, X6, X7, X8>(std::bind(h, _1, _2, _3, _4, _5, _6, _7, _8), x1, x2, x3, x4, x5, x6, x7, x8);
+        return numericalDerivative85<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8), x1, x2, x3, x4, x5, x6, x7, x8);
     }
 
     // 8 argument derivative, argument #6
@@ -367,7 +367,7 @@ namespace gtsamutils{
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
     inline typename internal::FixedSizeMatrix<Y,X6>::type numericalDerivative86(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&),
                                                                                 const X1& x1, const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, const X8& x8, double delta = 1e-5) {
-        return numericalDerivative86<Y, X1, X2, X3, X4, X5, X6, X7, X8>(std::bind(h, _1, _2, _3, _4, _5, _6, _7, _8), x1, x2, x3, x4, x5, x6, x7, x8);
+        return numericalDerivative86<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8), x1, x2, x3, x4, x5, x6, x7, x8);
     }
 
     // 8 argument derivative, argument #7
@@ -384,7 +384,7 @@ namespace gtsamutils{
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
     inline typename internal::FixedSizeMatrix<Y,X7>::type numericalDerivative87(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&),
                                                                                 const X1& x1, const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, const X8& x8, double delta = 1e-5) {
-        return numericalDerivative87<Y, X1, X2, X3, X4, X5, X6, X7, X8>(std::bind(h, _1, _2, _3, _4, _5, _6, _7, _8), x1, x2, x3, x4, x5, x6, x7, x8);
+        return numericalDerivative87<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8), x1, x2, x3, x4, x5, x6, x7, x8);
     }
 
     // 8 argument derivative, argument #8
@@ -401,7 +401,7 @@ namespace gtsamutils{
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
     inline typename internal::FixedSizeMatrix<Y,X8>::type numericalDerivative88(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&),
                                                                                 const X1& x1, const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, const X8& x8, double delta = 1e-5) {
-        return numericalDerivative88<Y, X1, X2, X3, X4, X5, X6, X7, X8>(std::bind(h, _1, _2, _3, _4, _5, _6, _7, _8), x1, x2, x3, x4, x5, x6, x7, x8);
+        return numericalDerivative88<Y, X1, X2, X3, X4, X5, X6, X7>(std::bind(h, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8), x1, x2, x3, x4, x5, x6, x7, x8);
     }
     // --- end numericalDerivative8 ---
     /* ************************************************************************************************************** */
