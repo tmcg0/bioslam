@@ -111,7 +111,7 @@ jobs:
           cd ${{runner.workspace}} # cd to runner home
           git clone --depth 1 --branch ${{ matrix.gtsam-version }} https://github.com/borglab/gtsam.git gtsam
           cd gtsam && mkdir build && cd build # move into build dir for gtsam
-          cmake -DCMAKE_BUILD_TYPE=Release -DGTSAM_WITH_EIGEN_MKL=OFF -DGTSAM_BUILD_EXAMPLES_ALWAYS=OFF -DGTSAM_BUILD_TIMING_ALWAYS=OFF -DGTSAM_BUILD_TESTS=OFF -DGTSAM_BUILD_UNSTABLE=ON ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DGTSAM_WITH_EIGEN_MKL=OFF -DGTSAM_BUILD_EXAMPLES_ALWAYS=OFF -DGTSAM_BUILD_TIMING_ALWAYS=OFF -DGTSAM_BUILD_TESTS=OFF -DGTSAM_BUILD_UNSTABLE=OFF -DGTSAM_UNSTABLE_BUILD_PYTHON=OFF ..
           sudo make -j$(nproc) install
 
       - name: Install hdf5
@@ -121,16 +121,8 @@ jobs:
         run: |
           cd ${{runner.workspace}} # cd to runner home
           git clone --depth 1 --branch ${{ matrix.highfive-version }} https://github.com/BlueBrain/HighFive HighFive
-          mkdir build && cd build # move into build dir for HighFive
+          cd HighFive && mkdir build && cd build # move into build dir for HighFive
           cmake -DHIGHFIVE_USE_BOOST=OFF ..
-          sudo make -j$(nproc) install
-
-      - name: Install imuDataUtils
-        run: |
-          cd ${{runner.workspace}} # cd to runner home
-          git clone --depth 1 --branch master https://github.com/tmcg0/imuDataUtils imuDataUtils # clone imuDataUtils
-          cd imuDataUtils && mkdir build && cd build # move into build dir for imuDataUtils
-          cmake ..
           sudo make -j$(nproc) install
 
       - name: Install LCov
@@ -145,7 +137,9 @@ jobs:
           sudo make -j$(nproc) install
 
       - name: Test bioslam
-        run: make -j$(nproc) test
+        run: |
+          cd ${{github.workspace}}/build
+          make -j$(nproc) test
 
       - name: Run LCov
         if: matrix.name == 'ubuntu-20.04-gcc-9' && matrix.build_type == 'Debug'

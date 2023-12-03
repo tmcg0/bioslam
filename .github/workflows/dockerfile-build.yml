@@ -17,4 +17,4 @@ jobs:
         docker run -id --name bioslam bioslam
 
     - name: Run tests
-      run: docker exec -i bioslam make test
+      run: docker exec -i bioslam bash -c "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib && cd /usr/src/bioslam/build && make test"

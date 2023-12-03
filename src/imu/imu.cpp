@@ -101,6 +101,14 @@ gtsam::Vector3 imu::gyroVec(const uint idx) const {
     return {this->gx[idx],this->gy[idx],this->gz[idx]};
 }
 
+std::vector<std::vector<double>> imu::quaternion() const {
+    std::vector<std::vector<double>> q(this->length());
+    for(uint i=0; i<this->length();i++){
+        q[i]={qs[i],qx[i],qy[i],qz[i]};
+    }
+    return q;
+}
+
 Eigen::MatrixXd imu::gyroMat() const {
     Eigen::MatrixXd gyros(this->length(),3);
     for(uint k=0; k<this->length();k++){
