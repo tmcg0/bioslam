@@ -6,7 +6,7 @@
 #   HDF5 (serial): 1.10.4 (https://packages.ubuntu.com/focal/libhdf5-dev)
 #   Eigen: 3.3.9 (https://gitlab.com/libeigen/eigen)
 #   GTSAM: 4.0.3 (https://github.com/borglab/gtsam/releases/4.0.3)
-#   HighFive: 2.3.1 (https://github.com/BlueBrain/HighFive/releases/v2.3.1)
+#   HighFive: 2.8.0 (https://github.com/BlueBrain/HighFive/releases/v2.8.0)
 # build environment:
 #   git: 2.25.1 (https://packages.ubuntu.com/focal/git)
 #   cmake: 3.16.3 (https://packages.ubuntu.com/focal/cmake)
@@ -64,9 +64,9 @@ RUN make install -j${N_JOBS} && make clean
 #   if not working inside container, run export LD_LIBRARY_PATH=/usr/local/lib:LD_LIBRARY_PATH in the shell
 RUN echo 'export LD_LIBRARY_PATH=/usr/local/lib:LD_LIBRARY_PATH' >> /root/.bashrc
 
-# install HighFive v2.3.1
+# install HighFive v2.8.0
 WORKDIR /usr/src/
-RUN git clone --depth 1 --branch v2.3.1 https://github.com/BlueBrain/HighFive
+RUN git clone --depth 1 --branch v2.8.0 https://github.com/BlueBrain/HighFive
 WORKDIR /usr/src/HighFive/build/
 RUN cmake ..
 RUN make install -j${N_JOBS}
