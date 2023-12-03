@@ -129,7 +129,7 @@ int testNorm(uint nTests){
         gtsam::Point3 a=testutils::randomPoint3();
         if(a.norm()>0.1){
             gtsam::Matrix derivedH1;
-            a.norm(derivedH1);
+            gtsam::norm3(a,derivedH1);
             // test derivative numerically
             gtsam::Matrix numericalH1=gtsam::numericalDerivative11<double,gtsam::Point3>(
                     std::function<double(const gtsam::Point3&)>
@@ -179,7 +179,7 @@ int testDot(uint nTests){
     for(uint i=0; i<nTests; i++){
         gtsam::Point3 a=testutils::randomPoint3(), b=testutils::randomPoint3();
         gtsam::Matrix derivedH1, derivedH2;
-        a.dot(b,derivedH1,derivedH2);
+        gtsam::dot(a,b,derivedH1,derivedH2);
         // test derivative numerically
         gtsam::Matrix numericalH1=gtsam::numericalDerivative21<double,gtsam::Point3,gtsam::Point3>(
                 std::function<double(const gtsam::Point3&, const gtsam::Point3&)>

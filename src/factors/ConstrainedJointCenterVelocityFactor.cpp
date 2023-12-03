@@ -206,7 +206,7 @@ namespace bioslam {
         gtsam::Matrix36 do_dxA, do_dxB; gtsam::Matrix33 do_dwA, do_dvA, do_dsA, do_dwB, do_dvB, do_dsB;
         gtsam::Vector3 o=ConstrainedJointCenterVelocityFactor::errorModel(xA,vA,wA,sA,xB,vB,wB,sB,do_dxA,do_dvA,do_dwA,do_dsA,do_dxB,do_dvB,do_dwB,do_dsB);
         gtsam::Matrix13 derr_do;
-        double err=((gtsam::Point3) o).norm(derr_do);
+        double err=gtsam::norm3(o,derr_do);
         // handle all the derivatives
         if(H_xA){ *H_xA=derr_do*do_dxA; }
         if(H_vA){ *H_vA=derr_do*do_dvA; }

@@ -72,9 +72,9 @@ namespace mathutils
             gtsam::Matrix33 dc_da, dc_db;
             gtsam::Point3 c=gtsam::cross(a,b,dc_da,dc_db);
             gtsam::Matrix13 dy_dc;
-            double y=c.norm(dy_dc); // y = norm(cross(a,b))
+            double y=gtsam::norm3(c, dy_dc); // y = norm(cross(a,b))
             gtsam::Matrix13 dx_da,dx_db;
-            double x=a.dot(b,dx_da,dx_db); // x = dot(a,b)
+            double x=gtsam::dot(a,b,dx_da,dx_db); // x = dot(a,b)
             // do the derivative of f(y,x)=atan2(y,x) manually: https://en.wikipedia.org/wiki/Atan2#Derivative
             double denom=pow(x,2.0)+pow(y,2.0); // common denominator to both derivatives
             gtsam::Matrix11 df_dy, df_dx;
@@ -720,7 +720,7 @@ namespace mathutils
         gtsam::Matrix32 dr_dk;
         gtsam::Vector3 r=k.unitVector(dr_dk); // r := k transformed to R(3)
         gtsam::Matrix13 dmdr_dm, dmdr_dr;
-        double mdr=((gtsam::Point3) m).dot((gtsam::Point3) r,dmdr_dm,dmdr_dr); // casting them as gtsam::Point3 to take advantage of the derivatives in gtsam's Point3::dot
+        double mdr=gtsam::dot(m,r,dmdr_dm,dmdr_dr); // casting them as gtsam::Point3 to take advantage of the derivatives in gtsam's Point3::dot
         gtsam::Matrix31 dmdrtr_dmdr; gtsam::Matrix33 dmdrtr_dr;
         gtsam::Vector3 mdrtr=mathutils::scalarTimesVector(mdr, r, dmdrtr_dmdr, dmdrtr_dr); // mdr * r
         if(H_m){ // dmdrtr_dm = dmdrtr_dmdr*dmdr_dm
@@ -751,7 +751,7 @@ namespace mathutils
         gtsam::Matrix36 de_dxA, de_dxB; gtsam::Matrix33 de_dsA, de_dsB;
         gtsam::Point3 e =ptSeparation(xA,sA,xB,sB,de_dxA,de_dsA,de_dxB,de_dsB);// point separation (vector)
         gtsam::Matrix13 dn_de;
-        double n=e.norm(dn_de);
+        double n=gtsam::norm3(e,dn_de);
         if(H_xA){ *H_xA=dn_de*de_dxA; }
         if(H_sA){ *H_sA=dn_de*de_dsA; }
         if(H_xB){ *H_xB=dn_de*de_dxB; }

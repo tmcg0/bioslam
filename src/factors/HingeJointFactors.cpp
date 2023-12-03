@@ -163,7 +163,7 @@ namespace bioslam {
         gtsam::Matrix36 do_dxA, do_dxB; gtsam::Matrix33 do_dwA, do_dwB; gtsam::Matrix32 do_dkA;
         gtsam::Vector3 o=HingeJointConstraintVecErrEstAngVel::errorModel(xA, wA, xB, wB, kA, do_dxA, do_dwA, do_dxB, do_dwB, do_dkA);
         gtsam::Matrix13 derr_do;
-        double err=((gtsam::Point3)o).norm(derr_do);
+        double err=gtsam::norm3(o,derr_do);
         if(H_xA){ *H_xA=derr_do*do_dxA; }
         if(H_wA){ *H_wA=derr_do*do_dwA; }
         if(H_xB){ *H_xB=derr_do*do_dxB; }
