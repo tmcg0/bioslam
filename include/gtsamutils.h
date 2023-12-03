@@ -155,7 +155,7 @@ namespace gtsamutils{
                                  "Template argument Y must be a manifold type.");
         BOOST_STATIC_ASSERT_MSG( (boost::is_base_of<gtsam::manifold_tag, typename gtsam::traits<X1>::structure_category>::value),
                                  "Template argument X1 must be a manifold type.");
-        return gtsam::numericalDerivative11<Y, X1>(std::bind(h, _1, std::cref(x2), std::cref(x3), std::cref(x4), std::cref(x5), std::cref(x6), std::cref(x7)), x1, delta);
+        return gtsam::numericalDerivative11<Y, X1, N>(std::bind(h, std::placeholders::_1, std::cref(x2), std::cref(x3), std::cref(x4), std::cref(x5), std::cref(x6), std::cref(x7)), x1, delta);
     } // ^ this one should always call gtsam::numericalDerivative11<>. Otherwise the numbers should all match.
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7>
     inline typename internal::FixedSizeMatrix<Y,X1>::type numericalDerivative71(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&),
@@ -172,7 +172,7 @@ namespace gtsamutils{
                                  "Template argument Y must be a manifold type.");
         BOOST_STATIC_ASSERT_MSG( (boost::is_base_of<gtsam::manifold_tag, typename gtsam::traits<X2>::structure_category>::value),
                                  "Template argument X2 must be a manifold type.");
-        return gtsam::numericalDerivative11<Y, X2>(std::bind(h, std::cref(x1), _1, std::cref(x3), std::cref(x4), std::cref(x5), std::cref(x6), std::cref(x7)), x2, delta);
+        return gtsam::numericalDerivative11<Y, X2, N>(std::bind(h, std::cref(x1), std::placeholders::_1, std::cref(x3), std::cref(x4), std::cref(x5), std::cref(x6), std::cref(x7)), x2, delta);
     } // ^ this one should always call gtsam::numericalDerivative11<>. Otherwise the numbers should all match.
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7>
     inline typename internal::FixedSizeMatrix<Y,X2>::type numericalDerivative72(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&),
@@ -189,7 +189,7 @@ namespace gtsamutils{
                                  "Template argument Y must be a manifold type.");
         BOOST_STATIC_ASSERT_MSG( (boost::is_base_of<gtsam::manifold_tag, typename gtsam::traits<X3>::structure_category>::value),
                                  "Template argument X3 must be a manifold type.");
-        return gtsam::numericalDerivative11<Y, X3>(std::bind(h, std::cref(x1), std::cref(x2), _1, std::cref(x4), std::cref(x5), std::cref(x6), std::cref(x7)), x3, delta);
+        return gtsam::numericalDerivative11<Y, X3, N>(std::bind(h, std::cref(x1), std::cref(x2), std::placeholders::_1, std::cref(x4), std::cref(x5), std::cref(x6), std::cref(x7)), x3, delta);
     } // ^ this one should always call gtsam::numericalDerivative11<>. Otherwise the numbers should all match.
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7>
     inline typename internal::FixedSizeMatrix<Y,X3>::type numericalDerivative73(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&),
@@ -206,7 +206,7 @@ namespace gtsamutils{
                                  "Template argument Y must be a manifold type.");
         BOOST_STATIC_ASSERT_MSG( (boost::is_base_of<gtsam::manifold_tag, typename gtsam::traits<X4>::structure_category>::value),
                                  "Template argument X4 must be a manifold type.");
-        return gtsam::numericalDerivative11<Y, X4>(std::bind(h, std::cref(x1), std::cref(x2), std::cref(x3), _1, std::cref(x5), std::cref(x6), std::cref(x7)), x4, delta);
+        return gtsam::numericalDerivative11<Y, X4, N>(std::bind(h, std::cref(x1), std::cref(x2), std::cref(x3), std::placeholders::_1, std::cref(x5), std::cref(x6), std::cref(x7)), x4, delta);
     } // ^ this one should always call gtsam::numericalDerivative11<>. Otherwise the numbers should all match.
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7>
     inline typename internal::FixedSizeMatrix<Y,X4>::type numericalDerivative74(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&),
@@ -223,7 +223,7 @@ namespace gtsamutils{
                                  "Template argument Y must be a manifold type.");
         BOOST_STATIC_ASSERT_MSG( (boost::is_base_of<gtsam::manifold_tag, typename gtsam::traits<X5>::structure_category>::value),
                                  "Template argument X5 must be a manifold type.");
-        return gtsam::numericalDerivative11<Y, X5>(std::bind(h, std::cref(x1), std::cref(x2), std::cref(x3), std::cref(x4), _1, std::cref(x6), std::cref(x7)), x5, delta);
+        return gtsam::numericalDerivative11<Y, X5, N>(std::bind(h, std::cref(x1), std::cref(x2), std::cref(x3), std::cref(x4), std::placeholders::_1, std::cref(x6), std::cref(x7)), x5, delta);
     } // ^ this one should always call gtsam::numericalDerivative11<>. Otherwise the numbers should all match.
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7>
     inline typename internal::FixedSizeMatrix<Y,X5>::type numericalDerivative75(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&),
@@ -240,7 +240,7 @@ namespace gtsamutils{
                                  "Template argument Y must be a manifold type.");
         BOOST_STATIC_ASSERT_MSG( (boost::is_base_of<gtsam::manifold_tag, typename gtsam::traits<X6>::structure_category>::value),
                                  "Template argument X6 must be a manifold type.");
-        return gtsam::numericalDerivative11<Y, X6>(std::bind(h, std::cref(x1), std::cref(x2), std::cref(x3), std::cref(x4), std::cref(x5), _1, std::cref(x7)), x6, delta);
+        return gtsam::numericalDerivative11<Y, X6, N>(std::bind(h, std::cref(x1), std::cref(x2), std::cref(x3), std::cref(x4), std::cref(x5), std::placeholders::_1, std::cref(x7)), x6, delta);
     } // ^ this one should always call gtsam::numericalDerivative11<>. Otherwise the numbers should all match.
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7>
     inline typename internal::FixedSizeMatrix<Y,X6>::type numericalDerivative76(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&),
@@ -257,7 +257,7 @@ namespace gtsamutils{
                                  "Template argument Y must be a manifold type.");
         BOOST_STATIC_ASSERT_MSG( (boost::is_base_of<gtsam::manifold_tag, typename gtsam::traits<X7>::structure_category>::value),
                                  "Template argument X7 must be a manifold type.");
-        return gtsam::numericalDerivative11<Y, X7>(std::bind(h, std::cref(x1), std::cref(x2), std::cref(x3), std::cref(x4), std::cref(x5), std::cref(x6), _1), x7, delta);
+        return gtsam::numericalDerivative11<Y, X7, N>(std::bind(h, std::cref(x1), std::cref(x2), std::cref(x3), std::cref(x4), std::cref(x5), std::cref(x6), std::placeholders::_1), x7, delta);
     } // ^ this one should always call gtsam::numericalDerivative11<>. Otherwise the numbers should all match.
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7>
     inline typename internal::FixedSizeMatrix<Y,X7>::type numericalDerivative77(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&),
@@ -277,7 +277,7 @@ namespace gtsamutils{
                                  "Template argument Y must be a manifold type.");
         BOOST_STATIC_ASSERT_MSG( (boost::is_base_of<gtsam::manifold_tag, typename gtsam::traits<X1>::structure_category>::value),
                                  "Template argument X1 must be a manifold type.");
-        return gtsam::numericalDerivative11<Y, X1>(std::bind(h, _1, std::cref(x2), std::cref(x3), std::cref(x4), std::cref(x5), std::cref(x6), std::cref(x7), std::cref(x8)), x1, delta);
+        return gtsam::numericalDerivative11<Y, X1, N>(std::bind(h, std::placeholders::_1, std::cref(x2), std::cref(x3), std::cref(x4), std::cref(x5), std::cref(x6), std::cref(x7), std::cref(x8)), x1, delta);
     } // ^ this one should always call gtsam::numericalDerivative11<>. Otherwise the numbers should all match.
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
     inline typename internal::FixedSizeMatrix<Y,X1>::type numericalDerivative81(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&),
@@ -294,7 +294,7 @@ namespace gtsamutils{
                                  "Template argument Y must be a manifold type.");
         BOOST_STATIC_ASSERT_MSG( (boost::is_base_of<gtsam::manifold_tag, typename gtsam::traits<X2>::structure_category>::value),
                                  "Template argument X2 must be a manifold type.");
-        return gtsam::numericalDerivative11<Y, X2>(std::bind(h, std::cref(x1), _1, std::cref(x3), std::cref(x4), std::cref(x5), std::cref(x6), std::cref(x7), std::cref(x8)), x2, delta);
+        return gtsam::numericalDerivative11<Y, X2, N>(std::bind(h, std::cref(x1), std::placeholders::_1, std::cref(x3), std::cref(x4), std::cref(x5), std::cref(x6), std::cref(x7), std::cref(x8)), x2, delta);
     } // ^ this one should always call gtsam::numericalDerivative11<>. Otherwise the numbers should all match.
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
     inline typename internal::FixedSizeMatrix<Y,X2>::type numericalDerivative82(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&),
@@ -311,7 +311,7 @@ namespace gtsamutils{
                                  "Template argument Y must be a manifold type.");
         BOOST_STATIC_ASSERT_MSG( (boost::is_base_of<gtsam::manifold_tag, typename gtsam::traits<X3>::structure_category>::value),
                                  "Template argument X3 must be a manifold type.");
-        return gtsam::numericalDerivative11<Y, X3>(std::bind(h, std::cref(x1), std::cref(x2), _1, std::cref(x4), std::cref(x5), std::cref(x6), std::cref(x7), std::cref(x8)), x3, delta);
+        return gtsam::numericalDerivative11<Y, X3, N>(std::bind(h, std::cref(x1), std::cref(x2), std::placeholders::_1, std::cref(x4), std::cref(x5), std::cref(x6), std::cref(x7), std::cref(x8)), x3, delta);
     } // ^ this one should always call gtsam::numericalDerivative11<>. Otherwise the numbers should all match.
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
     inline typename internal::FixedSizeMatrix<Y,X3>::type numericalDerivative83(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&),
@@ -328,7 +328,7 @@ namespace gtsamutils{
                                  "Template argument Y must be a manifold type.");
         BOOST_STATIC_ASSERT_MSG( (boost::is_base_of<gtsam::manifold_tag, typename gtsam::traits<X4>::structure_category>::value),
                                  "Template argument X4 must be a manifold type.");
-        return gtsam::numericalDerivative11<Y, X4>(std::bind(h, std::cref(x1), std::cref(x2), std::cref(x3), _1, std::cref(x5), std::cref(x6), std::cref(x7), std::cref(x8)), x4, delta);
+        return gtsam::numericalDerivative11<Y, X4, N>(std::bind(h, std::cref(x1), std::cref(x2), std::cref(x3), std::placeholders::_1, std::cref(x5), std::cref(x6), std::cref(x7), std::cref(x8)), x4, delta);
     } // ^ this one should always call gtsam::numericalDerivative11<>. Otherwise the numbers should all match.
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
     inline typename internal::FixedSizeMatrix<Y,X4>::type numericalDerivative84(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&),
@@ -345,7 +345,7 @@ namespace gtsamutils{
                                  "Template argument Y must be a manifold type.");
         BOOST_STATIC_ASSERT_MSG( (boost::is_base_of<gtsam::manifold_tag, typename gtsam::traits<X5>::structure_category>::value),
                                  "Template argument X5 must be a manifold type.");
-        return gtsam::numericalDerivative11<Y, X5>(std::bind(h, std::cref(x1), std::cref(x2), std::cref(x3), std::cref(x4), _1, std::cref(x6), std::cref(x7), std::cref(x8)), x5, delta);
+        return gtsam::numericalDerivative11<Y, X5, N>(std::bind(h, std::cref(x1), std::cref(x2), std::cref(x3), std::cref(x4), std::placeholders::_1, std::cref(x6), std::cref(x7), std::cref(x8)), x5, delta);
     } // ^ this one should always call gtsam::numericalDerivative11<>. Otherwise the numbers should all match.
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
     inline typename internal::FixedSizeMatrix<Y,X5>::type numericalDerivative85(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&),
@@ -362,7 +362,7 @@ namespace gtsamutils{
                                  "Template argument Y must be a manifold type.");
         BOOST_STATIC_ASSERT_MSG( (boost::is_base_of<gtsam::manifold_tag, typename gtsam::traits<X6>::structure_category>::value),
                                  "Template argument X6 must be a manifold type.");
-        return gtsam::numericalDerivative11<Y, X6>(std::bind(h, std::cref(x1), std::cref(x2), std::cref(x3), std::cref(x4), std::cref(x5), _1, std::cref(x7), std::cref(x8)), x6, delta);
+        return gtsam::numericalDerivative11<Y, X6, N>(std::bind(h, std::cref(x1), std::cref(x2), std::cref(x3), std::cref(x4), std::cref(x5), std::placeholders::_1, std::cref(x7), std::cref(x8)), x6, delta);
     } // ^ this one should always call gtsam::numericalDerivative11<>. Otherwise the numbers should all match.
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
     inline typename internal::FixedSizeMatrix<Y,X6>::type numericalDerivative86(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&),
@@ -379,7 +379,7 @@ namespace gtsamutils{
                                  "Template argument Y must be a manifold type.");
         BOOST_STATIC_ASSERT_MSG( (boost::is_base_of<gtsam::manifold_tag, typename gtsam::traits<X7>::structure_category>::value),
                                  "Template argument X7 must be a manifold type.");
-        return gtsam::numericalDerivative11<Y, X7>(std::bind(h, std::cref(x1), std::cref(x2), std::cref(x3), std::cref(x4), std::cref(x5), std::cref(x6), _1, std::cref(x8)), x7, delta);
+        return gtsam::numericalDerivative11<Y, X7, N>(std::bind(h, std::cref(x1), std::cref(x2), std::cref(x3), std::cref(x4), std::cref(x5), std::cref(x6), std::placeholders::_1, std::cref(x8)), x7, delta);
     } // ^ this one should always call gtsam::numericalDerivative11<>. Otherwise the numbers should all match.
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
     inline typename internal::FixedSizeMatrix<Y,X7>::type numericalDerivative87(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&),
@@ -396,7 +396,7 @@ namespace gtsamutils{
                                  "Template argument Y must be a manifold type.");
         BOOST_STATIC_ASSERT_MSG( (boost::is_base_of<gtsam::manifold_tag, typename gtsam::traits<X8>::structure_category>::value),
                                  "Template argument X8 must be a manifold type.");
-        return gtsam::numericalDerivative11<Y, X8>(std::bind(h, std::cref(x1), std::cref(x2), std::cref(x3), std::cref(x4), std::cref(x5), std::cref(x6), std::cref(x7), _1), x8, delta);
+        return gtsam::numericalDerivative11<Y, X8, N>(std::bind(h, std::cref(x1), std::cref(x2), std::cref(x3), std::cref(x4), std::cref(x5), std::cref(x6), std::cref(x7), std::placeholders::_1), x8, delta);
     } // ^ this one should always call gtsam::numericalDerivative11<>. Otherwise the numbers should all match.
     template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
     inline typename internal::FixedSizeMatrix<Y,X8>::type numericalDerivative88(Y (*h)(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&),
