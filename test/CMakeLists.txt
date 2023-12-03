@@ -51,6 +51,8 @@ add_executable(testPose3TranslationPrior unit/testPose3TranslationPrior.cpp)
 target_link_libraries(testPose3TranslationPrior bioslam ${BIOSLAMLIBS})
 add_executable(testPose3CompassPrior unit/testPose3CompassPrior.cpp)
 target_link_libraries(testPose3CompassPrior bioslam ${BIOSLAMLIBS})
+add_executable(testImu unit/testImu.cpp)
+target_link_libraries(testImu bioslam ${BIOSLAMLIBS})
 
 # make solution tests. these test expected solutions of different estimators.
 add_executable(testImuEstimationSolution solution/testImuEstimationSolution.cpp)
@@ -87,3 +89,4 @@ add_test(RUN_testLowerBodyEstimationSolution testLowerBodyEstimationSolution)
 add_test(RUN_testPose3TranslationPrior testPose3TranslationPrior)
 add_test(RUN_testPose3CompassPrior testPose3CompassPrior)
 add_test(RUN_testRotateImuStateAboutPointAxisAngle testRotateImuStateAboutPointAxisAngle)
+add_test(RUN_testImu testImu)

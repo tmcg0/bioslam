@@ -6,7 +6,7 @@
 
 // unit test of lowerBodyPoseEstimator. Does not test solution, only tests basic functionality and interface.
 
-#include "imuDataUtils/imu.h"
+#include "imu/imu.h"
 #include "lowerBodyPoseEstimator.h"
 #include <string>
 #include "testutils.h"

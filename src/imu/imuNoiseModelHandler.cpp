@@ -1,3 +1,9 @@
+// -------------------------------------------------------------------- //
+//    (c) Copyright 2021 Massachusetts Institute of Technology          //
+//    Author: Tim McGrath                                               //
+//    All rights reserved. See LICENSE file for license information.    //
+// -------------------------------------------------------------------- //
+
 #include "imu/imuNoiseModelHandler.h"
 
 imuNoiseModel imuNoiseModelHandler::model;
