@@ -6,7 +6,25 @@ env:
   DOCKERFILE_NAME: bioslam1.0.1-gtsam4.0.3-ubu20.Dockerfile
 
 jobs:
+  duplicate_job_check:
+    # continue-on-error: true # Uncomment once integration is finished 
+    runs-on: ubuntu-20.04
+    
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+
+    steps:
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@v5.3.0
+        with:
+          concurrent_skipping: "same_content_newer"
+          skip_after_successful_duplicate: "true"
+          paths_ignore: '["**/README.md", "**/docs/**"]'
+          do_not_skip: '["workflow_dispatch", "schedule"]'
+
   conditional_check_dockerfile_changed:
+    needs: duplicate_job_check
+    if: needs.duplicate_job_check.outputs.should_skip != 'true'
     runs-on: ubuntu-latest
     # Declare outputs for next jobs
     outputs:
