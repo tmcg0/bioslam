@@ -10,7 +10,7 @@
 // right now, only tests that we can drive global error low
 // --------
 
-#include "imuDataUtils/imu.h"
+#include "imu/imu.h"
 #include "lowerBodyPoseEstimator.h"
 #include <string>
 #include "testutils.h"

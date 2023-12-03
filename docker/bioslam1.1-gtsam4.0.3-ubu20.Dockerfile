@@ -1,12 +1,12 @@
 # --------------------------------------------------------------------------- #
-#           bioslam (latest) Dockerfile for Ubuntu 20.04 base image          
+#           bioslam v1.1 Dockerfile for Ubuntu 20.04 base image          
 # with dependencies:
 #   boost: 1.71.0 (https://packages.ubuntu.com/focal/libboost1.71-all-dev)
 #   TBB: 2020.1 (https://packages.ubuntu.com/focal/libtbb-dev)
 #   HDF5 (serial): 1.10.4 (https://packages.ubuntu.com/focal/libhdf5-dev)
 #   Eigen: 3.3.9 (https://gitlab.com/libeigen/eigen)
 #   GTSAM: 4.0.3 (https://github.com/borglab/gtsam/releases/4.0.3)
-#   HighFive: 2.3.1 (https://github.com/BlueBrain/HighFive/releases/v2.3.1)
+#   HighFive: 2.8.0 (https://github.com/BlueBrain/HighFive/releases/v2.8.0)
 # build environment:
 #   git: 2.25.1 (https://packages.ubuntu.com/focal/git)
 #   cmake: 3.16.3 (https://packages.ubuntu.com/focal/cmake)
@@ -15,6 +15,7 @@
 # notes:
 # - only builds the C++ library and executables, no Python/MATLAB wrappers
 # - internet connection required to download dependencies
+# - note: prior to bioslam v1.1, imuDataUtils is required
 # --------------------------------------------------------------------------- #
 
 FROM ubuntu:20.04
@@ -60,28 +61,28 @@ RUN cmake \
 RUN make install -j${N_JOBS} && make clean
 
 
-# add /usr/local/lib to LD_LIBRARY_PATH for dynamic linking
-# note: this doesn't seem to save the .bashrc file, which isn't sourced anyway when running the container
-#   if not working inside container, run export LD_LIBRARY_PATH=/usr/local/lib:LD_LIBRARY_PATH in the shell
-RUN echo 'export LD_LIBRARY_PATH=/usr/local/lib:LD_LIBRARY_PATH' >> /root/.bashrc
+# add /usr/local/lib to LD_LIBRARY_PATH for dynamic linking (in bash only!)
+RUN echo "export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:/usr/local/lib" >> /root/.bashrc
 
-# install HighFive v2.3.1
+# install HighFive v2.8.0
 WORKDIR /usr/src/
-RUN git clone --depth 1 --branch v2.3.1 https://github.com/BlueBrain/HighFive
+RUN git clone --depth 1 --branch v2.8.0 https://github.com/BlueBrain/HighFive
 WORKDIR /usr/src/HighFive/build/
 RUN cmake ..
 RUN make install -j${N_JOBS}
 
 # install imuDataUtils
 WORKDIR /usr/src/
-RUN git clone --depth 1 --branch master https://github.com/tmcg0/imuDataUtils
+RUN git clone --depth 1 --branch v0.0-alpha https://github.com/tmcg0/imuDataUtils
 WORKDIR /usr/src/imuDataUtils/build/
 RUN cmake ..
 RUN make install -j${N_JOBS}
 
 # install bioslam
 WORKDIR /usr/src/
-RUN git clone --depth 1 --branch dev https://github.com/tmcg0/bioslam
+RUN git clone --depth 1 --branch v1.1 https://github.com/tmcg0/bioslam
 WORKDIR /usr/src/bioslam/build/
 RUN cmake -DBIOSLAM_BUILD_MATLAB_WRAPPER=OFF ..
 RUN make install -j${N_JOBS}
+
+ENTRYPOINT ["/bin/bash"]

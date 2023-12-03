@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # Set the version number for the library
 set (BIOSLAM_VERSION_MAJOR 1)
-set (BIOSLAM_VERSION_MINOR 0)
+set (BIOSLAM_VERSION_MINOR 1)
 set (BIOSLAM_VERSION_PATCH 0)
 math (EXPR BIOSLAM_VERSION_NUMERIC "10000 * ${BIOSLAM_VERSION_MAJOR} + 100 * ${BIOSLAM_VERSION_MINOR} + ${BIOSLAM_VERSION_PATCH}")
 set (BIOSLAM_VERSION_STRING "${BIOSLAM_VERSION_MAJOR}.${BIOSLAM_VERSION_MINOR}.${BIOSLAM_VERSION_PATCH}")
@@ -123,10 +123,6 @@ include_directories(${HDF5_INCLUDE_DIR})
 list(APPEND BIOSLAMLIBS ${HDF5_LIBRARIES})
 # --- required HighFive --- #
 find_package(HighFive REQUIRED)
-# --- find and include imuDataUtils library --- #
-find_package(ImuDataUtils REQUIRED)
-include_directories(${IMUDATAUTILS_INCLUDE_DIR})
-list(APPEND BIOSLAMLIBS ${IMUDATAUTILS_LIBRARIES})
 # --- Require GTSAM ---
 find_package(GTSAM REQUIRED)
 if (GTSAM_FOUND)
@@ -141,13 +137,11 @@ endif(GTSAM_FOUND)
 message(STATUS "proj source dir is ${PROJECT_SOURCE_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}/include") # bioslam headers
 include_directories("${PROJECT_SOURCE_DIR}/include/factors") # bioslam headers for factors
-#file(GLOB SOURCES_BIOSLAM "${PROJECT_SOURCE_DIR}/src/*.cpp" "${PROJECT_SOURCE_DIR}/src/factors/*.cpp" "${PROJECT_SOURCE_DIR}/include/*.h" "${PROJECT_SOURCE_DIR}/include/factors/*.h" "imuDataUtils/include/*.h" "imuDataUtils/src/*.cpp" "wrap/example/*.h" "wrap/example/*.cpp")
+include_directories("${PROJECT_SOURCE_DIR}/include/imu") # bioslam headers for imu
 # --- add sources --- #
-# glob all stuff from imuDataUtils
-# glob headers. do I need to do this? doesn't help. what's the prob?
-file(GLOB SOURCES_BIOSLAM" ${PROJECT_SOURCE_DIR}/include/*.h" "${PROJECT_SOURCE_DIR}/include/factors/*.h")
+file(GLOB SOURCES_BIOSLAM "${PROJECT_SOURCE_DIR}/include/*.h" "${PROJECT_SOURCE_DIR}/include/factors/*.h" "${PROJECT_SOURCE_DIR}/include/imu/*.h")
 # base stuff
-list(APPEND SOURCES_BIOSLAM ${PROJECT_SOURCE_DIR}/src/lowerBodyPoseEstimator.cpp ${PROJECT_SOURCE_DIR}/src/imuPoseEstimator.cpp ${PROJECT_SOURCE_DIR}/src/imuNoiseModelHandler.cpp ${PROJECT_SOURCE_DIR}/src/VarStrToCharMap.cpp)
+list(APPEND SOURCES_BIOSLAM ${PROJECT_SOURCE_DIR}/src/lowerBodyPoseEstimator.cpp ${PROJECT_SOURCE_DIR}/src/imuPoseEstimator.cpp ${PROJECT_SOURCE_DIR}/src/imu/imuNoiseModelHandler.cpp ${PROJECT_SOURCE_DIR}/src/imu/imu.cpp ${PROJECT_SOURCE_DIR}/src/VarStrToCharMap.cpp)
 # add utilities
 list(APPEND SOURCES_BIOSLAM ${PROJECT_SOURCE_DIR}/src/gtsamutils.cpp ${PROJECT_SOURCE_DIR}/src/mathutils.cpp ${PROJECT_SOURCE_DIR}/src/testutils.cpp ${PROJECT_SOURCE_DIR}/src/bioutils.cpp)
 # add custom factors
