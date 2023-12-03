@@ -62,10 +62,8 @@ RUN cmake \
 RUN make install -j${N_JOBS} && make clean
 
 
-# add /usr/local/lib to LD_LIBRARY_PATH for dynamic linking
-# note: this doesn't seem to save the .bashrc file, which isn't sourced anyway when running the container
-#   if not working inside container, run export LD_LIBRARY_PATH=/usr/local/lib:LD_LIBRARY_PATH in the shell
-RUN echo 'export LD_LIBRARY_PATH=/usr/local/lib:LD_LIBRARY_PATH' >> /root/.bashrc
+# add /usr/local/lib to LD_LIBRARY_PATH for dynamic linking (in bash only!)
+RUN echo "export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:/usr/local/lib" >> /root/.bashrc
 
 # install HighFive v2.3.1
 WORKDIR /usr/src/
@@ -87,3 +85,5 @@ RUN git clone --depth 1 --branch v1.0.1 https://github.com/tmcg0/bioslam
 WORKDIR /usr/src/bioslam/build/
 RUN cmake -DBIOSLAM_BUILD_MATLAB_WRAPPER=OFF ..
 RUN make install -j${N_JOBS}
+
+ENTRYPOINT ["/bin/bash"]
