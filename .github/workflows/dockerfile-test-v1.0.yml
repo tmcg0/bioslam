@@ -30,6 +30,8 @@ jobs:
     outputs:
       file_changed: ${{ steps.check_file_changed.outputs.file_changed }}
     steps:
+    - name: print skip check results
+      run: echo "should_skip=${{ needs.duplicate_job_check.outputs.should_skip }}, reason is ${{ needs.duplicate_job_check.outputs.reason }}"
     - uses: actions/checkout@v3
       with:
         # Checkout as many commits as needed for the diff
