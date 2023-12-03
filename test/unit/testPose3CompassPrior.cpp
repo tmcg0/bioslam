@@ -98,7 +98,7 @@ int test_derivative_numerically(const bioslam::Pose3CompassPrior& fac, const gts
     //    templates are: <output type (typically gtsam::Vector), then the input argument types in order)
     gtsam::Matrix numericalH1=gtsam::numericalDerivative11<gtsam::Vector,gtsam::Pose3>(
             std::function<gtsam::Vector(const gtsam::Pose3&)>
-                    (std::bind(&bioslam::Pose3CompassPrior::evaluateError,fac,_1,boost::none)),x,1e-8);
+                    (std::bind(&bioslam::Pose3CompassPrior::evaluateError,fac,std::placeholders::_1,boost::none)),x,1e-8);
 
     // now test using gtsam::assert_equal()
     bool testH1=gtsam::assert_equal(derivedH1,numericalH1,5.0e-3);

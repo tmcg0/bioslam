@@ -51,7 +51,7 @@ imuPoseEstimator test_posthoc_smoother(const std::string& dataFileToUse, const s
     poseProblem.fastOptimize();
     // check for any infinity errors
     for(uint i=0;i<poseProblem.m_optimizationTotalError.size();i++){
-        if(isinf(poseProblem.m_optimizationTotalError[i])){
+        if(std::isinf(poseProblem.m_optimizationTotalError[i])){
             throw std::runtime_error("optimizer error is infinity!");
         }
     }

@@ -114,10 +114,10 @@ int test_derivative_numerically(const bioslam::SegmentLengthMaxMagnitudeFactor& 
     //    templates are: <output type (typically gtsam::Vector), then the input argument types in order)
     gtsam::Matrix numericalH1=gtsam::numericalDerivative21<gtsam::Vector,gtsam::Point3,gtsam::Point3>(
             std::function<gtsam::Vector(const gtsam::Point3&, const gtsam::Point3&)>
-                    (std::bind(&bioslam::SegmentLengthMaxMagnitudeFactor::evaluateError,fac,_1,_2,boost::none,boost::none)),v1,v2,1e-5);
+                    (std::bind(&bioslam::SegmentLengthMaxMagnitudeFactor::evaluateError,fac,std::placeholders::_1,std::placeholders::_2,boost::none,boost::none)),v1,v2,1e-5);
     gtsam::Matrix numericalH2=gtsam::numericalDerivative22<gtsam::Vector,gtsam::Point3,gtsam::Point3>(
             std::function<gtsam::Vector(const gtsam::Point3&, const gtsam::Point3&)>
-                    (std::bind(&bioslam::SegmentLengthMaxMagnitudeFactor::evaluateError,fac,_1,_2,boost::none,boost::none)),v1,v2,1e-5);
+                    (std::bind(&bioslam::SegmentLengthMaxMagnitudeFactor::evaluateError,fac,std::placeholders::_1,std::placeholders::_2,boost::none,boost::none)),v1,v2,1e-5);
     // now test using gtsam::assert_equal()
     bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-5);
     bool testH2=gtsam::assert_equal(derivedH2,numericalH2,1e-5);
@@ -145,10 +145,10 @@ int test_derivative_numerically(const bioslam::SegmentLengthMinMagnitudeFactor& 
     //    templates are: <output type (typically gtsam::Vector), then the input argument types in order)
     gtsam::Matrix numericalH1=gtsam::numericalDerivative21<gtsam::Vector,gtsam::Point3,gtsam::Point3>(
             std::function<gtsam::Vector(const gtsam::Point3&, const gtsam::Point3&)>
-                    (std::bind(&bioslam::SegmentLengthMinMagnitudeFactor::evaluateError,fac,_1,_2,boost::none,boost::none)),v1,v2,1e-5);
+                    (std::bind(&bioslam::SegmentLengthMinMagnitudeFactor::evaluateError,fac,std::placeholders::_1,std::placeholders::_2,boost::none,boost::none)),v1,v2,1e-5);
     gtsam::Matrix numericalH2=gtsam::numericalDerivative22<gtsam::Vector,gtsam::Point3,gtsam::Point3>(
             std::function<gtsam::Vector(const gtsam::Point3&, const gtsam::Point3&)>
-                    (std::bind(&bioslam::SegmentLengthMinMagnitudeFactor::evaluateError,fac,_1,_2,boost::none,boost::none)),v1,v2,1e-5);
+                    (std::bind(&bioslam::SegmentLengthMinMagnitudeFactor::evaluateError,fac,std::placeholders::_1,std::placeholders::_2,boost::none,boost::none)),v1,v2,1e-5);
     // now test using gtsam::assert_equal()
     bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-7);
     bool testH2=gtsam::assert_equal(derivedH2,numericalH2,1e-7);

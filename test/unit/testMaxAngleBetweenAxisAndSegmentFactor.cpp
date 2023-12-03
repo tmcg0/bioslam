@@ -163,13 +163,13 @@ int test_derivative_numerically(const bioslam::MaxAngleBetweenAxisAndSegmentFact
     //    templates are: <output type (typically gtsam::Vector), then the input argument types in order)
     gtsam::Matrix numericalH1=gtsam::numericalDerivative31<gtsam::Vector,gtsam::Unit3,gtsam::Point3,gtsam::Point3>(
             std::function<gtsam::Vector(const gtsam::Unit3&, const gtsam::Point3&, const gtsam::Point3&)>
-                    (std::bind(&bioslam::MaxAngleBetweenAxisAndSegmentFactor::evaluateError,fac,_1,_2,_3,boost::none,boost::none,boost::none)),axis,v1,v2,1e-5);
+                    (std::bind(&bioslam::MaxAngleBetweenAxisAndSegmentFactor::evaluateError,fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,boost::none,boost::none,boost::none)),axis,v1,v2,1e-5);
     gtsam::Matrix numericalH2=gtsam::numericalDerivative32<gtsam::Vector,gtsam::Unit3,gtsam::Point3,gtsam::Point3>(
             std::function<gtsam::Vector(const gtsam::Unit3&, const gtsam::Point3&, const gtsam::Point3&)>
-                    (std::bind(&bioslam::MaxAngleBetweenAxisAndSegmentFactor::evaluateError,fac,_1,_2,_3,boost::none,boost::none,boost::none)),axis,v1,v2,1e-5);
+                    (std::bind(&bioslam::MaxAngleBetweenAxisAndSegmentFactor::evaluateError,fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,boost::none,boost::none,boost::none)),axis,v1,v2,1e-5);
     gtsam::Matrix numericalH3=gtsam::numericalDerivative33<gtsam::Vector,gtsam::Unit3,gtsam::Point3,gtsam::Point3>(
             std::function<gtsam::Vector(const gtsam::Unit3&, const gtsam::Point3&, const gtsam::Point3&)>
-                    (std::bind(&bioslam::MaxAngleBetweenAxisAndSegmentFactor::evaluateError,fac,_1,_2,_3,boost::none,boost::none,boost::none)),axis,v1,v2,1e-5);
+                    (std::bind(&bioslam::MaxAngleBetweenAxisAndSegmentFactor::evaluateError,fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,boost::none,boost::none,boost::none)),axis,v1,v2,1e-5);
 
     // now test using gtsam::assert_equal()
     bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-5);

@@ -177,19 +177,19 @@ int test_derivative_numerically(const bioslam::HingeJointConstraintVecErrEstAngV
     //    templates are: <output type (typically gtsam::Vector), then the input argument types in order)
     gtsam::Matrix numericalH1=gtsam::numericalDerivative51<gtsam::Vector,gtsam::Pose3,gtsam::Vector3,gtsam::Pose3,gtsam::Vector3,gtsam::Unit3>(
             std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Unit3&)>
-                    (std::bind(&bioslam::HingeJointConstraintVecErrEstAngVel::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5)), poseA, angVelA, poseB, angVelB, axisA, 1e-5);
+                    (std::bind(&bioslam::HingeJointConstraintVecErrEstAngVel::evaluateErrorNoJacCall, fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4,std::placeholders::_5)), poseA, angVelA, poseB, angVelB, axisA, 1e-5);
     gtsam::Matrix numericalH2=gtsam::numericalDerivative52<gtsam::Vector,gtsam::Pose3,gtsam::Vector3,gtsam::Pose3,gtsam::Vector3,gtsam::Unit3>(
             std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Unit3&)>
-                    (std::bind(&bioslam::HingeJointConstraintVecErrEstAngVel::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5)), poseA, angVelA, poseB, angVelB, axisA, 1e-5);
+                    (std::bind(&bioslam::HingeJointConstraintVecErrEstAngVel::evaluateErrorNoJacCall, fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4,std::placeholders::_5)), poseA, angVelA, poseB, angVelB, axisA, 1e-5);
     gtsam::Matrix numericalH3=gtsam::numericalDerivative53<gtsam::Vector,gtsam::Pose3,gtsam::Vector3,gtsam::Pose3,gtsam::Vector3,gtsam::Unit3>(
             std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Unit3&)>
-                    (std::bind(&bioslam::HingeJointConstraintVecErrEstAngVel::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5)), poseA, angVelA, poseB, angVelB, axisA, 1e-5);
+                    (std::bind(&bioslam::HingeJointConstraintVecErrEstAngVel::evaluateErrorNoJacCall, fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4,std::placeholders::_5)), poseA, angVelA, poseB, angVelB, axisA, 1e-5);
     gtsam::Matrix numericalH4=gtsam::numericalDerivative54<gtsam::Vector,gtsam::Pose3,gtsam::Vector3,gtsam::Pose3,gtsam::Vector3,gtsam::Unit3>(
             std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Unit3&)>
-                    (std::bind(&bioslam::HingeJointConstraintVecErrEstAngVel::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5)), poseA, angVelA, poseB, angVelB, axisA, 1e-5);
+                    (std::bind(&bioslam::HingeJointConstraintVecErrEstAngVel::evaluateErrorNoJacCall, fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4,std::placeholders::_5)), poseA, angVelA, poseB, angVelB, axisA, 1e-5);
     gtsam::Matrix numericalH5=gtsam::numericalDerivative55<gtsam::Vector,gtsam::Pose3,gtsam::Vector3,gtsam::Pose3,gtsam::Vector3,gtsam::Unit3>(
             std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Unit3&)>
-                    (std::bind(&bioslam::HingeJointConstraintVecErrEstAngVel::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5)), poseA, angVelA, poseB, angVelB, axisA, 1e-5);
+                    (std::bind(&bioslam::HingeJointConstraintVecErrEstAngVel::evaluateErrorNoJacCall, fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4,std::placeholders::_5)), poseA, angVelA, poseB, angVelB, axisA, 1e-5);
     // now test using gtsam::assert_equal()
     bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-9);
     bool testH2=gtsam::assert_equal(derivedH2,numericalH2,1e-9);

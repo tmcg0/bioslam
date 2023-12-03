@@ -84,16 +84,16 @@ int test_derivative_numerically(const bioslam::SegmentLengthDiscrepancyFactor& f
     //    templates are: <output type (typically gtsam::Vector), then the input argument types in order)
     gtsam::Matrix numericalH1=gtsam::numericalDerivative41<gtsam::Vector,gtsam::Point3,gtsam::Point3,gtsam::Point3,gtsam::Point3>(
             std::function<gtsam::Vector(const gtsam::Point3&,const gtsam::Point3&,const gtsam::Point3&,const gtsam::Point3&)>
-                    (std::bind(&bioslam::SegmentLengthDiscrepancyFactor::evaluateError,fac,_1,_2,_3,_4,boost::none,boost::none,boost::none,boost::none)),imuAToProximalJointCtr,imuAToDistalJointCtr, imuBToProximalJointCtr, imuBToDistalJointCtr,1e-5);
+                    (std::bind(&bioslam::SegmentLengthDiscrepancyFactor::evaluateError,fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4,boost::none,boost::none,boost::none,boost::none)),imuAToProximalJointCtr,imuAToDistalJointCtr, imuBToProximalJointCtr, imuBToDistalJointCtr,1e-5);
     gtsam::Matrix numericalH2=gtsam::numericalDerivative42<gtsam::Vector,gtsam::Point3,gtsam::Point3,gtsam::Point3,gtsam::Point3>(
             std::function<gtsam::Vector(const gtsam::Point3&,const gtsam::Point3&,const gtsam::Point3&,const gtsam::Point3&)>
-                    (std::bind(&bioslam::SegmentLengthDiscrepancyFactor::evaluateError,fac,_1,_2,_3,_4,boost::none,boost::none,boost::none,boost::none)),imuAToProximalJointCtr,imuAToDistalJointCtr, imuBToProximalJointCtr, imuBToDistalJointCtr,1e-5);
+                    (std::bind(&bioslam::SegmentLengthDiscrepancyFactor::evaluateError,fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4,boost::none,boost::none,boost::none,boost::none)),imuAToProximalJointCtr,imuAToDistalJointCtr, imuBToProximalJointCtr, imuBToDistalJointCtr,1e-5);
     gtsam::Matrix numericalH3=gtsam::numericalDerivative43<gtsam::Vector,gtsam::Point3,gtsam::Point3,gtsam::Point3,gtsam::Point3>(
             std::function<gtsam::Vector(const gtsam::Point3&,const gtsam::Point3&,const gtsam::Point3&,const gtsam::Point3&)>
-                    (std::bind(&bioslam::SegmentLengthDiscrepancyFactor::evaluateError,fac,_1,_2,_3,_4,boost::none,boost::none,boost::none,boost::none)),imuAToProximalJointCtr,imuAToDistalJointCtr, imuBToProximalJointCtr, imuBToDistalJointCtr,1e-5);
+                    (std::bind(&bioslam::SegmentLengthDiscrepancyFactor::evaluateError,fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4,boost::none,boost::none,boost::none,boost::none)),imuAToProximalJointCtr,imuAToDistalJointCtr, imuBToProximalJointCtr, imuBToDistalJointCtr,1e-5);
     gtsam::Matrix numericalH4=gtsam::numericalDerivative44<gtsam::Vector,gtsam::Point3,gtsam::Point3,gtsam::Point3,gtsam::Point3>(
             std::function<gtsam::Vector(const gtsam::Point3&,const gtsam::Point3&,const gtsam::Point3&,const gtsam::Point3&)>
-                    (std::bind(&bioslam::SegmentLengthDiscrepancyFactor::evaluateError,fac,_1,_2,_3,_4,boost::none,boost::none,boost::none,boost::none)),imuAToProximalJointCtr,imuAToDistalJointCtr, imuBToProximalJointCtr, imuBToDistalJointCtr,1e-5);
+                    (std::bind(&bioslam::SegmentLengthDiscrepancyFactor::evaluateError,fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4,boost::none,boost::none,boost::none,boost::none)),imuAToProximalJointCtr,imuAToDistalJointCtr, imuBToProximalJointCtr, imuBToDistalJointCtr,1e-5);
 
     // now test using gtsam::assert_equal()
     bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-7);

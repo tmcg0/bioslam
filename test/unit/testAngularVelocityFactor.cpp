@@ -72,10 +72,10 @@ int test_derivative_numerically(const bioslam::AngularVelocityFactor& fac, const
     // () get numerical jacobians
     gtsam::Matrix numericalH1=gtsam::numericalDerivative21<gtsam::Vector,gtsam::Vector3,gtsam::imuBias::ConstantBias>(
             std::function<gtsam::Vector(const gtsam::Vector3&, const gtsam::imuBias::ConstantBias&)>
-                    (std::bind(&bioslam::AngularVelocityFactor::evaluateError,fac,_1,_2,boost::none,boost::none)),estAngVel,imuBias,1e-5);
+                    (std::bind(&bioslam::AngularVelocityFactor::evaluateError,fac,std::placeholders::_1,std::placeholders::_2,boost::none,boost::none)),estAngVel,imuBias,1e-5);
     gtsam::Matrix numericalH2=gtsam::numericalDerivative22<gtsam::Vector,gtsam::Vector3,gtsam::imuBias::ConstantBias>(
             std::function<gtsam::Vector(const gtsam::Vector3&, const gtsam::imuBias::ConstantBias&)>
-                    (std::bind(&bioslam::AngularVelocityFactor::evaluateError,fac,_1,_2,boost::none,boost::none)),estAngVel,imuBias,1e-5);
+                    (std::bind(&bioslam::AngularVelocityFactor::evaluateError,fac,std::placeholders::_1,std::placeholders::_2,boost::none,boost::none)),estAngVel,imuBias,1e-5);
     // now test using gtsam::assert_equal()
     bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-7);
     bool testH2=gtsam::assert_equal(derivedH2,numericalH2,1e-7);

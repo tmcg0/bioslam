@@ -50,10 +50,10 @@ int testatan2(uint nTests){
             // test derivative numerically
             gtsam::Matrix numericalH1=gtsam::numericalDerivative21<double,double,double>(
                     std::function<double(const double&, const double&)>
-                            (std::bind(&mathutils::atan2, _1, _2, boost::none, boost::none)), y,x, 1e-5);
+                            (std::bind(&mathutils::atan2,std::placeholders::_1,std::placeholders::_2, boost::none, boost::none)), y,x, 1e-5);
             gtsam::Matrix numericalH2=gtsam::numericalDerivative22<double,double,double>(
                     std::function<double(const double&, const double&)>
-                            (std::bind(&mathutils::atan2, _1, _2, boost::none, boost::none)), y,x, 1e-5);
+                            (std::bind(&mathutils::atan2,std::placeholders::_1,std::placeholders::_2, boost::none, boost::none)), y,x, 1e-5);
             bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-5);
             bool testH2=gtsam::assert_equal(derivedH2,numericalH2,1e-5);
             if (!testH1){
@@ -81,10 +81,10 @@ int testProjVecIntoPlane(uint nTests){
         // test derivative numerically
         gtsam::Matrix numericalH1=gtsam::numericalDerivative21<gtsam::Point3,gtsam::Point3,gtsam::Point3>(
                 std::function<gtsam::Point3(const gtsam::Point3&, const gtsam::Point3&)>
-                        (std::bind(&mathutils::projVecIntoPlane, _1, _2, boost::none, boost::none)), a, b, 1e-5);
+                        (std::bind(&mathutils::projVecIntoPlane,std::placeholders::_1,std::placeholders::_2, boost::none, boost::none)), a, b, 1e-5);
         gtsam::Matrix numericalH2=gtsam::numericalDerivative22<gtsam::Point3,gtsam::Point3,gtsam::Point3>(
                 std::function<gtsam::Point3(const gtsam::Point3&, const gtsam::Point3&)>
-                        (std::bind(&mathutils::projVecIntoPlane, _1, _2, boost::none, boost::none)), a, b, 1e-5);
+                        (std::bind(&mathutils::projVecIntoPlane,std::placeholders::_1,std::placeholders::_2, boost::none, boost::none)), a, b, 1e-5);
         bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-10);
         bool testH2=gtsam::assert_equal(derivedH2,numericalH2,1e-10);
         if (!testH1){
@@ -111,7 +111,7 @@ int testNormalized(uint nTests){
             // test derivative numerically
             gtsam::Matrix numericalH1=gtsam::numericalDerivative11<gtsam::Point3,gtsam::Point3>(
                     std::function<gtsam::Point3(const gtsam::Point3&)>
-                            (std::bind(&gtsam::Point3::normalized,_1,boost::none)),a,1e-5);
+                            (std::bind(&gtsam::Point3::normalized,std::placeholders::_1,boost::none)),a,1e-5);
             bool testH1=gtsam::assert_equal(derivedH1,numericalH1,5.0e-8);
             if (!testH1){
                 std::cout<<"a="<<a.transpose()<<", norm="<<a.norm()<<std::endl;
@@ -133,7 +133,7 @@ int testNorm(uint nTests){
             // test derivative numerically
             gtsam::Matrix numericalH1=gtsam::numericalDerivative11<double,gtsam::Point3>(
                     std::function<double(const gtsam::Point3&)>
-                            (std::bind(&gtsam::Point3::norm,_1,boost::none)),a,1e-8);
+                            (std::bind(&gtsam::Point3::norm,std::placeholders::_1,boost::none)),a,1e-8);
             bool testH1=gtsam::assert_equal(derivedH1,numericalH1,5.0e-8);
             if (!testH1){
                 std::cout<<"a="<<a.transpose()<<", norm="<<a.norm()<<std::endl;
@@ -183,10 +183,10 @@ int testDot(uint nTests){
         // test derivative numerically
         gtsam::Matrix numericalH1=gtsam::numericalDerivative21<double,gtsam::Point3,gtsam::Point3>(
                 std::function<double(const gtsam::Point3&, const gtsam::Point3&)>
-                        (std::bind(&gtsam::Point3::dot,_1,_2,boost::none,boost::none)),a,b,1e-5);
+                        (std::bind(&gtsam::Point3::dot,std::placeholders::_1,std::placeholders::_2,boost::none,boost::none)),a,b,1e-5);
         gtsam::Matrix numericalH2=gtsam::numericalDerivative22<double,gtsam::Point3,gtsam::Point3>(
                 std::function<double(const gtsam::Point3&, const gtsam::Point3&)>
-                        (std::bind(&gtsam::Point3::dot,_1,_2,boost::none,boost::none)),a,b,1e-5);
+                        (std::bind(&gtsam::Point3::dot,std::placeholders::_1,std::placeholders::_2,boost::none,boost::none)),a,b,1e-5);
         bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-9);
         bool testH2=gtsam::assert_equal(derivedH2,numericalH2,1e-9);
         if (!testH1){
@@ -213,16 +213,16 @@ int testPtSeparationNorm(uint nTests){
         // test derivative numerically
         gtsam::Matrix numericalH1=gtsam::numericalDerivative41<double,gtsam::Pose3,gtsam::Point3,gtsam::Pose3,gtsam::Point3>(
                 std::function<double(const gtsam::Pose3&, const gtsam::Point3&,const gtsam::Pose3&, const gtsam::Point3&)>
-                        (std::bind(&mathutils::ptSeparationNorm, _1, _2, _3, _4, boost::none, boost::none, boost::none, boost::none)), xA, sA, xB, sB, 1e-5);
+                        (std::bind(&mathutils::ptSeparationNorm,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4, boost::none, boost::none, boost::none, boost::none)), xA, sA, xB, sB, 1e-5);
         gtsam::Matrix numericalH2=gtsam::numericalDerivative42<double,gtsam::Pose3,gtsam::Point3,gtsam::Pose3,gtsam::Point3>(
                 std::function<double(const gtsam::Pose3&, const gtsam::Point3&,const gtsam::Pose3&, const gtsam::Point3&)>
-                        (std::bind(&mathutils::ptSeparationNorm, _1, _2, _3, _4, boost::none, boost::none, boost::none, boost::none)), xA, sA, xB, sB, 1e-5);
+                        (std::bind(&mathutils::ptSeparationNorm,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4, boost::none, boost::none, boost::none, boost::none)), xA, sA, xB, sB, 1e-5);
         gtsam::Matrix numericalH3=gtsam::numericalDerivative43<double,gtsam::Pose3,gtsam::Point3,gtsam::Pose3,gtsam::Point3>(
                 std::function<double(const gtsam::Pose3&, const gtsam::Point3&,const gtsam::Pose3&, const gtsam::Point3&)>
-                        (std::bind(&mathutils::ptSeparationNorm, _1, _2, _3, _4, boost::none, boost::none, boost::none, boost::none)), xA, sA, xB, sB, 1e-5);
+                        (std::bind(&mathutils::ptSeparationNorm,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4, boost::none, boost::none, boost::none, boost::none)), xA, sA, xB, sB, 1e-5);
         gtsam::Matrix numericalH4=gtsam::numericalDerivative44<double,gtsam::Pose3,gtsam::Point3,gtsam::Pose3,gtsam::Point3>(
                 std::function<double(const gtsam::Pose3&, const gtsam::Point3&,const gtsam::Pose3&, const gtsam::Point3&)>
-                        (std::bind(&mathutils::ptSeparationNorm, _1, _2, _3, _4, boost::none, boost::none, boost::none, boost::none)), xA, sA, xB, sB, 1e-5);
+                        (std::bind(&mathutils::ptSeparationNorm,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4, boost::none, boost::none, boost::none, boost::none)), xA, sA, xB, sB, 1e-5);
         // now test using gtsam::assert_equal()
         bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-5);
         if (!testH1){
@@ -262,16 +262,16 @@ int testPtSeparation(uint nTests){
         // test derivative numerically
         gtsam::Matrix numericalH1=gtsam::numericalDerivative41<gtsam::Vector3,gtsam::Pose3,gtsam::Point3,gtsam::Pose3,gtsam::Point3>(
                 std::function<gtsam::Vector3(const gtsam::Pose3&, const gtsam::Point3&,const gtsam::Pose3&, const gtsam::Point3&)>
-                        (std::bind(&mathutils::ptSeparation, _1, _2, _3, _4, boost::none, boost::none, boost::none, boost::none)), xA, sA, xB, sB, 1e-5);
+                        (std::bind(&mathutils::ptSeparation,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4, boost::none, boost::none, boost::none, boost::none)), xA, sA, xB, sB, 1e-5);
         gtsam::Matrix numericalH2=gtsam::numericalDerivative42<gtsam::Vector3,gtsam::Pose3,gtsam::Point3,gtsam::Pose3,gtsam::Point3>(
                 std::function<gtsam::Vector3(const gtsam::Pose3&, const gtsam::Point3&,const gtsam::Pose3&, const gtsam::Point3&)>
-                        (std::bind(&mathutils::ptSeparation, _1, _2, _3, _4, boost::none, boost::none, boost::none, boost::none)), xA, sA, xB, sB, 1e-5);
+                        (std::bind(&mathutils::ptSeparation,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4, boost::none, boost::none, boost::none, boost::none)), xA, sA, xB, sB, 1e-5);
         gtsam::Matrix numericalH3=gtsam::numericalDerivative43<gtsam::Vector3,gtsam::Pose3,gtsam::Point3,gtsam::Pose3,gtsam::Point3>(
                 std::function<gtsam::Vector3(const gtsam::Pose3&, const gtsam::Point3&,const gtsam::Pose3&, const gtsam::Point3&)>
-                        (std::bind(&mathutils::ptSeparation, _1, _2, _3, _4, boost::none, boost::none, boost::none, boost::none)), xA, sA, xB, sB, 1e-5);
+                        (std::bind(&mathutils::ptSeparation,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4, boost::none, boost::none, boost::none, boost::none)), xA, sA, xB, sB, 1e-5);
         gtsam::Matrix numericalH4=gtsam::numericalDerivative44<gtsam::Vector3,gtsam::Pose3,gtsam::Point3,gtsam::Pose3,gtsam::Point3>(
                 std::function<gtsam::Vector3(const gtsam::Pose3&, const gtsam::Point3&,const gtsam::Pose3&, const gtsam::Point3&)>
-                        (std::bind(&mathutils::ptSeparation, _1, _2, _3, _4, boost::none, boost::none, boost::none, boost::none)), xA, sA, xB, sB, 1e-5);
+                        (std::bind(&mathutils::ptSeparation,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4, boost::none, boost::none, boost::none, boost::none)), xA, sA, xB, sB, 1e-5);
         // now test using gtsam::assert_equal()
         bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-9);
         if (!testH1){
@@ -311,10 +311,10 @@ int testProjmk(uint nTests){
         // test derivative numerically
         gtsam::Matrix numericalH1=gtsam::numericalDerivative21<gtsam::Vector3,gtsam::Vector3,gtsam::Unit3>(
                 std::function<gtsam::Vector3(const gtsam::Vector3&, const gtsam::Unit3&)>
-                        (std::bind(&mathutils::projmk, _1, _2, boost::none, boost::none)), m, k, 1e-5);
+                        (std::bind(&mathutils::projmk,std::placeholders::_1,std::placeholders::_2, boost::none, boost::none)), m, k, 1e-5);
         gtsam::Matrix numericalH2=gtsam::numericalDerivative22<gtsam::Vector3,gtsam::Vector3,gtsam::Unit3>(
                 std::function<gtsam::Vector3(const gtsam::Vector3&, const gtsam::Unit3&)>
-                        (std::bind(&mathutils::projmk, _1, _2, boost::none, boost::none)), m, k, 1e-5);
+                        (std::bind(&mathutils::projmk,std::placeholders::_1,std::placeholders::_2, boost::none, boost::none)), m, k, 1e-5);
         bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-9);
         bool testH2=gtsam::assert_equal(derivedH2,numericalH2,1e-9);
         if (!testH1){
