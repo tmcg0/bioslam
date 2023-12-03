@@ -52,7 +52,7 @@ using Boost 1.67, GTSAM 4.0.3, and Eigen 3.3.9.
 On other systems, a bioslam-installed Ubuntu image can be spun up in a Docker container using a provided [Dockerfile](docker/).
 
 ### Required Dependencies
-#### _bioslam < v1.1_
+#### bioslam < v1.1
 * CMake (>= 3.17)
 * boost (>= 1.65 && <1.74)
   * Ubuntu: `sudo apt-get install libboost-all-dev`
@@ -65,18 +65,15 @@ On other systems, a bioslam-installed Ubuntu image can be spun up in a Docker co
 * Optional: Intel's Thread Building Blocks (TBB)
   * ubuntu: `sudo apt install libtbb-dev`
 
- #### bioslam >= v1.1
-* CMake (>= 3.17)
-* boost (???)
-  * Ubuntu: `sudo apt-get install libboost-all-dev`
-* [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page) 3.3.9+
-* hdf5
-  * Ubuntu: `sudo apt-get install libhdf5-dev`
-* [gtsam 4.2](https://github.com/borglab/gtsam) (note: bioslam MATLAB wrapper may have a [known compatibility issue](https://github.com/tmcg0/bioslam/issues/4).)
-* [HighFive](https://github.com/BlueBrain/HighFive) >= ??? (2.3.1 doesn't work, 2.8 does)
-* Notes:
-  * bioslam 1.1 [removes the dependency on the imuDataUtils library](https://github.com/tmcg0/bioslam/issues/31)
-  * Intel's TBB (optional dependency) has shown compatibility issues when installing via Ubuntu's package manager in 22.04+
+#### bioslam >= v1.1 && <1.2
+_similar to < v1.1, but:_
+* no need for [imuDataUtils](https://github.com/tmcg0/imuDataUtils)
+
+#### bioslam >= 1.2
+_similar to v1.1, but:_
+* boost >= 1.74
+* [gtsam 4.2](https://github.com/borglab/gtsam)
+* [HighFive](https://github.com/BlueBrain/HighFive) >= 2.7
 
 ### Optional Recommended Dependencies
 for faster performance
