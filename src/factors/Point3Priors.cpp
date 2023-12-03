@@ -10,7 +10,7 @@ namespace bioslam{
     // --- a factor which encodes a numerical maximum length on a Point3 --- //
     gtsam::Vector MaxPoint3MagnitudeFactor::evaluateError(const gtsam::Point3& p, boost::optional<gtsam::Matrix&> H) const {
         // error scalar function is e=VMax-||Vi||
-        const gtsam::Vector3 v=p.vector();
+        const gtsam::Vector3 v=p;
         double vnorm=v.norm();
         if(vnorm > maxNorm_){ // velocity is too high, make actual error and jacobian
             double error=0.5*pow((vnorm - maxNorm_), P_);
@@ -42,10 +42,10 @@ namespace bioslam{
         //      de/dv2=-1/(norm2(v2)) dot v2
         double error=v1.norm()-v2.norm();
         if(H1) { // de/dv1 -> should be 1x3
-            *H1= 1.0/(v1.norm()) * v1.vector().transpose();
+            *H1= 1.0/(v1.norm()) * v1.transpose();
         }
         if(H2) { // de/dv2 -> should be 1x3
-            *H2= -1.0/(v2.norm()) * v2.vector().transpose();
+            *H2= -1.0/(v2.norm()) * v2.transpose();
         }
         return gtsam::Vector1(error);
     }

@@ -1,0 +1,76 @@
+name: v1.2 Dockerfile
+
+on: [push, pull_request, workflow_dispatch]
+
+env:
+  DOCKERFILE_NAME: "bioslam1.2-gtsam4.2-ubu23.Dockerfile"
+
+jobs:
+  duplicate_job_check:
+    # continue-on-error: true # Uncomment once integration is finished 
+    runs-on: ubuntu-20.04
+    
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+
+    steps:
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@v5.3.0
+        with:
+          concurrent_skipping: "same_content_newer"
+          skip_after_successful_duplicate: "true"
+          paths_ignore: '["**/README.md", "**/docs/**"]'
+          do_not_skip: '["workflow_dispatch", "schedule"]'
+
+  conditional_check_dockerfile_changed:
+    needs: duplicate_job_check
+    if: needs.duplicate_job_check.outputs.should_skip != 'true'
+    runs-on: ubuntu-latest
+    # Declare outputs for next jobs
+    outputs:
+      file_changed: ${{ steps.check_file_changed.outputs.file_changed }}
+    steps:
+    - name: print skip check results
+      run: echo "should_skip=${{ needs.duplicate_job_check.outputs.should_skip }}, reason is ${{ needs.duplicate_job_check.outputs.reason }}"
+    - uses: actions/checkout@v3
+      with:
+        # Checkout as many commits as needed for the diff
+        fetch-depth: 2
+
+    - id: check_file_changed
+      name: Check if Dockerfile changed
+      run: |
+        # Diff HEAD with the previous commit (a list of changed files)
+        diff=$(git diff --name-only HEAD^ HEAD)
+        # check if the Dockerfile at docker/$DOCKERFILE_NAME is in the diff
+        # Use || true to prevent failure if grep doesn't find a match
+        DockerfileDiff=$(echo "$diff" | grep "docker/$DOCKERFILE_NAME" || true)
+        # if the Dockerfile is in the diff, then set HasDiff to True
+        if [ -z "$DockerfileDiff" ]; then
+          HasDiff="False"
+        else
+          HasDiff="True"
+        fi
+        # echo the output to $GITHUB_OUTPUT
+        echo "file_changed=$HasDiff" >> "$GITHUB_OUTPUT"
+
+    - name: print if file changed
+      run: echo "file_changed=${{ steps.check_file_changed.outputs.file_changed }}"
+
+  test:
+    name: Test Dockerfile 
+    runs-on: ubuntu-latest
+    needs: conditional_check_dockerfile_changed
+    if: needs.conditional_check_dockerfile_changed.outputs.file_changed == 'True'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Build and run docker image
+      run: |
+        docker build -t bioslam -f ./docker/$DOCKERFILE_NAME ./docker
+        docker run -id --name bioslam bioslam
+
+    - name: Run tests
+      run: docker exec -i bioslam bash -c "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib && cd /usr/src/bioslam/build && make test"

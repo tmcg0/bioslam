@@ -14,8 +14,8 @@ namespace bioutils{
         // x: right, y: anterior, z: proximal (per Grood & Suntay 1983)
         // used for thighs, shanks, and feet. for pelvis, see bioutils::get_R_SacrumImu_to_Pelvis
         // if useProximalAsMasterVec=true, it will correct the rightAxis, otherwise, rightAxis is assumed master and the proximalvec is corrected to create an orthonormal coordinate system
-        gtsam::Vector3 Fx=rightAxis.point3().vector(); // right
-        gtsam::Vector3 Fz= imuToProximalJointVec.vector() - imuToDistalJointVec.vector(); Fz.normalize(); // up/proximal/superior
+        gtsam::Vector3 Fx=rightAxis.point3(); // right
+        gtsam::Vector3 Fz= imuToProximalJointVec - imuToDistalJointVec; Fz.normalize(); // up/proximal/superior
         gtsam::Vector3 Fy=Fz.cross(Fx); Fy.normalize(); // anterior, from cross product
         if(useProximalAsMasterVec){ // leave Fz alone and correct Fx
             Fx=Fy.cross(Fz); // CROSS PRODUCT CORRECTION: Use the proximal vector as the master vector in the orthonormal system
@@ -63,7 +63,7 @@ namespace bioutils{
         // if useHipCtrAsMasterVec=true, it will correct the vertical vector, otherwise, upVec is assumed master and the rightVec is corrected to create an orthonormal coordinate system
         // x: right, y: anterior, z: proximal (per Grood & Suntay 1983)*
         //    *Author's note: We assume the Grood coordiante system, even though in Wu 2002 (where this JCS for the hip was proposed) they assume y-up. We had to change one to keep the coordinate systems consistent, so I chose Grood.
-        gtsam::Vector3 Fx=(sacrumImuToRHipCtr.vector()-sacrumImuToLHipCtr.vector()).normalized(); // right
+        gtsam::Vector3 Fx=(sacrumImuToRHipCtr-sacrumImuToLHipCtr).normalized(); // right
         gtsam::Vector3 Fz= upVec.normalized(); // up/proximal/superior
         gtsam::Vector3 Fy=Fz.cross(Fx); Fy.normalize(); // anterior, from cross product
         if(useHipCtrAsMasterVec){ // leave Fx alone and correct Fz

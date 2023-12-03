@@ -20,14 +20,14 @@
 
 namespace bioslam {
 
-    class ConstrainedJointCenterPositionFactor : public gtsam::NoiseModelFactor4<gtsam::Pose3, gtsam::Pose3, gtsam::Point3, gtsam::Point3> {
+    class ConstrainedJointCenterPositionFactor : public gtsam::NoiseModelFactorN<gtsam::Pose3, gtsam::Pose3, gtsam::Point3, gtsam::Point3> {
 
     public:
         // shorthand for a smart pointer to a factor
         typedef boost::shared_ptr<ConstrainedJointCenterPositionFactor> shared_ptr;
 
         ConstrainedJointCenterPositionFactor(gtsam::Key x_A_to_N, gtsam::Key x_B_to_N, gtsam::Key L_A_to_ctr, gtsam::Key L_B_to_ctr, const gtsam::SharedNoiseModel &model) :
-                NoiseModelFactor4<gtsam::Pose3, gtsam::Pose3, gtsam::Point3, gtsam::Point3>(model, x_A_to_N, x_B_to_N, L_A_to_ctr, L_B_to_ctr) {};
+                NoiseModelFactorN<gtsam::Pose3, gtsam::Pose3, gtsam::Point3, gtsam::Point3>(model, x_A_to_N, x_B_to_N, L_A_to_ctr, L_B_to_ctr) {};
 
         virtual ~ConstrainedJointCenterPositionFactor() {}
 
@@ -56,7 +56,7 @@ namespace bioslam {
 
     // ------ norm error version of factor ----- //
 
-    class ConstrainedJointCenterNormPositionFactor : public gtsam::NoiseModelFactor4<gtsam::Pose3, gtsam::Pose3, gtsam::Point3, gtsam::Point3> {
+    class ConstrainedJointCenterNormPositionFactor : public gtsam::NoiseModelFactorN<gtsam::Pose3, gtsam::Pose3, gtsam::Point3, gtsam::Point3> {
 
     public:
         double m_expectedDist=0.0;
@@ -65,11 +65,11 @@ namespace bioslam {
 
         // default constructor with zero expectedDist
         ConstrainedJointCenterNormPositionFactor(gtsam::Key x_A_to_N, gtsam::Key x_B_to_N, gtsam::Key L_A_to_ctr, gtsam::Key L_B_to_ctr, const gtsam::SharedNoiseModel &model) :
-                NoiseModelFactor4<gtsam::Pose3, gtsam::Pose3, gtsam::Point3, gtsam::Point3>(model, x_A_to_N, x_B_to_N, L_A_to_ctr, L_B_to_ctr) {};
+                NoiseModelFactorN<gtsam::Pose3, gtsam::Pose3, gtsam::Point3, gtsam::Point3>(model, x_A_to_N, x_B_to_N, L_A_to_ctr, L_B_to_ctr) {};
 
         // constructor with non-zero expectedDist
         ConstrainedJointCenterNormPositionFactor(gtsam::Key x_A_to_N, gtsam::Key x_B_to_N, gtsam::Key L_A_to_ctr, gtsam::Key L_B_to_ctr, double expectedDist, const gtsam::SharedNoiseModel &model) :
-                NoiseModelFactor4<gtsam::Pose3, gtsam::Pose3, gtsam::Point3, gtsam::Point3>(model, x_A_to_N, x_B_to_N, L_A_to_ctr, L_B_to_ctr), m_expectedDist(expectedDist) {};
+                NoiseModelFactorN<gtsam::Pose3, gtsam::Pose3, gtsam::Point3, gtsam::Point3>(model, x_A_to_N, x_B_to_N, L_A_to_ctr, L_B_to_ctr), m_expectedDist(expectedDist) {};
 
         virtual ~ConstrainedJointCenterNormPositionFactor() {}
 

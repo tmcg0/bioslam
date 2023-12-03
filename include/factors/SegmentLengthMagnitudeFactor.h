@@ -13,14 +13,14 @@
 
 namespace bioslam {
 
-    class SegmentLengthMagnitudeFactor : public gtsam::NoiseModelFactor2<gtsam::Point3, gtsam::Point3> {
+    class SegmentLengthMagnitudeFactor : public gtsam::NoiseModelFactorN<gtsam::Point3, gtsam::Point3> {
 
     public:
         // member variables for gyro measurements
         double m_idealSegmentLength;
 
         SegmentLengthMagnitudeFactor(const gtsam::Key &v1, const gtsam::Key &v2, double segmentLengthMean, const gtsam::SharedNoiseModel &model) :
-                NoiseModelFactor2<gtsam::Point3, gtsam::Point3>(model, v1, v2),
+                NoiseModelFactorN<gtsam::Point3, gtsam::Point3>(model, v1, v2),
                 m_idealSegmentLength(std::move(segmentLengthMean)) {};
 
         gtsam::Vector evaluateError(const gtsam::Point3 &v1, const gtsam::Point3 &v2,
@@ -53,7 +53,7 @@ namespace bioslam {
     // -------------------------------- maximum segment length version of the factor -------------------------------- //
     // -------------------------------------------------------------------------------------------------------------- //
 
-    class SegmentLengthMaxMagnitudeFactor : public gtsam::NoiseModelFactor2<gtsam::Point3, gtsam::Point3> {
+    class SegmentLengthMaxMagnitudeFactor : public gtsam::NoiseModelFactorN<gtsam::Point3, gtsam::Point3> {
 
     public:
         const double m_maxSegmentLength;
@@ -61,7 +61,7 @@ namespace bioslam {
 
 
         SegmentLengthMaxMagnitudeFactor(const gtsam::Key &v1, const gtsam::Key &v2, double segmentLengthMax, const gtsam::SharedNoiseModel &model) :
-                NoiseModelFactor2<gtsam::Point3, gtsam::Point3>(model, v1, v2),
+                NoiseModelFactorN<gtsam::Point3, gtsam::Point3>(model, v1, v2),
                 m_maxSegmentLength(segmentLengthMax) {};
 
         gtsam::Vector evaluateError(const gtsam::Point3 &v1, const gtsam::Point3 &v2,
@@ -90,14 +90,14 @@ namespace bioslam {
     // -------------------------------- minimum segment length version of the factor -------------------------------- //
     // -------------------------------------------------------------------------------------------------------------- //
 
-    class SegmentLengthMinMagnitudeFactor : public gtsam::NoiseModelFactor2<gtsam::Point3, gtsam::Point3> {
+    class SegmentLengthMinMagnitudeFactor : public gtsam::NoiseModelFactorN<gtsam::Point3, gtsam::Point3> {
 
     public:
         const double m_minSegmentLength;
         const double a_ = 4.000000000000001; // the order of the polynomial error function
 
         SegmentLengthMinMagnitudeFactor(const gtsam::Key &v1, const gtsam::Key &v2, double segmentLengthMin, const gtsam::SharedNoiseModel &model) :
-                NoiseModelFactor2<gtsam::Point3, gtsam::Point3>(model, v1, v2),
+                NoiseModelFactorN<gtsam::Point3, gtsam::Point3>(model, v1, v2),
                 m_minSegmentLength(segmentLengthMin) {};
 
         gtsam::Vector evaluateError(const gtsam::Point3 &v1, const gtsam::Point3 &v2,

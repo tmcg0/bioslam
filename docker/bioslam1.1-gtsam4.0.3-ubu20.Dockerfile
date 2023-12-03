@@ -25,6 +25,10 @@ LABEL maintainer="Tim McGrath <t.mike.mcgrath@gmail.com>"
 ARG N_JOBS=4
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV eigen_version=3.3.9
+ENV gtsam_version=4.0.3
+ENV highfive_version=v2.8.0
+ENV bioslam_version=v1.1
 
 # install package dependencies
 RUN apt-get update && \
@@ -40,23 +44,27 @@ RUN apt-get update && \
 
 # install Eigen
 WORKDIR /usr/src/
-RUN git clone --single-branch --branch 3.3.9 https://gitlab.com/libeigen/eigen eigen3
+RUN git clone --single-branch --branch ${eigen_version} https://gitlab.com/libeigen/eigen eigen3
 WORKDIR /usr/src/eigen3/build/
 RUN cmake ..
 RUN make install -j${N_JOBS}
 
 # Install GTSAM
 WORKDIR /usr/src/
-RUN git clone --depth 1 --branch 4.0.3 https://github.com/borglab/gtsam.git
+RUN git clone --depth 1 --branch ${gtsam_version} https://github.com/borglab/gtsam.git
 WORKDIR /usr/src/gtsam/build
 RUN cmake \
     -DCMAKE_BUILD_TYPE=Release \
+    -DGTSAM_BUILD_PYTHON=OFF \
     -DGTSAM_WITH_EIGEN_MKL=OFF \
     -DGTSAM_BUILD_EXAMPLES_ALWAYS=OFF \
     -DGTSAM_BUILD_TIMING_ALWAYS=OFF \
     -DGTSAM_BUILD_TESTS=OFF \
     -DGTSAM_BUILD_UNSTABLE=OFF \
     -DGTSAM_UNSTABLE_BUILD_PYTHON=OFF \
+    -DGTSAM_BUILD_WITH_MARCH_NATIVE=ON \
+    -DGTSAM_WITH_TBB=OFF \
+    -DGTSAM_INSTALL_CPPUNITLITE=OFF \
     ..
 RUN make install -j${N_JOBS} && make clean
 
@@ -64,23 +72,16 @@ RUN make install -j${N_JOBS} && make clean
 # add /usr/local/lib to LD_LIBRARY_PATH for dynamic linking (in bash only!)
 RUN echo "export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:/usr/local/lib" >> /root/.bashrc
 
-# install HighFive v2.8.0
+# install HighFive
 WORKDIR /usr/src/
-RUN git clone --depth 1 --branch v2.8.0 https://github.com/BlueBrain/HighFive
+RUN git clone --depth 1 --branch ${highfive_version} https://github.com/BlueBrain/HighFive
 WORKDIR /usr/src/HighFive/build/
-RUN cmake ..
-RUN make install -j${N_JOBS}
-
-# install imuDataUtils
-WORKDIR /usr/src/
-RUN git clone --depth 1 --branch v0.0-alpha https://github.com/tmcg0/imuDataUtils
-WORKDIR /usr/src/imuDataUtils/build/
 RUN cmake ..
 RUN make install -j${N_JOBS}
 
 # install bioslam
 WORKDIR /usr/src/
-RUN git clone --depth 1 --branch v1.1 https://github.com/tmcg0/bioslam
+RUN git clone --depth 1 --branch ${bioslam_version} https://github.com/tmcg0/bioslam
 WORKDIR /usr/src/bioslam/build/
 RUN cmake -DBIOSLAM_BUILD_MATLAB_WRAPPER=OFF ..
 RUN make install -j${N_JOBS}

@@ -103,8 +103,8 @@ int test_givenPriorsOn3Variables(uint numTests, double errorTol, const gtsam::Sh
         gtsam::Point3 est_v2=estimate.at<gtsam::Point3>(v2Key);
         double finalAngle=angleBwVectors(est_axis,est_v1,est_v2);
         std::cout<<"    test #"<<i<<": initial angle between: "<<initialAngle<<", final angle between: "<<finalAngle<<"  |  optimizer error "<<initialError<<" --> "<<finalError<<" ("<<nIterations<<" iterations, with "<<mygraph.size()<<" factors and "<<myVals.size()<<" values)"<<std::endl;
-        //std::cout<<"        initial: q1=["<<axis.rotation().quaternion().transpose()<<"], p1=["<<axis.translation().vector().transpose()<<"], v1=["<<v1.vector().transpose()<<"] | q2=["<<x2.rotation().quaternion().transpose()<<"], p2=["<<x2.translation().vector().transpose()<<"], v2=["<<v2.vector().transpose()<<"]"<<std::endl;
-        //std::cout<<"        optimized: q1=["<<est_axis.rotation().quaternion().transpose()<<"], p1=["<<est_axis.translation().vector().transpose()<<"], v1=["<<est_v1.vector().transpose()<<"] | q2=["<<est_x2.rotation().quaternion().transpose()<<"], p2=["<<est_x2.translation().vector().transpose()<<"], v2=["<<est_v2.vector().transpose()<<"]"<<std::endl;
+        //std::cout<<"        initial: q1=["<<axis.rotation().quaternion().transpose()<<"], p1=["<<axis.translation().transpose()<<"], v1=["<<v1.transpose()<<"] | q2=["<<x2.rotation().quaternion().transpose()<<"], p2=["<<x2.translation().transpose()<<"], v2=["<<v2.transpose()<<"]"<<std::endl;
+        //std::cout<<"        optimized: q1=["<<est_axis.rotation().quaternion().transpose()<<"], p1=["<<est_axis.translation().transpose()<<"], v1=["<<est_v1.transpose()<<"] | q2=["<<est_x2.rotation().quaternion().transpose()<<"], p2=["<<est_x2.translation().transpose()<<"], v2=["<<est_v2.transpose()<<"]"<<std::endl;
         // can find the residual in MATLAB with: (quatrotate(quatinv(q1),v1)+p1)-(quatrotate(quatinv(q2),v2)+p2)
         //     why do I have to use quatinv() here?
         if((minang-finalAngle)>errorTol){ //
@@ -118,8 +118,8 @@ int test_givenPriorsOn3Variables(uint numTests, double errorTol, const gtsam::Sh
 }
 
 double angleBwVectors(const gtsam::Unit3& axis, const gtsam::Point3& v1, const gtsam::Point3& v2){
-    double numerator=(axis.unitVector().transpose()*(v1.vector()-v2.vector()));
-    double denom=((v1.vector()-v2.vector()).norm());
+    double numerator=(axis.unitVector().transpose()*(v1-v2));
+    double denom=((v1-v2).norm());
     return acos( numerator / denom );
 }
 
@@ -164,14 +164,14 @@ int test_derivative_numerically(const bioslam::MinAngleBetweenAxisAndSegmentFact
     //    I think to call it it's numericalDerivativeXY where X=number of input variables and Y=which Jacobian you want to test
     //    templates are: <output type (typically gtsam::Vector), then the input argument types in order)
     gtsam::Matrix numericalH1=gtsam::numericalDerivative31<gtsam::Vector,gtsam::Unit3,gtsam::Point3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Unit3&, const gtsam::Point3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::MinAngleBetweenAxisAndSegmentFactor::evaluateError,fac,_1,_2,_3,boost::none,boost::none,boost::none)),axis,v1,v2,1e-5);
+            std::function<gtsam::Vector(const gtsam::Unit3&, const gtsam::Point3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::MinAngleBetweenAxisAndSegmentFactor::evaluateError,fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,boost::none,boost::none,boost::none)),axis,v1,v2,1e-5);
     gtsam::Matrix numericalH2=gtsam::numericalDerivative32<gtsam::Vector,gtsam::Unit3,gtsam::Point3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Unit3&, const gtsam::Point3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::MinAngleBetweenAxisAndSegmentFactor::evaluateError,fac,_1,_2,_3,boost::none,boost::none,boost::none)),axis,v1,v2,1e-5);
+            std::function<gtsam::Vector(const gtsam::Unit3&, const gtsam::Point3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::MinAngleBetweenAxisAndSegmentFactor::evaluateError,fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,boost::none,boost::none,boost::none)),axis,v1,v2,1e-5);
     gtsam::Matrix numericalH3=gtsam::numericalDerivative33<gtsam::Vector,gtsam::Unit3,gtsam::Point3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Unit3&, const gtsam::Point3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::MinAngleBetweenAxisAndSegmentFactor::evaluateError,fac,_1,_2,_3,boost::none,boost::none,boost::none)),axis,v1,v2,1e-5);
+            std::function<gtsam::Vector(const gtsam::Unit3&, const gtsam::Point3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::MinAngleBetweenAxisAndSegmentFactor::evaluateError,fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,boost::none,boost::none,boost::none)),axis,v1,v2,1e-5);
 
     // now test using gtsam::assert_equal()
     bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-5);

@@ -376,7 +376,7 @@ void lowerBodyPoseEstimator::setup(){
     m_sacrumImuToLHipCtrKey=gtsam::Symbol(m_sacrumImuToLHipCtrVarChar,0), m_lthighImuToHipCtrKey=gtsam::Symbol(m_lthighImuToHipCtrVarChar,0), m_lthighImuToKneeCtrKey=gtsam::Symbol(m_lthighImuToKneeCtrVarChar,0);
     m_lshankImuToKneeCtrKey=gtsam::Symbol(m_lshankImuToKneeCtrVarChar,0), m_lshankImuToAnkleCtrKey=gtsam::Symbol(m_lshankImuToAnkleCtrVarChar,0), m_lfootImuToAnkleCtrKey=gtsam::Symbol(m_lfootImuToAnkleCtrVarChar,0);
     // add knee axis initial values and optional priors
-    //std::cout<<"initialized knee axes as: RThigh=["<<priorAxisRThigh.point3().vector().transpose()<<"], RShank .... "<<std::endl;
+    //std::cout<<"initialized knee axes as: RThigh=["<<priorAxisRThigh.point3().transpose()<<"], RShank .... "<<std::endl;
     m_initialValues.insert(m_rkneeAxisThighKey, priorKneeAxisRThigh); m_initialValues.insert(m_rkneeAxisShankKey, priorKneeAxisRShank); m_initialValues.insert(m_lkneeAxisThighKey, priorKneeAxisLThigh); m_initialValues.insert(m_lkneeAxisShankKey, priorKneeAxisLShank);
     if(m_usePriorsOnKneeHingeAxes){
         m_graph.push_back(gtsam::PriorFactor<gtsam::Unit3>(m_rkneeAxisThighKey, priorKneeAxisRThigh, gtsam::noiseModel::Diagonal::Sigmas(rkneeHingeAxisThighPriorStd, true)));
@@ -721,12 +721,12 @@ bool lowerBodyPoseEstimator::postHocAxesCheck(bool verbose) {
     bool anyChangesMade=false; // if changes made, this goes to true. it will rerun this method just to make sure no changes are made the second time around.
     // --- right leg first ---
     // () are both axes pointing the same direction in the world frame?
-    gtsam::Vector3 rThighAxis=m_rkneeAxisThigh.point3().vector(), rShankAxis=m_rkneeAxisShank.point3().vector();
+    gtsam::Vector3 rThighAxis=m_rkneeAxisThigh.point3(), rShankAxis=m_rkneeAxisShank.point3();
     if(verbose) {
         std::cout << "---postHocAxesCheck()---" << std::endl;
         std::cout << "    ***checking right leg first***" << std::endl;
-        std::cout<<"    rknee axis, thigh frame: "<<m_rkneeAxisThigh.point3().vector().transpose()<<std::endl;
-        std::cout<<"    rknee axis, shank frame: "<<m_rkneeAxisShank.point3().vector().transpose()<<std::endl;
+        std::cout<<"    rknee axis, thigh frame: "<<m_rkneeAxisThigh.point3().transpose()<<std::endl;
+        std::cout<<"    rknee axis, shank frame: "<<m_rkneeAxisShank.point3().transpose()<<std::endl;
     }
     // get axes in world frame
     Eigen::MatrixXd rThighAxisNav(m_rthighImuOrientation.size(),3), rShankAxisNav(m_rshankImuOrientation.size(),3);
@@ -740,7 +740,7 @@ bool lowerBodyPoseEstimator::postHocAxesCheck(bool verbose) {
         if(verbose){std::cout<<"mean of angle b/w: "<<std::accumulate(angBwRightAxesNavDeg.begin(),angBwRightAxesNavDeg.end(),0.0)/angBwRightAxesNavDeg.size()<<" deg < 90 deg, therefore I think they're pointing in the same direction"<<std::endl;}
     }else{
         m_rkneeAxisShank=gtsam::Unit3(-1.0*m_rkneeAxisShank.point3()); anyChangesMade=true;
-        if(verbose){std::cout<<"mean of angle b/w: "<<std::accumulate(angBwRightAxesNavDeg.begin(),angBwRightAxesNavDeg.end(),0.0)/angBwRightAxesNavDeg.size()<<" deg > 90 deg, therefore I think they're pointing in opposite directions so I'm flipping the shank axis, which is now: "<<m_rkneeAxisShank.point3().vector().transpose()<<std::endl;}
+        if(verbose){std::cout<<"mean of angle b/w: "<<std::accumulate(angBwRightAxesNavDeg.begin(),angBwRightAxesNavDeg.end(),0.0)/angBwRightAxesNavDeg.size()<<" deg > 90 deg, therefore I think they're pointing in opposite directions so I'm flipping the shank axis, which is now: "<<m_rkneeAxisShank.point3().transpose()<<std::endl;}
     }
     // () now from the flex/ex knee angle determine if they are both pointed to the subject's right
     // determine this from the 10th and 90th percentile quantiles for outlier rejection
@@ -754,11 +754,11 @@ bool lowerBodyPoseEstimator::postHocAxesCheck(bool verbose) {
     }
     // --- now do the same for the left leg ---
     // () are both axes pointing the same direction in the world frame?
-    gtsam::Vector3 lThighAxis=m_lkneeAxisThigh.point3().vector(), lShankAxis=m_lkneeAxisShank.point3().vector();
+    gtsam::Vector3 lThighAxis=m_lkneeAxisThigh.point3(), lShankAxis=m_lkneeAxisShank.point3();
     if(verbose) {
         std::cout << "    *** now checking left leg" << std::endl;
-        std::cout<< "    lknee axis, thigh frame: "<<m_lkneeAxisThigh.point3().vector().transpose()<<std::endl;
-        std::cout<< "    lknee axis, shank frame: "<<m_lkneeAxisShank.point3().vector().transpose()<<std::endl;
+        std::cout<< "    lknee axis, thigh frame: "<<m_lkneeAxisThigh.point3().transpose()<<std::endl;
+        std::cout<< "    lknee axis, shank frame: "<<m_lkneeAxisShank.point3().transpose()<<std::endl;
     }
     // get axes in world frame
     Eigen::MatrixXd lThighAxisNav(m_lthighImuOrientation.size(),3), lShankAxisNav(m_lshankImuOrientation.size(),3);
@@ -772,7 +772,7 @@ bool lowerBodyPoseEstimator::postHocAxesCheck(bool verbose) {
         if(verbose){std::cout<<"mean of angle b/w: "<<std::accumulate(angBwLeftAxesNavDeg.begin(),angBwLeftAxesNavDeg.end(),0.0)/angBwLeftAxesNavDeg.size()<<"deg < 90 deg, therefore I think they're pointing in the same direction"<<std::endl;}
     }else{
         m_lkneeAxisShank=gtsam::Unit3(-1.0*m_lkneeAxisShank.point3()); anyChangesMade=true;
-        if(verbose){std::cout<<"mean of angle b/w: "<<std::accumulate(angBwLeftAxesNavDeg.begin(),angBwLeftAxesNavDeg.end(),0.0)/angBwLeftAxesNavDeg.size()<<"deg > 90 deg, therefore I think they're pointing in opposite directions so I'm flipping the shank axis, which is now: "<<m_lkneeAxisShank.point3().vector().transpose()<<std::endl;}
+        if(verbose){std::cout<<"mean of angle b/w: "<<std::accumulate(angBwLeftAxesNavDeg.begin(),angBwLeftAxesNavDeg.end(),0.0)/angBwLeftAxesNavDeg.size()<<"deg > 90 deg, therefore I think they're pointing in opposite directions so I'm flipping the shank axis, which is now: "<<m_lkneeAxisShank.point3().transpose()<<std::endl;}
     }
     // () now from the flex/ex knee angle determine if they are both pointed to the subject's right
     std::vector<double> lkneeFlexExAngRad=getLKneeFlexExAngle();
@@ -801,13 +801,13 @@ void lowerBodyPoseEstimator::setAllInternalPrecessionAngles() {
     // calculates and sets all internal procession angles
     // set internal procession angles
     // todo: for sacrum we're assuming that [0 0 -1] is the up vector. do something better for this.
-    m_sacrumImuInternalPrecessionAng=mathutils::imuInternalPrecessionAboutStaticVector(m_sacrumImuOrientation, Eigen::Vector3d(-1.0, 0.0, 0.0), (m_sacrumImuToRHipCtr.vector() - m_sacrumImuToLHipCtr.vector()).normalized());
-    m_rthighImuInternalPrecessionAng=mathutils::imuInternalPrecessionAboutStaticVector(m_rthighImuOrientation, m_rthighImuToHipCtr, m_rkneeAxisThigh.point3().vector());
-    m_rshankImuInternalPrecessionAng=mathutils::imuInternalPrecessionAboutStaticVector(m_rshankImuOrientation, m_rshankImuToKneeCtr, m_rkneeAxisShank.point3().vector());
-    m_rfootImuInternalPrecessionAng=mathutils::imuInternalPrecessionAboutStaticVector(m_rfootImuOrientation, m_rfootImuToAnkleCtr, m_rankleAxisFoot.point3().vector());
-    m_lthighImuInternalPrecessionAng=mathutils::imuInternalPrecessionAboutStaticVector(m_lthighImuOrientation, m_lthighImuToHipCtr, m_lkneeAxisThigh.point3().vector());
-    m_lshankImuInternalPrecessionAng=mathutils::imuInternalPrecessionAboutStaticVector(m_lshankImuOrientation, m_lshankImuToKneeCtr, m_lkneeAxisShank.point3().vector());
-    m_lfootImuInternalPrecessionAng=mathutils::imuInternalPrecessionAboutStaticVector(m_lfootImuOrientation, m_lfootImuToAnkleCtr, m_lankleAxisFoot.point3().vector());
+    m_sacrumImuInternalPrecessionAng=mathutils::imuInternalPrecessionAboutStaticVector(m_sacrumImuOrientation, Eigen::Vector3d(-1.0, 0.0, 0.0), (m_sacrumImuToRHipCtr - m_sacrumImuToLHipCtr).normalized());
+    m_rthighImuInternalPrecessionAng=mathutils::imuInternalPrecessionAboutStaticVector(m_rthighImuOrientation, m_rthighImuToHipCtr, m_rkneeAxisThigh.point3());
+    m_rshankImuInternalPrecessionAng=mathutils::imuInternalPrecessionAboutStaticVector(m_rshankImuOrientation, m_rshankImuToKneeCtr, m_rkneeAxisShank.point3());
+    m_rfootImuInternalPrecessionAng=mathutils::imuInternalPrecessionAboutStaticVector(m_rfootImuOrientation, m_rfootImuToAnkleCtr, m_rankleAxisFoot.point3());
+    m_lthighImuInternalPrecessionAng=mathutils::imuInternalPrecessionAboutStaticVector(m_lthighImuOrientation, m_lthighImuToHipCtr, m_lkneeAxisThigh.point3());
+    m_lshankImuInternalPrecessionAng=mathutils::imuInternalPrecessionAboutStaticVector(m_lshankImuOrientation, m_lshankImuToKneeCtr, m_lkneeAxisShank.point3());
+    m_lfootImuInternalPrecessionAng=mathutils::imuInternalPrecessionAboutStaticVector(m_lfootImuOrientation, m_lfootImuToAnkleCtr, m_lankleAxisFoot.point3());
 }
 
 void lowerBodyPoseEstimator::setDerivedJointAnglesFromEstimatedStates(bool verbose){
@@ -946,33 +946,33 @@ void lowerBodyPoseEstimator::saveResultsToH5File(const std::string& filename) co
     H5Easy::dump(file,"/Estimated/gyrobias_LFootImu",gyrobias_LFootImu,H5Easy::DumpMode::Create);
     H5Easy::dump(file,"/Estimated/accelbias_LFootImu",accelbias_LFootImu,H5Easy::DumpMode::Create);
     // knee axes
-    H5Easy::dump(file,"/Estimated/RKneeAxis_RThigh",(Eigen::Vector3d) m_rkneeAxisThigh.point3().vector(),H5Easy::DumpMode::Create);
-    H5Easy::dump(file,"/Estimated/RKneeAxis_RShank",(Eigen::Vector3d) m_rkneeAxisShank.point3().vector(),H5Easy::DumpMode::Create);
-    H5Easy::dump(file,"/Estimated/LKneeAxis_LThigh",(Eigen::Vector3d) m_lkneeAxisThigh.point3().vector(),H5Easy::DumpMode::Create);
-    H5Easy::dump(file,"/Estimated/LKneeAxis_LShank",(Eigen::Vector3d) m_lkneeAxisShank.point3().vector(),H5Easy::DumpMode::Create);
+    H5Easy::dump(file,"/Estimated/RKneeAxis_RThigh",(Eigen::Vector3d) m_rkneeAxisThigh.point3(),H5Easy::DumpMode::Create);
+    H5Easy::dump(file,"/Estimated/RKneeAxis_RShank",(Eigen::Vector3d) m_rkneeAxisShank.point3(),H5Easy::DumpMode::Create);
+    H5Easy::dump(file,"/Estimated/LKneeAxis_LThigh",(Eigen::Vector3d) m_lkneeAxisThigh.point3(),H5Easy::DumpMode::Create);
+    H5Easy::dump(file,"/Estimated/LKneeAxis_LShank",(Eigen::Vector3d) m_lkneeAxisShank.point3(),H5Easy::DumpMode::Create);
     // static vectors to joint rotation centers
-    H5Easy::dump(file,"/Estimated/SacrumImuToRHipCtr",(Eigen::Vector3d) m_sacrumImuToRHipCtr.vector(),H5Easy::DumpMode::Create);
-    H5Easy::dump(file,"/Estimated/RThighImuToRHipCtr",(Eigen::Vector3d) m_rthighImuToHipCtr.vector(),H5Easy::DumpMode::Create);
-    H5Easy::dump(file,"/Estimated/RThighImuToRKneeCtr",(Eigen::Vector3d) m_rthighImuToKneeCtr.vector(),H5Easy::DumpMode::Create);
-    H5Easy::dump(file,"/Estimated/RShankImuToRKneeCtr",(Eigen::Vector3d) m_rshankImuToKneeCtr.vector(),H5Easy::DumpMode::Create);
-    H5Easy::dump(file,"/Estimated/RShankImuToRAnkleCtr",(Eigen::Vector3d) m_rshankImuToAnkleCtr.vector(),H5Easy::DumpMode::Create);
-    H5Easy::dump(file,"/Estimated/RFootImuToRAnkleCtr",(Eigen::Vector3d) m_rfootImuToAnkleCtr.vector(),H5Easy::DumpMode::Create);
-    H5Easy::dump(file,"/Estimated/SacrumImuToLHipCtr",(Eigen::Vector3d) m_sacrumImuToLHipCtr.vector(),H5Easy::DumpMode::Create);
-    H5Easy::dump(file,"/Estimated/LThighImuToLHipCtr",(Eigen::Vector3d) m_lthighImuToHipCtr.vector(),H5Easy::DumpMode::Create);
-    H5Easy::dump(file,"/Estimated/LThighImuToLKneeCtr",(Eigen::Vector3d) m_lthighImuToKneeCtr.vector(),H5Easy::DumpMode::Create);
-    H5Easy::dump(file,"/Estimated/LShankImuToLKneeCtr",(Eigen::Vector3d) m_lshankImuToKneeCtr.vector(),H5Easy::DumpMode::Create);
-    H5Easy::dump(file,"/Estimated/LShankImuToLAnkleCtr",(Eigen::Vector3d) m_lshankImuToAnkleCtr.vector(),H5Easy::DumpMode::Create);
-    H5Easy::dump(file,"/Estimated/LFootImuToLAnkleCtr",(Eigen::Vector3d) m_lfootImuToAnkleCtr.vector(),H5Easy::DumpMode::Create);
+    H5Easy::dump(file,"/Estimated/SacrumImuToRHipCtr",(Eigen::Vector3d) m_sacrumImuToRHipCtr,H5Easy::DumpMode::Create);
+    H5Easy::dump(file,"/Estimated/RThighImuToRHipCtr",(Eigen::Vector3d) m_rthighImuToHipCtr,H5Easy::DumpMode::Create);
+    H5Easy::dump(file,"/Estimated/RThighImuToRKneeCtr",(Eigen::Vector3d) m_rthighImuToKneeCtr,H5Easy::DumpMode::Create);
+    H5Easy::dump(file,"/Estimated/RShankImuToRKneeCtr",(Eigen::Vector3d) m_rshankImuToKneeCtr,H5Easy::DumpMode::Create);
+    H5Easy::dump(file,"/Estimated/RShankImuToRAnkleCtr",(Eigen::Vector3d) m_rshankImuToAnkleCtr,H5Easy::DumpMode::Create);
+    H5Easy::dump(file,"/Estimated/RFootImuToRAnkleCtr",(Eigen::Vector3d) m_rfootImuToAnkleCtr,H5Easy::DumpMode::Create);
+    H5Easy::dump(file,"/Estimated/SacrumImuToLHipCtr",(Eigen::Vector3d) m_sacrumImuToLHipCtr,H5Easy::DumpMode::Create);
+    H5Easy::dump(file,"/Estimated/LThighImuToLHipCtr",(Eigen::Vector3d) m_lthighImuToHipCtr,H5Easy::DumpMode::Create);
+    H5Easy::dump(file,"/Estimated/LThighImuToLKneeCtr",(Eigen::Vector3d) m_lthighImuToKneeCtr,H5Easy::DumpMode::Create);
+    H5Easy::dump(file,"/Estimated/LShankImuToLKneeCtr",(Eigen::Vector3d) m_lshankImuToKneeCtr,H5Easy::DumpMode::Create);
+    H5Easy::dump(file,"/Estimated/LShankImuToLAnkleCtr",(Eigen::Vector3d) m_lshankImuToAnkleCtr,H5Easy::DumpMode::Create);
+    H5Easy::dump(file,"/Estimated/LFootImuToLAnkleCtr",(Eigen::Vector3d) m_lfootImuToAnkleCtr,H5Easy::DumpMode::Create);
     if(m_assumeHipHinge){ // add hip hinge vectors
-        H5Easy::dump(file,"/Estimated/HipAxis_Sacrum",(Eigen::Vector3d) m_hipAxisSacrum.point3().vector(),H5Easy::DumpMode::Create);
-        H5Easy::dump(file,"/Estimated/RHipAxis_RThigh",(Eigen::Vector3d) m_rhipAxisThigh.point3().vector(),H5Easy::DumpMode::Create);
-        H5Easy::dump(file,"/Estimated/LHipAxis_LThigh",(Eigen::Vector3d) m_lhipAxisThigh.point3().vector(),H5Easy::DumpMode::Create);
+        H5Easy::dump(file,"/Estimated/HipAxis_Sacrum",(Eigen::Vector3d) m_hipAxisSacrum.point3(),H5Easy::DumpMode::Create);
+        H5Easy::dump(file,"/Estimated/RHipAxis_RThigh",(Eigen::Vector3d) m_rhipAxisThigh.point3(),H5Easy::DumpMode::Create);
+        H5Easy::dump(file,"/Estimated/LHipAxis_LThigh",(Eigen::Vector3d) m_lhipAxisThigh.point3(),H5Easy::DumpMode::Create);
     }
     if(m_assumeAnkleHinge){ // add ankle hinge vectors
-        H5Easy::dump(file,"/Estimated/RAnkleAxis_Foot",(Eigen::Vector3d) m_rankleAxisFoot.point3().vector(),H5Easy::DumpMode::Create);
-        H5Easy::dump(file,"/Estimated/LAnkleAxis_Foot",(Eigen::Vector3d) m_lankleAxisFoot.point3().vector(),H5Easy::DumpMode::Create);
-        H5Easy::dump(file,"/Estimated/RAnkleAxis_RThigh",(Eigen::Vector3d) m_rankleAxisShank.point3().vector(),H5Easy::DumpMode::Create);
-        H5Easy::dump(file,"/Estimated/LAnkleAxis_LThigh",(Eigen::Vector3d) m_lankleAxisShank.point3().vector(),H5Easy::DumpMode::Create);
+        H5Easy::dump(file,"/Estimated/RAnkleAxis_Foot",(Eigen::Vector3d) m_rankleAxisFoot.point3(),H5Easy::DumpMode::Create);
+        H5Easy::dump(file,"/Estimated/LAnkleAxis_Foot",(Eigen::Vector3d) m_lankleAxisFoot.point3(),H5Easy::DumpMode::Create);
+        H5Easy::dump(file,"/Estimated/RAnkleAxis_RThigh",(Eigen::Vector3d) m_rankleAxisShank.point3(),H5Easy::DumpMode::Create);
+        H5Easy::dump(file,"/Estimated/LAnkleAxis_LThigh",(Eigen::Vector3d) m_lankleAxisShank.point3(),H5Easy::DumpMode::Create);
     }
     // derived quantities: segment coordinate system, joint angles, etc.
     file.createGroup("Derived");
@@ -1075,43 +1075,43 @@ void lowerBodyPoseEstimator::saveResultsToH5File(const std::string& filename) co
 
 void lowerBodyPoseEstimator::printStaticStatesSummary(){
     // prints to std::cout the general static states. similar to the MATLAB function.
-    std::cout<<"rknee axis, thigh frame: ["<<m_rkneeAxisThigh.point3().vector().transpose()<<"]"<<std::endl;
-    std::cout<<"rknee axis, shank frame: ["<<m_rkneeAxisShank.point3().vector().transpose()<<"]"<<std::endl;
+    std::cout<<"rknee axis, thigh frame: ["<<m_rkneeAxisThigh.point3().transpose()<<"]"<<std::endl;
+    std::cout<<"rknee axis, shank frame: ["<<m_rkneeAxisShank.point3().transpose()<<"]"<<std::endl;
     std::cout << "    mean angle b/w rknee axes in nav frame: " << mathutils::meanAngBwAxesNavFrame(m_rthighImuOrientation, m_rkneeAxisThigh, m_rshankImuOrientation, m_rkneeAxisShank) * 180.0 / M_PI << " deg" << std::endl;
-    std::cout<<"lknee axis, thigh frame: ["<<m_lkneeAxisThigh.point3().vector().transpose()<<"]"<<std::endl;
-    std::cout<<"lknee axis, shank frame: ["<<m_lkneeAxisShank.point3().vector().transpose()<<"]"<<std::endl;
+    std::cout<<"lknee axis, thigh frame: ["<<m_lkneeAxisThigh.point3().transpose()<<"]"<<std::endl;
+    std::cout<<"lknee axis, shank frame: ["<<m_lkneeAxisShank.point3().transpose()<<"]"<<std::endl;
     std::cout << "    mean angle b/w lknee axes in nav frame: " << mathutils::meanAngBwAxesNavFrame(m_lthighImuOrientation, m_lkneeAxisThigh, m_lshankImuOrientation, m_lkneeAxisShank) * 180.0 / M_PI << " deg" << std::endl;;
     if(m_assumeHipHinge){ // also print hip hinge axes
-        std::cout<<"both hip axis, sacrum frame: ["<<m_hipAxisSacrum.point3().vector().transpose()<<"]"<<std::endl;
-        std::cout<<"rhip axis, thigh frame: ["<<m_rhipAxisThigh.point3().vector().transpose()<<"]"<<std::endl;
+        std::cout<<"both hip axis, sacrum frame: ["<<m_hipAxisSacrum.point3().transpose()<<"]"<<std::endl;
+        std::cout<<"rhip axis, thigh frame: ["<<m_rhipAxisThigh.point3().transpose()<<"]"<<std::endl;
         std::cout << "    (angle b/w rhip and rknee axes in thigh frame: " << mathutils::unsignedAngle(m_rkneeAxisThigh.unitVector(), m_rhipAxisThigh.unitVector()) * 180.0 / M_PI << " deg)" << std::endl;
         std::cout << "    (mean angle b/w rhip axes in nav frame: " << mathutils::meanAngBwAxesNavFrame(m_sacrumImuOrientation, m_hipAxisSacrum, m_rthighImuOrientation, m_rhipAxisThigh) * 180.0 / M_PI << " deg)" << std::endl;
-        std::cout<<"lhip axis, thigh frame: ["<<m_lhipAxisThigh.point3().vector().transpose()<<"]"<<std::endl;
+        std::cout<<"lhip axis, thigh frame: ["<<m_lhipAxisThigh.point3().transpose()<<"]"<<std::endl;
         std::cout << "    (angle b/w lhip and lknee axes in thigh frame: " << mathutils::unsignedAngle(m_lkneeAxisThigh.unitVector(), m_lhipAxisThigh.unitVector()) * 180.0 / M_PI << " deg)" << std::endl;
         std::cout << "    (mean angle b/w lhip axes in nav frame: " << mathutils::meanAngBwAxesNavFrame(m_sacrumImuOrientation, m_hipAxisSacrum, m_lthighImuOrientation, m_lhipAxisThigh) * 180.0 / M_PI << " deg)" << std::endl;
     }
     if(m_assumeAnkleHinge){ // also print ankle hinge axes
-        std::cout<<"rankle axis, foot frame: ["<<m_rankleAxisFoot.point3().vector().transpose()<<"]"<<std::endl;
-        std::cout<<"lankle axis, foot frame: ["<<m_lankleAxisFoot.point3().vector().transpose()<<"]"<<std::endl;
-        std::cout<<"rankle axis, shank frame: ["<<m_rankleAxisShank.point3().vector().transpose()<<"]"<<std::endl;
+        std::cout<<"rankle axis, foot frame: ["<<m_rankleAxisFoot.point3().transpose()<<"]"<<std::endl;
+        std::cout<<"lankle axis, foot frame: ["<<m_lankleAxisFoot.point3().transpose()<<"]"<<std::endl;
+        std::cout<<"rankle axis, shank frame: ["<<m_rankleAxisShank.point3().transpose()<<"]"<<std::endl;
         std::cout << "    (angle b/w rankle and rknee axes in shank frame: " << mathutils::unsignedAngle(m_rkneeAxisShank.unitVector(), m_rankleAxisShank.unitVector()) * 180.0 / M_PI << " deg)" << std::endl;
         std::cout << "    (mean angle b/w rankle axes in nav frame: " << mathutils::meanAngBwAxesNavFrame(m_rshankImuOrientation, m_rankleAxisShank, m_rfootImuOrientation, m_rankleAxisFoot) * 180.0 / M_PI << " deg)" << std::endl;
-        std::cout<<"lankle axis, shank frame: ["<<m_lankleAxisShank.point3().vector().transpose()<<"]"<<std::endl;
+        std::cout<<"lankle axis, shank frame: ["<<m_lankleAxisShank.point3().transpose()<<"]"<<std::endl;
         std::cout << "    (angle b/w lankle and lknee axes in shank frame: " << mathutils::unsignedAngle(m_lkneeAxisShank.unitVector(), m_lankleAxisShank.unitVector()) * 180.0 / M_PI << " deg)" << std::endl;
         std::cout << "    (mean angle b/w lankle axes in nav frame: " << mathutils::meanAngBwAxesNavFrame(m_lshankImuOrientation, m_lankleAxisShank, m_lfootImuOrientation, m_lankleAxisFoot) * 180.0 / M_PI << " deg)" << std::endl;
     }
-    std::cout<<"sacrum imu to rhip ctr: ["<<m_sacrumImuToRHipCtr.vector().transpose()<<"] (norm="<<m_sacrumImuToRHipCtr.vector().norm()<<")"<<std::endl;
-    std::cout<<"sacrum imu to lhip ctr: ["<<m_sacrumImuToLHipCtr.vector().transpose()<<"] (norm="<<m_sacrumImuToLHipCtr.vector().norm()<<")"<<std::endl;
-    std::cout<<"thigh imu to rhip ctr: ["<<m_rthighImuToHipCtr.vector().transpose()<<"] (norm="<<m_rthighImuToHipCtr.vector().norm()<<")"<<std::endl;
-    std::cout<<"thigh imu to rknee ctr: ["<<m_rthighImuToKneeCtr.vector().transpose()<<"] (norm="<<m_rthighImuToKneeCtr.vector().norm()<<")"<<std::endl;
-    std::cout<<"shank imu to rknee ctr: ["<<m_rshankImuToKneeCtr.vector().transpose()<<"] (norm="<<m_rshankImuToKneeCtr.vector().norm()<<")"<<std::endl;
-    std::cout<<"shank imu to rankle ctr: ["<<m_rshankImuToAnkleCtr.vector().transpose()<<"] (norm="<<m_rshankImuToAnkleCtr.vector().norm()<<")"<<std::endl;
-    std::cout<<"foot imu to rankle ctr: ["<<m_rfootImuToAnkleCtr.vector().transpose()<<"] (norm="<<m_rfootImuToAnkleCtr.vector().norm()<<")"<<std::endl;
-    std::cout<<"thigh imu to lhip ctr: ["<<m_lthighImuToHipCtr.vector().transpose()<<"] (norm="<<m_lthighImuToHipCtr.vector().norm()<<")"<<std::endl;
-    std::cout<<"thigh imu to lknee ctr: ["<<m_lthighImuToKneeCtr.vector().transpose()<<"] (norm="<<m_lthighImuToKneeCtr.vector().norm()<<")"<<std::endl;
-    std::cout<<"shank imu to lknee ctr: ["<<m_lshankImuToKneeCtr.vector().transpose()<<"] (norm="<<m_lshankImuToKneeCtr.vector().norm()<<")"<<std::endl;
-    std::cout<<"shank imu to lankle ctr: ["<<m_lshankImuToAnkleCtr.vector().transpose()<<"] (norm="<<m_lshankImuToAnkleCtr.vector().norm()<<")"<<std::endl;
-    std::cout<<"foot imu to lankle ctr: ["<<m_lfootImuToAnkleCtr.vector().transpose()<<"] (norm="<<m_lfootImuToAnkleCtr.vector().norm()<<")"<<std::endl;
+    std::cout<<"sacrum imu to rhip ctr: ["<<m_sacrumImuToRHipCtr.transpose()<<"] (norm="<<m_sacrumImuToRHipCtr.norm()<<")"<<std::endl;
+    std::cout<<"sacrum imu to lhip ctr: ["<<m_sacrumImuToLHipCtr.transpose()<<"] (norm="<<m_sacrumImuToLHipCtr.norm()<<")"<<std::endl;
+    std::cout<<"thigh imu to rhip ctr: ["<<m_rthighImuToHipCtr.transpose()<<"] (norm="<<m_rthighImuToHipCtr.norm()<<")"<<std::endl;
+    std::cout<<"thigh imu to rknee ctr: ["<<m_rthighImuToKneeCtr.transpose()<<"] (norm="<<m_rthighImuToKneeCtr.norm()<<")"<<std::endl;
+    std::cout<<"shank imu to rknee ctr: ["<<m_rshankImuToKneeCtr.transpose()<<"] (norm="<<m_rshankImuToKneeCtr.norm()<<")"<<std::endl;
+    std::cout<<"shank imu to rankle ctr: ["<<m_rshankImuToAnkleCtr.transpose()<<"] (norm="<<m_rshankImuToAnkleCtr.norm()<<")"<<std::endl;
+    std::cout<<"foot imu to rankle ctr: ["<<m_rfootImuToAnkleCtr.transpose()<<"] (norm="<<m_rfootImuToAnkleCtr.norm()<<")"<<std::endl;
+    std::cout<<"thigh imu to lhip ctr: ["<<m_lthighImuToHipCtr.transpose()<<"] (norm="<<m_lthighImuToHipCtr.norm()<<")"<<std::endl;
+    std::cout<<"thigh imu to lknee ctr: ["<<m_lthighImuToKneeCtr.transpose()<<"] (norm="<<m_lthighImuToKneeCtr.norm()<<")"<<std::endl;
+    std::cout<<"shank imu to lknee ctr: ["<<m_lshankImuToKneeCtr.transpose()<<"] (norm="<<m_lshankImuToKneeCtr.norm()<<")"<<std::endl;
+    std::cout<<"shank imu to lankle ctr: ["<<m_lshankImuToAnkleCtr.transpose()<<"] (norm="<<m_lshankImuToAnkleCtr.norm()<<")"<<std::endl;
+    std::cout<<"foot imu to lankle ctr: ["<<m_lfootImuToAnkleCtr.transpose()<<"] (norm="<<m_lfootImuToAnkleCtr.norm()<<")"<<std::endl;
     // print the angle between knee axis and the segment vector
     std::cout<<"angle between knee axis and the femur/tibia segment proximal vector"<<std::endl;
     std::cout << "    right thigh imu: " << 180.0 / M_PI * mathutils::unsignedAngle(m_rkneeAxisThigh.unitVector(), (m_rthighImuToHipCtr - m_rthighImuToKneeCtr)) << " deg" << std::endl;
@@ -1120,11 +1120,11 @@ void lowerBodyPoseEstimator::printStaticStatesSummary(){
     std::cout << "    left shank imu: " << 180.0 / M_PI * mathutils::unsignedAngle(m_lkneeAxisShank.unitVector(), (m_lshankImuToKneeCtr - m_lshankImuToAnkleCtr)) << " deg" << std::endl;
 
     // geometry of each IMU's triangle to adjacent joint centers
-    double estRThighLength=(m_rthighImuToHipCtr.vector()-m_rthighImuToKneeCtr.vector()).norm();
-    double estRShankLength=(m_rshankImuToKneeCtr.vector()-m_rshankImuToAnkleCtr.vector()).norm();
-    double estLThighLength=(m_lthighImuToHipCtr.vector()-m_lthighImuToKneeCtr.vector()).norm();
-    double estLShankLength=(m_lshankImuToKneeCtr.vector()-m_lshankImuToAnkleCtr.vector()).norm();
-    double estPelvicWidth=(m_sacrumImuToRHipCtr.vector()-m_sacrumImuToLHipCtr.vector()).norm();
+    double estRThighLength=(m_rthighImuToHipCtr-m_rthighImuToKneeCtr).norm();
+    double estRShankLength=(m_rshankImuToKneeCtr-m_rshankImuToAnkleCtr).norm();
+    double estLThighLength=(m_lthighImuToHipCtr-m_lthighImuToKneeCtr).norm();
+    double estLShankLength=(m_lshankImuToKneeCtr-m_lshankImuToAnkleCtr).norm();
+    double estPelvicWidth=(m_sacrumImuToRHipCtr-m_sacrumImuToLHipCtr).norm();
     std::vector<double> hipSep=mathutils::ptSeparationNorm(m_rthighImuPose, m_rthighImuToHipCtr, m_lthighImuPose, m_lthighImuToHipCtr);
     std::cout<<"Estimated anthropometry: RFemur="<<estRThighLength<<", "<<"RTibia="<<estRShankLength<<", LFemur="<<estLThighLength<<", LTibia="<<estLShankLength<<", pelvic width="<<estPelvicWidth<<std::endl;
     std::cout << "    hip sep. from thigh IMUs: mean=" << mathutils::mean(hipSep) << ", median=" << mathutils::median(hipSep) << ", max=" << mathutils::max(hipSep) << ", min=" << mathutils::min(hipSep) << std::endl;
@@ -1245,8 +1245,8 @@ int lowerBodyPoseEstimator::testJointCenterVelocityAsDiscretePositionDerivative(
     Eigen::MatrixXd rhipPosThighImu(nKeyframes,3);
     Eigen::MatrixXd rhipVelThighImu(nKeyframes,3);
     for(uint k=0; k<nKeyframes; k++){
-        rhipPosThighImu.block<1,3>(k,0)=(m_rthighImuPosition[k].vector()+m_rthighImuOrientation[k].matrix()*m_rthighImuToHipCtr.vector()).transpose(); // joint pos = imu pos + imuOrientation*(vec to joint)
-        rhipVelThighImu.block<1,3>(k,0)=(m_rthighImuVelocity[k] +m_rthighImuOrientation[k].matrix()*(m_rthighImuAngVel[k].cross(m_rthighImuToHipCtr.vector())) ).transpose(); // joint vel = imu vel + imuOrientation*( cross(angVel,vecToJoint) )
+        rhipPosThighImu.block<1,3>(k,0)=(m_rthighImuPosition[k]+m_rthighImuOrientation[k].matrix()*m_rthighImuToHipCtr).transpose(); // joint pos = imu pos + imuOrientation*(vec to joint)
+        rhipVelThighImu.block<1,3>(k,0)=(m_rthighImuVelocity[k] +m_rthighImuOrientation[k].matrix()*(m_rthighImuAngVel[k].cross(m_rthighImuToHipCtr)) ).transpose(); // joint vel = imu vel + imuOrientation*( cross(angVel,vecToJoint) )
     }
     // now get discrete derivative for velocity
     Eigen::MatrixXd rhipVelThighImu_DiscreteDiff(nKeyframes-1,3); // remember that it is one less row than position/velocity. when comparing, you should compare this matrix to position/velocity(2:end,:)
@@ -1892,7 +1892,7 @@ void lowerBodyPoseEstimator::adjustDistalImuTrajectoryForInboundJointAngles(cons
     // () calculate original joint angles
     std::vector<gtsam::Rot3> R_DistalSeg_to_N_orig = bioutils::get_R_Segment_to_N(gtsamutils::Pose3VectorToRot3Vector(distalImuPose), rightAxisDist, distalImuToProxJointCtr,distalImuToDistalJointCtr);
     Eigen::MatrixXd origJointAngles=bioutils::consistent3DofJcsAngles(R_ProxSeg_to_N,R_DistalSeg_to_N_orig); // [flexion,adduction,externalRot]
-    gtsam::Rot3 R_B_to_B2=gtsam::Rot3::identity(),R_DistalSeg_to_N_k=gtsam::Rot3::identity();
+    gtsam::Rot3 R_B_to_B2=gtsam::Rot3::Identity(),R_DistalSeg_to_N_k=gtsam::Rot3::Identity();
     // () apriori centering of median int/ext rotation angle to zero
     if(zeroMedianCenterIntExtRot){
         Eigen::VectorXd intExtRotAngs=origJointAngles.col(2);
@@ -2055,13 +2055,13 @@ void lowerBodyPoseEstimator::setImuPositionsBasedOnConsistentInitialStaticVecsTo
 void lowerBodyPoseEstimator::adjustDistalImuPosBasedOnStaticVecsToJointCtr(const gtsam::Pose3& proximalImuPose,gtsam::Pose3& distalImuPose,const gtsam::Point3& proximalImuToJointCtr,const gtsam::Point3& distalImuToJointCtr){
     // edits distal imu pose in place
     // () calculate joint center in world frame
-    const gtsam::Vector3 jointCtrPerProximalImu=proximalImuPose.translation().vector()+proximalImuPose.rotation().matrix()*proximalImuToJointCtr.vector(); // world frame
+    const gtsam::Vector3 jointCtrPerProximalImu=proximalImuPose.translation()+proximalImuPose.rotation().matrix()*proximalImuToJointCtr; // world frame
     // () now find what the distal imu position must be given its orientation and joint ctr
-    const gtsam::Vector3 distalImuPosFixed=jointCtrPerProximalImu-distalImuPose.rotation().matrix()*distalImuToJointCtr.vector();
+    const gtsam::Vector3 distalImuPosFixed=jointCtrPerProximalImu-distalImuPose.rotation().matrix()*distalImuToJointCtr;
     // now put this new position into the array
     distalImuPose=gtsam::Pose3(distalImuPose.rotation(),gtsam::Point3(distalImuPosFixed));
     // optional: double check your math
-    const gtsam::Vector3 jointCtrPerDistalImu=distalImuPose.translation().vector()+distalImuPose.rotation().matrix()*distalImuToJointCtr.vector(); // world frame
+    const gtsam::Vector3 jointCtrPerDistalImu=distalImuPose.translation()+distalImuPose.rotation().matrix()*distalImuToJointCtr; // world frame
     if(!jointCtrPerProximalImu.isApprox(jointCtrPerDistalImu)){
         throw std::runtime_error("vectors from imus to joint centers could not be consistently created.");
     }

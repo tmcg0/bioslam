@@ -13,12 +13,12 @@
 #include <gtsam/geometry/Point3.h>
 
 namespace bioslam {
-    class AngleBetweenAxisAndSegmentFactor : public gtsam::NoiseModelFactor3<gtsam::Unit3,gtsam::Point3,gtsam::Point3> {
+    class AngleBetweenAxisAndSegmentFactor : public gtsam::NoiseModelFactorN<gtsam::Unit3,gtsam::Point3,gtsam::Point3> {
         const double m_ang = M_PI/2; // radians, must be between 0 and pi
     public:
         /* Constructor */
         AngleBetweenAxisAndSegmentFactor(const gtsam::Key& axisKey, const gtsam::Key& v1Key, const gtsam::Key& v2Key, const double &ang, const gtsam::SharedNoiseModel &model) :
-                gtsam::NoiseModelFactor3<gtsam::Unit3,gtsam::Point3,gtsam::Point3>(model, axisKey, v1Key, v2Key), m_ang(ang){
+                gtsam::NoiseModelFactorN<gtsam::Unit3,gtsam::Point3,gtsam::Point3>(model, axisKey, v1Key, v2Key), m_ang(ang){
               // assert that the input angle is within bounds
               if(m_ang<0.0){ // must be at least 0 radians
                   throw std::runtime_error("input angle limit must was less than zero.");
@@ -60,13 +60,13 @@ namespace bioslam {
 // ---------------------- minimum allowable angle constraint version of this factor --------------------------------- //
 // ------------------------------------------------------------------------------------------------------------------ //
 
-    class MinAngleBetweenAxisAndSegmentFactor : public gtsam::NoiseModelFactor3<gtsam::Unit3,gtsam::Point3,gtsam::Point3> {
+    class MinAngleBetweenAxisAndSegmentFactor : public gtsam::NoiseModelFactorN<gtsam::Unit3,gtsam::Point3,gtsam::Point3> {
         const double m_minAng = 0.0001; // radians, must be between 0 and pi
         double a_ = 10.000000000001;
     public:
         /* Constructor */
         MinAngleBetweenAxisAndSegmentFactor(const gtsam::Key& axisKey, const gtsam::Key& v1Key, const gtsam::Key& v2Key, const double &minang, const gtsam::SharedNoiseModel &model) :
-                gtsam::NoiseModelFactor3<gtsam::Unit3,gtsam::Point3,gtsam::Point3>(model, axisKey, v1Key, v2Key), m_minAng(minang){
+                gtsam::NoiseModelFactorN<gtsam::Unit3,gtsam::Point3,gtsam::Point3>(model, axisKey, v1Key, v2Key), m_minAng(minang){
             // assert that the input angle is within bounds
             if(m_minAng<0.0){ // must be at least 0 radians
                 throw std::runtime_error("input angle limit must was less than zero.");
@@ -101,13 +101,13 @@ namespace bioslam {
 // ---------------------- maximum allowable angle constraint version of this factor --------------------------------- //
 // ------------------------------------------------------------------------------------------------------------------ //
 
-    class MaxAngleBetweenAxisAndSegmentFactor : public gtsam::NoiseModelFactor3<gtsam::Unit3,gtsam::Point3,gtsam::Point3> {
+    class MaxAngleBetweenAxisAndSegmentFactor : public gtsam::NoiseModelFactorN<gtsam::Unit3,gtsam::Point3,gtsam::Point3> {
         const double m_maxAng = M_PI*0.9999; // radians, must be between 0 and pi
         double a_ = 10.000000000001;
     public:
         /* Constructor */
         MaxAngleBetweenAxisAndSegmentFactor(const gtsam::Key& axisKey, const gtsam::Key& v1Key, const gtsam::Key& v2Key, const double &maxang, const gtsam::SharedNoiseModel &model) :
-                gtsam::NoiseModelFactor3<gtsam::Unit3,gtsam::Point3,gtsam::Point3>(model, axisKey, v1Key, v2Key), m_maxAng(maxang){
+                gtsam::NoiseModelFactorN<gtsam::Unit3,gtsam::Point3,gtsam::Point3>(model, axisKey, v1Key, v2Key), m_maxAng(maxang){
             // assert that the input angle is within bounds
             if(m_maxAng<0.0){ // must be at least 0 radians
                 throw std::runtime_error("input angle limit must was less than zero.");

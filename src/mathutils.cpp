@@ -70,11 +70,11 @@ namespace mathutils
             gtsam::Point3 a=static_cast<gtsam::Point3>(av);
             gtsam::Point3 b=static_cast<gtsam::Point3>(bv);
             gtsam::Matrix33 dc_da, dc_db;
-            gtsam::Point3 c=a.cross(b,dc_da,dc_db);
+            gtsam::Point3 c=gtsam::cross(a,b,dc_da,dc_db);
             gtsam::Matrix13 dy_dc;
-            double y=c.norm(dy_dc); // y = norm(cross(a,b))
+            double y=gtsam::norm3(c, dy_dc); // y = norm(cross(a,b))
             gtsam::Matrix13 dx_da,dx_db;
-            double x=a.dot(b,dx_da,dx_db); // x = dot(a,b)
+            double x=gtsam::dot(a,b,dx_da,dx_db); // x = dot(a,b)
             // do the derivative of f(y,x)=atan2(y,x) manually: https://en.wikipedia.org/wiki/Atan2#Derivative
             double denom=pow(x,2.0)+pow(y,2.0); // common denominator to both derivatives
             gtsam::Matrix11 df_dy, df_dx;
@@ -617,7 +617,7 @@ namespace mathutils
         Eigen::VectorXd angles(R_B_to_N.size());
         // find an orthogonal vector to vB using the cross product and seedStartVec
         Eigen::Vector3d seedStartVecB=seedStartVec.normalized();
-        Eigen::Vector3d vproxBnorm=vproxB.vector().normalized();
+        Eigen::Vector3d vproxBnorm=vproxB.normalized();
         Eigen::Vector3d orthoVecB=vproxBnorm.cross(seedStartVecB); // so, orthoVec is orthogonal to vB
         orthoVecB.normalize(); // normalize! vproxB and seedStartVec are not in general orthogonal
         Eigen::Vector3d orthoVecNavInit=R_B_to_N[0]*orthoVecB;
@@ -720,7 +720,7 @@ namespace mathutils
         gtsam::Matrix32 dr_dk;
         gtsam::Vector3 r=k.unitVector(dr_dk); // r := k transformed to R(3)
         gtsam::Matrix13 dmdr_dm, dmdr_dr;
-        double mdr=((gtsam::Point3) m).dot((gtsam::Point3) r,dmdr_dm,dmdr_dr); // casting them as gtsam::Point3 to take advantage of the derivatives in gtsam's Point3::dot
+        double mdr=gtsam::dot(m,r,dmdr_dm,dmdr_dr); // casting them as gtsam::Point3 to take advantage of the derivatives in gtsam's Point3::dot
         gtsam::Matrix31 dmdrtr_dmdr; gtsam::Matrix33 dmdrtr_dr;
         gtsam::Vector3 mdrtr=mathutils::scalarTimesVector(mdr, r, dmdrtr_dmdr, dmdrtr_dr); // mdr * r
         if(H_m){ // dmdrtr_dm = dmdrtr_dmdr*dmdr_dm
@@ -743,7 +743,7 @@ namespace mathutils
         if(H_sA){ *H_sA=de_dpA*dpA_dsA; }
         if(H_xB){ *H_xB=de_dpB*dpB_dxB; }
         if(H_sB){ *H_sB=de_dpB*dpB_dsB; }
-        return e.vector();
+        return e;
     }
 
     double ptSeparationNorm(const gtsam::Pose3& xA, const gtsam::Point3& sA, const gtsam::Pose3& xB, const gtsam::Point3& sB, boost::optional<gtsam::Matrix16 &> H_xA, boost::optional<gtsam::Matrix13 &> H_sA, boost::optional<gtsam::Matrix16 &> H_xB, boost::optional<gtsam::Matrix13 &> H_sB){
@@ -751,7 +751,7 @@ namespace mathutils
         gtsam::Matrix36 de_dxA, de_dxB; gtsam::Matrix33 de_dsA, de_dsB;
         gtsam::Point3 e =ptSeparation(xA,sA,xB,sB,de_dxA,de_dsA,de_dxB,de_dsB);// point separation (vector)
         gtsam::Matrix13 dn_de;
-        double n=e.norm(dn_de);
+        double n=gtsam::norm3(e,dn_de);
         if(H_xA){ *H_xA=dn_de*de_dxA; }
         if(H_sA){ *H_sA=dn_de*de_dsA; }
         if(H_xB){ *H_xB=dn_de*de_dxB; }
@@ -772,12 +772,12 @@ namespace mathutils
         // project vector v into plane whose normal is n, and optionally return derivative w.r.t. v and/or n
         // assumes v and n are in same coordinate frame
         gtsam::Matrix33 dt_dv, dt_dn;
-        gtsam::Point3 t=((gtsam::Point3) v).cross(n,dt_dv,dt_dn); // t = cross(n,v) => temp vector for cross product below
+        gtsam::Point3 t=gtsam::cross(v,n,dt_dv,dt_dn); // t = cross(n,v) => temp vector for cross product below
         gtsam::Matrix33 dh_dt ,dh_dn;
-        gtsam::Point3 h=((gtsam::Point3) t).cross(n,dh_dt,dh_dn); // h = cross(t,n) => the projection of v into the plane whose normal is n
+        gtsam::Point3 h=gtsam::cross(t,n,dh_dt,dh_dn); // h = cross(t,n) => the projection of v into the plane whose normal is n
         if(H_v){ *H_v=dh_dt*dt_dv; } // dh/dv
         if(H_n){ *H_n=dh_dn + dh_dt*dt_dn;} // dh/dn
-        return h.vector();
+        return h;
     }
 
     std::string distributionInfoString(const std::vector<double>& x) {

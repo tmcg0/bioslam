@@ -1,25 +1,22 @@
 # --------------------------------------------------------------------------- #
-#           bioslam v1.0.1 Dockerfile for Ubuntu 20.04 base image          
+#           bioslam v1.2 Dockerfile for Ubuntu 23.10 base image          
 # with dependencies:
-#   boost: 1.71.0 (https://packages.ubuntu.com/focal/libboost1.71-all-dev)
-#   TBB: 2020.1 (https://packages.ubuntu.com/focal/libtbb-dev)
-#   HDF5 (serial): 1.10.4 (https://packages.ubuntu.com/focal/libhdf5-dev)
+#   boost: 1.74.0 (https://packages.ubuntu.com/mantic/libboost-all-dev)
+#   HDF5 (serial): 1.10.8 (https://packages.ubuntu.com/mantic/libhdf5-dev)
 #   Eigen: 3.3.9 (https://gitlab.com/libeigen/eigen)
-#   GTSAM: 4.0.3 (https://github.com/borglab/gtsam/releases/4.0.3)
-#   HighFive: 2.3.1 (https://github.com/BlueBrain/HighFive/releases/v2.3.1)
-#   imuDataUtils: 0.0-alpha (https://github.com/tmcg0/imuDataUtils)
+#   GTSAM: 4.2 (https://github.com/borglab/gtsam/releases/4.2)
+#   HighFive: 2.8.0 (https://github.com/BlueBrain/HighFive/releases/v2.8.0)
 # build environment:
-#   git: 2.25.1 (https://packages.ubuntu.com/focal/git)
-#   cmake: 3.16.3 (https://packages.ubuntu.com/focal/cmake)
-#   g++: 9.3.0 (from build-essential: https://packages.ubuntu.com/focal/build-essential)
-#   make: 4.2.1 (from build-essential: https://packages.ubuntu.com/focal/build-essential)
+#   git: 2.40.1 (https://packages.ubuntu.com/mantic/git)
+#   cmake: 3.27.4 (https://packages.ubuntu.com/mantic/cmake)
+#   g++: 13.2.0 (from build-essential: https://packages.ubuntu.com/mantic/build-essential)
+#   make: 4.3 (from build-essential: https://packages.ubuntu.com/mantic/build-essential)
 # notes:
 # - only builds the C++ library and executables, no Python/MATLAB wrappers
 # - internet connection required to download dependencies
-# - note: prior to v1.1, imuDataUtils is required
 # --------------------------------------------------------------------------- #
 
-FROM ubuntu:20.04
+FROM ubuntu:23.10
 
 LABEL maintainer="Tim McGrath <t.mike.mcgrath@gmail.com>"
 
@@ -27,9 +24,9 @@ ARG N_JOBS=4
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV eigen_version=3.3.9
-ENV gtsam_version=4.0.3
-ENV highfive_version=v2.3.1
-ENV bioslam_version=v1.0.1
+ENV gtsam_version=4.2
+ENV highfive_version=v2.8.0
+ENV bioslam_version=dev
 
 # install package dependencies
 RUN apt-get update && \
@@ -39,13 +36,12 @@ RUN apt-get update && \
     git \
     cmake \
     libhdf5-dev \
-    libboost1.71-all-dev \
-    libtbb-dev \
+    libboost-all-dev \
     && apt-get clean
 
 # install Eigen
 WORKDIR /usr/src/
-RUN git clone --single-branch --branch ${eigen_version} https://gitlab.com/libeigen/eigen eigen3
+RUN git clone --single-branch --branch ${eigen_version} https://gitlab.com/libeigen/eigen.git eigen3
 WORKDIR /usr/src/eigen3/build/
 RUN cmake ..
 RUN make install -j${N_JOBS}
@@ -77,13 +73,6 @@ RUN echo "export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:/usr/local/lib" >> /root/.bas
 WORKDIR /usr/src/
 RUN git clone --depth 1 --branch ${highfive_version} https://github.com/BlueBrain/HighFive
 WORKDIR /usr/src/HighFive/build/
-RUN cmake ..
-RUN make install -j${N_JOBS}
-
-# install imuDataUtils
-WORKDIR /usr/src/
-RUN git clone --depth 1 --branch v0.0-alpha https://github.com/tmcg0/imuDataUtils
-WORKDIR /usr/src/imuDataUtils/build/
 RUN cmake ..
 RUN make install -j${N_JOBS}
 

@@ -60,8 +60,8 @@ int solver_test(uint tests, double errorTol){
         gtsam::Point3 est_v1=estimate.at<gtsam::Point3>(v1Key);
         gtsam::Point3 est_v2=estimate.at<gtsam::Point3>(v2Key);
         double estSegLength=(est_v1-est_v2).norm();
-        std::cout<<"initial: v1=["<<v1.vector().transpose()<<"], v2=["<<v2.vector().transpose()<<"] (seg length="<<initialSegLength<<") -->  ";
-        std::cout<<"optimizec: v1=["<<est_v1.vector().transpose()<<"], v2=["<<est_v2.vector().transpose()<<"] (seg length="<<estSegLength<<"), optimizer error: "<<initialError<<" --> "<<finalError<<")  iterations="<<optimizer.iterations()<<std::endl;
+        std::cout<<"initial: v1=["<<v1.transpose()<<"], v2=["<<v2.transpose()<<"] (seg length="<<initialSegLength<<") -->  ";
+        std::cout<<"optimizec: v1=["<<est_v1.transpose()<<"], v2=["<<est_v2.transpose()<<"] (seg length="<<estSegLength<<"), optimizer error: "<<initialError<<" --> "<<finalError<<")  iterations="<<optimizer.iterations()<<std::endl;
         if((estSegLength-segLengthMax)>errorTol){ // if greater than 1% more than maxnorm, throw error
             throw std::runtime_error("error: estimated seg length is too large");
             return 1;
@@ -113,11 +113,11 @@ int test_derivative_numerically(const bioslam::SegmentLengthMaxMagnitudeFactor& 
     //    I think to call it it's numericalDerivativeXY where X=number of input variables and Y=which Jacobian you want to test
     //    templates are: <output type (typically gtsam::Vector), then the input argument types in order)
     gtsam::Matrix numericalH1=gtsam::numericalDerivative21<gtsam::Vector,gtsam::Point3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Point3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::SegmentLengthMaxMagnitudeFactor::evaluateError,fac,_1,_2,boost::none,boost::none)),v1,v2,1e-5);
+            std::function<gtsam::Vector(const gtsam::Point3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::SegmentLengthMaxMagnitudeFactor::evaluateError,fac,std::placeholders::_1,std::placeholders::_2,boost::none,boost::none)),v1,v2,1e-5);
     gtsam::Matrix numericalH2=gtsam::numericalDerivative22<gtsam::Vector,gtsam::Point3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Point3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::SegmentLengthMaxMagnitudeFactor::evaluateError,fac,_1,_2,boost::none,boost::none)),v1,v2,1e-5);
+            std::function<gtsam::Vector(const gtsam::Point3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::SegmentLengthMaxMagnitudeFactor::evaluateError,fac,std::placeholders::_1,std::placeholders::_2,boost::none,boost::none)),v1,v2,1e-5);
     // now test using gtsam::assert_equal()
     bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-5);
     bool testH2=gtsam::assert_equal(derivedH2,numericalH2,1e-5);
@@ -144,11 +144,11 @@ int test_derivative_numerically(const bioslam::SegmentLengthMinMagnitudeFactor& 
     //    I think to call it it's numericalDerivativeXY where X=number of input variables and Y=which Jacobian you want to test
     //    templates are: <output type (typically gtsam::Vector), then the input argument types in order)
     gtsam::Matrix numericalH1=gtsam::numericalDerivative21<gtsam::Vector,gtsam::Point3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Point3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::SegmentLengthMinMagnitudeFactor::evaluateError,fac,_1,_2,boost::none,boost::none)),v1,v2,1e-5);
+            std::function<gtsam::Vector(const gtsam::Point3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::SegmentLengthMinMagnitudeFactor::evaluateError,fac,std::placeholders::_1,std::placeholders::_2,boost::none,boost::none)),v1,v2,1e-5);
     gtsam::Matrix numericalH2=gtsam::numericalDerivative22<gtsam::Vector,gtsam::Point3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Point3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::SegmentLengthMinMagnitudeFactor::evaluateError,fac,_1,_2,boost::none,boost::none)),v1,v2,1e-5);
+            std::function<gtsam::Vector(const gtsam::Point3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::SegmentLengthMinMagnitudeFactor::evaluateError,fac,std::placeholders::_1,std::placeholders::_2,boost::none,boost::none)),v1,v2,1e-5);
     // now test using gtsam::assert_equal()
     bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-7);
     bool testH2=gtsam::assert_equal(derivedH2,numericalH2,1e-7);

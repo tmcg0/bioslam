@@ -97,7 +97,7 @@ namespace bioslam {
             if(H_vB){ *H_vB=derr_dtB*dtB_dvB; }
             if(H_wB){ *H_wB=derr_dtB*dtB_dwB; }
             if(H_sB){ *H_sB=derr_dtB*dtB_dsB; }
-            return err.vector();
+            return err;
         }
 
         gtsam::Vector3 ConstrainedJointCenterVelocityFactor::linearVelocity(const gtsam::Pose3& x, const gtsam::Vector3& v, const gtsam::Vector3& w, const gtsam::Vector3& p,
@@ -118,7 +118,7 @@ namespace bioslam {
             gtsam::Matrix36 dr_dx;
             gtsam::Rot3 r=x.rotation(dr_dx); // R[B->N]
             gtsam::Matrix33 dc_dw, dc_dp;
-            gtsam::Point3 c=((gtsam::Point3) w).cross((gtsam::Point3) p,dc_dw,dc_dp); // c=cross(w,p)
+            gtsam::Point3 c=gtsam::cross(w,p,dc_dw,dc_dp); // c=cross(w,p)
             gtsam::Matrix33 dcN_dr, dcN_dc;
             gtsam::Point3 cN=r.rotate(c,dcN_dr,dcN_dc); // c in nav frame (lin vel component due to rotation)
             gtsam::Matrix33 dt_dv=gtsam::Matrix33::Identity(), dt_dcN=gtsam::Matrix33::Identity();
@@ -127,7 +127,7 @@ namespace bioslam {
             if(H_v){ *H_v=dt_dv; }
             if(H_w){ *H_w=dt_dcN*dcN_dc*dc_dw; }
             if(H_p){ *H_p=dt_dcN*dcN_dc*dc_dp; }
-            return t.vector();
+            return t;
         }
 
         gtsam::Vector ConstrainedJointCenterVelocityFactor::evaluateErrorNoJacCall(const gtsam::Pose3& poseA, const gtsam::Vector3& linVelA, const gtsam::Vector3& angVelA, const gtsam::Point3& sA, const gtsam::Pose3& poseB, const gtsam::Vector3& linVelB, const gtsam::Vector3& angVelB, const gtsam::Point3& sB) const {
@@ -206,7 +206,7 @@ namespace bioslam {
         gtsam::Matrix36 do_dxA, do_dxB; gtsam::Matrix33 do_dwA, do_dvA, do_dsA, do_dwB, do_dvB, do_dsB;
         gtsam::Vector3 o=ConstrainedJointCenterVelocityFactor::errorModel(xA,vA,wA,sA,xB,vB,wB,sB,do_dxA,do_dvA,do_dwA,do_dsA,do_dxB,do_dvB,do_dwB,do_dsB);
         gtsam::Matrix13 derr_do;
-        double err=((gtsam::Point3) o).norm(derr_do);
+        double err=gtsam::norm3(o,derr_do);
         // handle all the derivatives
         if(H_xA){ *H_xA=derr_do*do_dxA; }
         if(H_vA){ *H_vA=derr_do*do_dvA; }

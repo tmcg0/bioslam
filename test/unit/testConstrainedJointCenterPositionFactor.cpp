@@ -81,17 +81,17 @@ int test_derivative_numerically(const bioslam::ConstrainedJointCenterPositionFac
     //    I think to call it it's numericalDerivativeXY where X=number of input variables and Y=which Jacobian you want to test
     //    templates are: <output type (typically gtsam::Vector), then the input argument types in order)
     gtsam::Matrix numericalH1=gtsam::numericalDerivative41<gtsam::Vector,gtsam::Pose3,gtsam::Pose3,gtsam::Point3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Pose3&, const gtsam::Point3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::ConstrainedJointCenterPositionFactor::evaluateError, fac, _1, _2, _3, _4, boost::none, boost::none, boost::none, boost::none)), xA, xB, L_A_to_ctr, L_B_to_ctr, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Pose3&, const gtsam::Point3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::ConstrainedJointCenterPositionFactor::evaluateError, fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4, boost::none, boost::none, boost::none, boost::none)), xA, xB, L_A_to_ctr, L_B_to_ctr, 1e-5);
     gtsam::Matrix numericalH2=gtsam::numericalDerivative42<gtsam::Vector,gtsam::Pose3,gtsam::Pose3,gtsam::Point3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Pose3&, const gtsam::Point3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::ConstrainedJointCenterPositionFactor::evaluateError, fac, _1, _2, _3, _4, boost::none, boost::none, boost::none, boost::none)), xA, xB, L_A_to_ctr, L_B_to_ctr, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Pose3&, const gtsam::Point3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::ConstrainedJointCenterPositionFactor::evaluateError, fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4, boost::none, boost::none, boost::none, boost::none)), xA, xB, L_A_to_ctr, L_B_to_ctr, 1e-5);
     gtsam::Matrix numericalH3=gtsam::numericalDerivative43<gtsam::Vector,gtsam::Pose3,gtsam::Pose3,gtsam::Point3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Pose3&, const gtsam::Point3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::ConstrainedJointCenterPositionFactor::evaluateError, fac, _1, _2, _3, _4, boost::none, boost::none, boost::none, boost::none)), xA, xB, L_A_to_ctr, L_B_to_ctr, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Pose3&, const gtsam::Point3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::ConstrainedJointCenterPositionFactor::evaluateError, fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4, boost::none, boost::none, boost::none, boost::none)), xA, xB, L_A_to_ctr, L_B_to_ctr, 1e-5);
     gtsam::Matrix numericalH4=gtsam::numericalDerivative44<gtsam::Vector,gtsam::Pose3,gtsam::Pose3,gtsam::Point3,gtsam::Point3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Pose3&, const gtsam::Point3&, const gtsam::Point3&)>
-                    (boost::bind(&bioslam::ConstrainedJointCenterPositionFactor::evaluateError, fac, _1, _2, _3, _4, boost::none, boost::none, boost::none, boost::none)), xA, xB, L_A_to_ctr, L_B_to_ctr, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Pose3&, const gtsam::Point3&, const gtsam::Point3&)>
+                    (std::bind(&bioslam::ConstrainedJointCenterPositionFactor::evaluateError, fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4, boost::none, boost::none, boost::none, boost::none)), xA, xB, L_A_to_ctr, L_B_to_ctr, 1e-5);
     // now test using gtsam::assert_equal()
     bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-9);
     bool testH2=gtsam::assert_equal(derivedH2,numericalH2,1e-9);
@@ -187,8 +187,8 @@ int test_givenPriorsOn4Variables(bool useRandomPoses, uint numTests, double erro
         gtsam::Point3 est_v2=estimate.at<gtsam::Point3>(v2Key);
         double finalConnectionError=jointConnectionError(est_x1,est_x2,est_v1,est_v2);
         std::cout<<"    test #"<<i<<": initial connection error: "<<initialConnectionError<<", final error: "<<finalConnectionError<<"  |  optimizer error "<<initialError<<" --> "<<finalError<<" ("<<nIterations<<" iterations, with "<<mygraph.size()<<" factors and "<<myVals.size()<<" values)"<<std::endl;
-        std::cout<<"        initial: q1=["<<x1.rotation().quaternion().transpose()<<"], p1=["<<x1.translation().vector().transpose()<<"], v1=["<<v1.vector().transpose()<<"] | q2=["<<x2.rotation().quaternion().transpose()<<"], p2=["<<x2.translation().vector().transpose()<<"], v2=["<<v2.vector().transpose()<<"]"<<std::endl;
-        std::cout<<"        optimized: q1=["<<est_x1.rotation().quaternion().transpose()<<"], p1=["<<est_x1.translation().vector().transpose()<<"], v1=["<<est_v1.vector().transpose()<<"] | q2=["<<est_x2.rotation().quaternion().transpose()<<"], p2=["<<est_x2.translation().vector().transpose()<<"], v2=["<<est_v2.vector().transpose()<<"]"<<std::endl;
+        std::cout<<"        initial: q1=["<<x1.rotation().quaternion().transpose()<<"], p1=["<<x1.translation().transpose()<<"], v1=["<<v1.transpose()<<"] | q2=["<<x2.rotation().quaternion().transpose()<<"], p2=["<<x2.translation().transpose()<<"], v2=["<<v2.transpose()<<"]"<<std::endl;
+        std::cout<<"        optimized: q1=["<<est_x1.rotation().quaternion().transpose()<<"], p1=["<<est_x1.translation().transpose()<<"], v1=["<<est_v1.transpose()<<"] | q2=["<<est_x2.rotation().quaternion().transpose()<<"], p2=["<<est_x2.translation().transpose()<<"], v2=["<<est_v2.transpose()<<"]"<<std::endl;
         // can find the residual in MATLAB with: (quatrotate(quatinv(q1),v1)+p1)-(quatrotate(quatinv(q2),v2)+p2)
         //     why do I have to use quatinv() here?
         if(finalConnectionError>errorTol){ // if greater than 1mm
@@ -206,9 +206,9 @@ void printStateOnError(const gtsam::Pose3& x1, const gtsam::Pose3& x2, const gts
     gtsam::Point3 jointCenterAccordingTo1=x1.rotation()*v1 + x1.translation(); // R[B->N]*v1[B] + p[N]
     gtsam::Point3 jointCenterAccordingTo2=x2.rotation()*v2 + x2.translation(); // R[B->N]*v2[B] + p[N]
     gtsam::Point3 jointConnectionDiff=jointCenterAccordingTo1-jointCenterAccordingTo2;
-    std::cout<<"joint center according to first IMU: "<<std::endl<<"R="<<std::endl<<x1.rotation().matrix()<<std::endl<<"*v="<<std::endl<<v1.vector().transpose()<<std::endl<<"+p="<<std::endl<<x1.translation().vector().transpose()<<std::endl<<"-------------------------"<<std::endl<<jointCenterAccordingTo1.vector().transpose()<<std::endl;
-    std::cout<<std::endl<<"joint center according to second IMU: "<<std::endl<<"R="<<std::endl<<x2.rotation().matrix()<<std::endl<<"*v="<<std::endl<<v2.vector().transpose()<<std::endl<<"+p="<<std::endl<<x2.translation().vector().transpose()<<std::endl<<"-------------------------"<<std::endl<<jointCenterAccordingTo2.vector().transpose()<<std::endl;
-    std::cout<<std::endl<<"for a resulting difference of: "<<jointConnectionDiff.vector().transpose()<<" (norm="<<jointConnectionDiff.vector().norm()<<")"<<std::endl;
+    std::cout<<"joint center according to first IMU: "<<std::endl<<"R="<<std::endl<<x1.rotation().matrix()<<std::endl<<"*v="<<std::endl<<v1.transpose()<<std::endl<<"+p="<<std::endl<<x1.translation().transpose()<<std::endl<<"-------------------------"<<std::endl<<jointCenterAccordingTo1.transpose()<<std::endl;
+    std::cout<<std::endl<<"joint center according to second IMU: "<<std::endl<<"R="<<std::endl<<x2.rotation().matrix()<<std::endl<<"*v="<<std::endl<<v2.transpose()<<std::endl<<"+p="<<std::endl<<x2.translation().transpose()<<std::endl<<"-------------------------"<<std::endl<<jointCenterAccordingTo2.transpose()<<std::endl;
+    std::cout<<std::endl<<"for a resulting difference of: "<<jointConnectionDiff.transpose()<<" (norm="<<jointConnectionDiff.norm()<<")"<<std::endl;
 }
 
 double jointConnectionError(const gtsam::Pose3& x1, const gtsam::Pose3& x2, const gtsam::Point3& v1, const gtsam::Point3& v2){
@@ -217,7 +217,7 @@ double jointConnectionError(const gtsam::Pose3& x1, const gtsam::Pose3& x2, cons
     gtsam::Point3 jointCenterAccordingTo1=x1.rotation()*v1 + x1.translation(); // R[B->N]*v1[B] + p[N]
     gtsam::Point3 jointCenterAccordingTo2=x2.rotation()*v2 + x2.translation(); // R[B->N]*v2[B] + p[N]
     gtsam::Point3 jointConnectionDiff=jointCenterAccordingTo1-jointCenterAccordingTo2;
-    double errorNorm=jointConnectionDiff.vector().norm();
+    double errorNorm=jointConnectionDiff.norm();
     return errorNorm;
 }
 
@@ -228,8 +228,8 @@ int assertJointCtrCalcMethodsSame(){
     gtsam::Matrix33 dp1, dp2;
     gtsam::Point3 calc1=jointCtrFromImuPoseAndVec_SO3_R3(T,p,dt1,dp1);
     gtsam::Point3 calc2=jointCtrFromImuPoseAndVec_SE3(T,p,dt2,dp2);
-    // test that their results are the same
-    if(!calc1.equals(calc2)){
+    // compare if calc1 and calc2 are equal
+    if(!gtsam::assert_equal(calc1,calc2)){
         throw std::runtime_error("expected calculation methods to be the same");
     }
     // test that their jacobians are the same

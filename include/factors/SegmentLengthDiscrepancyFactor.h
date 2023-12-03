@@ -13,11 +13,11 @@
 
 namespace bioslam {
 
-    class SegmentLengthDiscrepancyFactor : public gtsam::NoiseModelFactor4<gtsam::Point3, gtsam::Point3, gtsam::Point3, gtsam::Point3> {
+    class SegmentLengthDiscrepancyFactor : public gtsam::NoiseModelFactorN<gtsam::Point3, gtsam::Point3, gtsam::Point3, gtsam::Point3> {
 
     public:
         SegmentLengthDiscrepancyFactor(const gtsam::Key& imuAToProximalJointKey, const gtsam::Key& imuAToDistalJointKey, const gtsam::Key& imuBToProximalJointKey, const gtsam::Key& imuBToDistalJointKey, const gtsam::SharedNoiseModel &model) :
-            NoiseModelFactor4<gtsam::Point3, gtsam::Point3, gtsam::Point3, gtsam::Point3>(model, imuAToProximalJointKey, imuAToDistalJointKey, imuBToProximalJointKey, imuBToDistalJointKey) {};
+            NoiseModelFactorN<gtsam::Point3, gtsam::Point3, gtsam::Point3, gtsam::Point3>(model, imuAToProximalJointKey, imuAToDistalJointKey, imuBToProximalJointKey, imuBToDistalJointKey) {};
 
         gtsam::Vector evaluateError(const gtsam::Point3& imuAToProximalJoint, const gtsam::Point3& imuAToDistalJoint, const gtsam::Point3& imuBToProximalJoint, const gtsam::Point3& imuBToDistalJoint,
                                     boost::optional<gtsam::Matrix &> H1 = boost::none, // <- also include optional derivatives

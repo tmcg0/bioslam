@@ -3,9 +3,30 @@ name: cpp-linter
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
+  # check for duplicate jobs
+  pre_job:
+    # continue-on-error: true # Uncomment once integration is finished 
+    runs-on: ubuntu-20.04
+    
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+
+    steps:
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@v5.3.0
+        with:
+          concurrent_skipping: "same_content_newer"
+          skip_after_successful_duplicate: "true"
+          paths_ignore: '["**/README.md", "**/docs/**"]'
+          do_not_skip: '["workflow_dispatch", "schedule"]'
+
   cpp-linter:
+    needs: pre_job
+    if: needs.pre_job.outputs.should_skip != 'true'
     runs-on: ubuntu-latest
     steps:
+      - name: print skip check results
+        run: echo "should_skip=${{ needs.pre_job.outputs.should_skip }}, reason is ${{ needs.pre_job.outputs.reason }}"
       - uses: actions/checkout@v3
       - uses: cpp-linter/cpp-linter-action@v2
         id: linter
