@@ -8,6 +8,7 @@
 
 #include "mathutils.h"
 #include "testutils.h"
+#include "gtsamutils.h"
 #include "gtsam/base/numericalDerivative.h"
 #include "gtsam/slam/PriorFactor.h"
 
@@ -156,13 +157,19 @@ int testDot(uint nTests){
         gtsam::Point3 a=testutils::randomPoint3(), b=testutils::randomPoint3();
         gtsam::Matrix derivedH1, derivedH2;
         gtsam::dot(a,b,derivedH1,derivedH2);
-        // test derivative numerically
-        gtsam::Matrix numericalH1=gtsam::numericalDerivative21<double,gtsam::Point3,gtsam::Point3>(
-                std::function<double(const gtsam::Point3&, const gtsam::Point3&)>
-                        (std::bind(&gtsam::dot,std::placeholders::_1,std::placeholders::_2,boost::none,boost::none)),a,b,1e-5);
-        gtsam::Matrix numericalH2=gtsam::numericalDerivative22<double,gtsam::Point3,gtsam::Point3>(
-                std::function<double(const gtsam::Point3&, const gtsam::Point3&)>
-                        (std::bind(&gtsam::dot,std::placeholders::_1,std::placeholders::_2,boost::none,boost::none)),a,b,1e-5);
+        // to reduce ambiguity between overloads of gtsam::dot(), we test the derivative numerically using a lambda function, as opposed to other styles in this file
+        // remember to use std::function to avoid ambiguity between overloads of numericalDerivative
+        auto numericalH1 = gtsam::numericalDerivative21<double, gtsam::Point3, gtsam::Point3>(
+            std::function<double(const gtsam::Point3&, const gtsam::Point3&)>([](const gtsam::Point3& arg1, const gtsam::Point3& arg2) {
+                return gtsam::dot(arg1, arg2);
+            }),
+            a, b, 1e-5);
+        auto numericalH2 = gtsam::numericalDerivative22<double, gtsam::Point3, gtsam::Point3>(
+            std::function<double(const gtsam::Point3&, const gtsam::Point3&)>([](const gtsam::Point3& arg1, const gtsam::Point3& arg2) {
+                return gtsam::dot(arg1, arg2);
+            }),
+            a, b, 1e-5);
+        // now test using gtsam::assert_equal()
         bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-9);
         bool testH2=gtsam::assert_equal(derivedH2,numericalH2,1e-9);
         if (!testH1){
@@ -186,19 +193,28 @@ int testPtSeparationNorm(uint nTests){
         gtsam::Point3 sA=testutils::randomPoint3(), sB=testutils::randomPoint3();
         gtsam::Matrix16 derivedH1, derivedH3; gtsam::Matrix13 derivedH2, derivedH4;
         double n=mathutils::ptSeparationNorm(xA, sA, xB, sB, derivedH1, derivedH2, derivedH3, derivedH4);
-        // test derivative numerically
-        gtsam::Matrix numericalH1=gtsam::numericalDerivative41<double,gtsam::Pose3,gtsam::Point3,gtsam::Pose3,gtsam::Point3>(
-                std::function<double(const gtsam::Pose3&, const gtsam::Point3&,const gtsam::Pose3&, const gtsam::Point3&)>
-                        (std::bind(&mathutils::ptSeparationNorm,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4, boost::none, boost::none, boost::none, boost::none)), xA, sA, xB, sB, 1e-5);
-        gtsam::Matrix numericalH2=gtsam::numericalDerivative42<double,gtsam::Pose3,gtsam::Point3,gtsam::Pose3,gtsam::Point3>(
-                std::function<double(const gtsam::Pose3&, const gtsam::Point3&,const gtsam::Pose3&, const gtsam::Point3&)>
-                        (std::bind(&mathutils::ptSeparationNorm,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4, boost::none, boost::none, boost::none, boost::none)), xA, sA, xB, sB, 1e-5);
-        gtsam::Matrix numericalH3=gtsam::numericalDerivative43<double,gtsam::Pose3,gtsam::Point3,gtsam::Pose3,gtsam::Point3>(
-                std::function<double(const gtsam::Pose3&, const gtsam::Point3&,const gtsam::Pose3&, const gtsam::Point3&)>
-                        (std::bind(&mathutils::ptSeparationNorm,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4, boost::none, boost::none, boost::none, boost::none)), xA, sA, xB, sB, 1e-5);
-        gtsam::Matrix numericalH4=gtsam::numericalDerivative44<double,gtsam::Pose3,gtsam::Point3,gtsam::Pose3,gtsam::Point3>(
-                std::function<double(const gtsam::Pose3&, const gtsam::Point3&,const gtsam::Pose3&, const gtsam::Point3&)>
-                        (std::bind(&mathutils::ptSeparationNorm,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4, boost::none, boost::none, boost::none, boost::none)), xA, sA, xB, sB, 1e-5);
+        // to reduce ambiguity between overloads of mathutils::ptSeparationNorm, we test the derivative numerically using a lambda function, as opposed to other styles in this file
+        // remember to use std::function to avoid ambiguity between overloads of numericalDerivative
+        auto numericalH1 = gtsam::numericalDerivative41<double, gtsam::Pose3, gtsam::Point3, gtsam::Pose3, gtsam::Point3>(
+            std::function<double(const gtsam::Pose3&, const gtsam::Point3&, const gtsam::Pose3&, const gtsam::Point3&)>([](const gtsam::Pose3& arg1, const gtsam::Point3& arg2, const gtsam::Pose3& arg3, const gtsam::Point3& arg4) {
+                return mathutils::ptSeparationNorm(arg1, arg2, arg3, arg4);
+            }),
+            xA, sA, xB, sB, 1e-5);
+        auto numericalH2 = gtsam::numericalDerivative42<double, gtsam::Pose3, gtsam::Point3, gtsam::Pose3, gtsam::Point3>(
+            std::function<double(const gtsam::Pose3&, const gtsam::Point3&, const gtsam::Pose3&, const gtsam::Point3&)>([](const gtsam::Pose3& arg1, const gtsam::Point3& arg2, const gtsam::Pose3& arg3, const gtsam::Point3& arg4) {
+                return mathutils::ptSeparationNorm(arg1, arg2, arg3, arg4);
+            }),
+            xA, sA, xB, sB, 1e-5);
+        auto numericalH3 = gtsam::numericalDerivative43<double, gtsam::Pose3, gtsam::Point3, gtsam::Pose3, gtsam::Point3>(
+            std::function<double(const gtsam::Pose3&, const gtsam::Point3&, const gtsam::Pose3&, const gtsam::Point3&)>([](const gtsam::Pose3& arg1, const gtsam::Point3& arg2, const gtsam::Pose3& arg3, const gtsam::Point3& arg4) {
+                return mathutils::ptSeparationNorm(arg1, arg2, arg3, arg4);
+            }),
+            xA, sA, xB, sB, 1e-5);
+        auto numericalH4 = gtsam::numericalDerivative44<double, gtsam::Pose3, gtsam::Point3, gtsam::Pose3, gtsam::Point3>(
+            std::function<double(const gtsam::Pose3&, const gtsam::Point3&, const gtsam::Pose3&, const gtsam::Point3&)>([](const gtsam::Pose3& arg1, const gtsam::Point3& arg2, const gtsam::Pose3& arg3, const gtsam::Point3& arg4) {
+                return mathutils::ptSeparationNorm(arg1, arg2, arg3, arg4);
+            }),
+            xA, sA, xB, sB, 1e-5);
         // now test using gtsam::assert_equal()
         bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-5);
         if (!testH1){
