@@ -26,7 +26,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV eigen_version=3.3.9
 ENV gtsam_version=4.2
 ENV highfive_version=v2.8.0
-ENV bioslam_version=dev
+ENV bioslam_version=v1.2
 
 # install package dependencies
 RUN apt-get update && \
