@@ -123,10 +123,6 @@ include_directories(${HDF5_INCLUDE_DIR})
 list(APPEND BIOSLAMLIBS ${HDF5_LIBRARIES})
 # --- required HighFive --- #
 find_package(HighFive REQUIRED)
-# --- find and include imuDataUtils library --- #
-find_package(ImuDataUtils REQUIRED)
-include_directories(${IMUDATAUTILS_INCLUDE_DIR})
-list(APPEND BIOSLAMLIBS ${IMUDATAUTILS_LIBRARIES})
 # --- Require GTSAM ---
 find_package(GTSAM REQUIRED)
 if (GTSAM_FOUND)
@@ -142,10 +138,7 @@ message(STATUS "proj source dir is ${PROJECT_SOURCE_DIR}")
 include_directories("${PROJECT_SOURCE_DIR}/include") # bioslam headers
 include_directories("${PROJECT_SOURCE_DIR}/include/factors") # bioslam headers for factors
 include_directories("${PROJECT_SOURCE_DIR}/include/imu") # bioslam headers for imu
-#file(GLOB SOURCES_BIOSLAM "${PROJECT_SOURCE_DIR}/src/*.cpp" "${PROJECT_SOURCE_DIR}/src/factors/*.cpp" "${PROJECT_SOURCE_DIR}/include/*.h" "${PROJECT_SOURCE_DIR}/include/factors/*.h" "imuDataUtils/include/*.h" "imuDataUtils/src/*.cpp" "wrap/example/*.h" "wrap/example/*.cpp")
 # --- add sources --- #
-# glob all stuff from imuDataUtils
-# glob headers. do I need to do this? doesn't help. what's the prob?
 file(GLOB SOURCES_BIOSLAM "${PROJECT_SOURCE_DIR}/include/*.h" "${PROJECT_SOURCE_DIR}/include/factors/*.h" "${PROJECT_SOURCE_DIR}/include/imu/*.h")
 # base stuff
 list(APPEND SOURCES_BIOSLAM ${PROJECT_SOURCE_DIR}/src/lowerBodyPoseEstimator.cpp ${PROJECT_SOURCE_DIR}/src/imuPoseEstimator.cpp ${PROJECT_SOURCE_DIR}/src/imu/imuNoiseModelHandler.cpp ${PROJECT_SOURCE_DIR}/src/imu/imu.cpp ${PROJECT_SOURCE_DIR}/src/VarStrToCharMap.cpp)
