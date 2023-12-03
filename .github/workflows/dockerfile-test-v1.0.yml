@@ -1,0 +1,48 @@
+name: v1.0 Dockerfile
+
+on: [push, pull_request, workflow_dispatch]
+
+env:
+  DOCKERFILE_NAME: bioslam1.0.1-gtsam4.0.3-ubu20.Dockerfile
+
+jobs:
+  conditional_check_dockerfile_changed:
+    runs-on: ubuntu-latest
+    # Declare outputs for next jobs
+    outputs:
+      file_changed: ${{ steps.check_file_changed.outputs.file_changed }}
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        # Checkout as many commits as needed for the diff
+        fetch-depth: 2
+    - shell: pwsh
+      id: check_file_changed
+      run: |
+        # Diff HEAD with the previous commit
+        $diff = git diff --name-only HEAD^ HEAD
+
+        # check if the Dockerfile has changed (added, modified, deleted) at /docker/$DOCKERFILE_NAME
+        $DockerfileDiff = $diff | Where-Object { $_ -match '^docker/$env:DOCKERFILE_NAME' }
+        $HasDiff = $DockerfileDiff.Length -gt 0
+
+        # Set the output named "file_changed"
+        Write-Host "::set-output name=file_changed::$HasDiff"
+
+  test:
+    name: Test Dockerfile 
+    runs-on: ubuntu-latest
+    needs: conditional_check_dockerfile_changed
+    if: needs.conditional_check_dockerfile_changed.outputs.file_changed == 'True'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Build and run docker image
+      run: |
+        docker build -t bioslam -f ./docker/bioslam1.0.1-gtsam4.0.3-ubu20.Dockerfile ./docker
+        docker run -id --name bioslam bioslam
+
+    - name: Run tests
+      run: docker exec -i bioslam bash -c "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib && cd /usr/src/bioslam/build && make test"
