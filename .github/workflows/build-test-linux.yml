@@ -121,7 +121,7 @@ jobs:
         run: |
           cd ${{runner.workspace}} # cd to runner home
           git clone --depth 1 --branch ${{ matrix.highfive-version }} https://github.com/BlueBrain/HighFive HighFive
-          mkdir build && cd build # move into build dir for HighFive
+          cd HighFive && mkdir build && cd build # move into build dir for HighFive
           cmake -DHIGHFIVE_USE_BOOST=OFF ..
           sudo make -j$(nproc) install
 
