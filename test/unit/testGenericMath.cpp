@@ -109,7 +109,7 @@ int testNorm(uint nTests){
             // test derivative numerically
             gtsam::Matrix numericalH1=gtsam::numericalDerivative11<double,gtsam::Point3>(
                     std::function<double(const gtsam::Point3&)>
-                            (std::bind(&gtsam::Point3::norm,std::placeholders::_1,boost::none)),a,1e-8);
+                            (std::bind(&gtsam::norm3,std::placeholders::_1,boost::none)),a,1e-8);
             bool testH1=gtsam::assert_equal(derivedH1,numericalH1,5.0e-8);
             if (!testH1){
                 std::cout<<"a="<<a.transpose()<<", norm="<<a.norm()<<std::endl;
