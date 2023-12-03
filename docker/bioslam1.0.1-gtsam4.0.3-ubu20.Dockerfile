@@ -52,12 +52,16 @@ RUN git clone --depth 1 --branch 4.0.3 https://github.com/borglab/gtsam.git
 WORKDIR /usr/src/gtsam/build
 RUN cmake \
     -DCMAKE_BUILD_TYPE=Release \
+    -DGTSAM_BUILD_PYTHON=OFF \
     -DGTSAM_WITH_EIGEN_MKL=OFF \
     -DGTSAM_BUILD_EXAMPLES_ALWAYS=OFF \
     -DGTSAM_BUILD_TIMING_ALWAYS=OFF \
     -DGTSAM_BUILD_TESTS=OFF \
     -DGTSAM_BUILD_UNSTABLE=OFF \
     -DGTSAM_UNSTABLE_BUILD_PYTHON=OFF \
+    -DGTSAM_BUILD_WITH_MARCH_NATIVE=ON \
+    -DGTSAM_WITH_TBB=OFF \
+    -DGTSAM_INSTALL_CPPUNITLITE=OFF \
     ..
 RUN make install -j${N_JOBS} && make clean
 
@@ -83,7 +87,11 @@ RUN make install -j${N_JOBS}
 WORKDIR /usr/src/
 RUN git clone --depth 1 --branch v1.0.1 https://github.com/tmcg0/bioslam
 WORKDIR /usr/src/bioslam/build/
-RUN cmake -DBIOSLAM_BUILD_MATLAB_WRAPPER=OFF ..
+RUN cmake \
+    -DBIOSLAM_BUILD_MATLAB_WRAPPER=OFF \
+    -DBIOSLAM_BUILD_WITH_MARCH_NATIVE=ON \
+    -DBIOSLAM_USE_TBB=OFF \
+    ..
 RUN make install -j${N_JOBS}
 
 ENTRYPOINT ["/bin/bash"]
