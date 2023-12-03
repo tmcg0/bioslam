@@ -16,14 +16,14 @@
 #include <gtsam/nonlinear/NonlinearFactor.h>
 
 namespace bioslam {
-    class MagPose3Factor : public gtsam::NoiseModelFactor1<gtsam::Pose3> {
+    class MagPose3Factor : public gtsam::NoiseModelFactorN<gtsam::Pose3> {
         const gtsam::Point3 m_measurement; //< The measured magnetometer values (local frame)
         const gtsam::Point3 B_Global; //< Global magnetic field definition
         const gtsam::Point3 bias_; //< bias (unused in MagPose3Factor)
     public:
         /* Constructor */
         MagPose3Factor(gtsam::Key pose3key, const gtsam::Point3 &measured, double scale, const gtsam::Unit3 &direction, const gtsam::Point3 &bias, const gtsam::SharedNoiseModel &model) :
-                gtsam::NoiseModelFactor1<gtsam::Pose3>(model, pose3key), m_measurement(measured), B_Global(scale * direction), bias_(bias) {}
+                gtsam::NoiseModelFactorN<gtsam::Pose3>(model, pose3key), m_measurement(measured), B_Global(scale * direction), bias_(bias) {}
 
         gtsam::Vector evaluateError(const gtsam::Pose3 &pose_k, boost::optional<gtsam::Matrix &> H = boost::none) const;
 

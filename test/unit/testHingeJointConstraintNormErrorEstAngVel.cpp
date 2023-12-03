@@ -125,11 +125,11 @@ int test_givenPriorsOn5Variables(uint numTests, double errorTol, const gtsam::Sh
         /*
         double finalJointVelErr=jointConnectionVelocityError(est_poseA,est_linVelA,est_angVelA,est_vecA,est_poseB,est_linVelB,est_angVelB,est_vecB);
         std::cout<<"    test #"<<i<<": initial velocity error: "<<initialJointVelErr<<", final error: "<<finalJointVelErr<<"  |  optimizer error "<<initialError<<" --> "<<finalError<<" ("<<nIterations<<" iterations, with "<<mygraph.size()<<" factors and "<<myVals.size()<<" values)"<<std::endl;
-        std::cout<<"        initial: linVelA=["<<linVelA.transpose()<<"], angVelA=["<<angVelA.transpose()<<"], vecA=["<<vecA.vector().transpose()<<"] ==> jointVelA=["<<(jointVelocity(poseA,linVelA,angVelA,vecA)).transpose()<<"]"<<std::endl;
-        std::cout<<"                 linVelB=["<<linVelB.transpose()<<"], angVelB=["<<angVelB.transpose()<<"], vecB=["<<vecB.vector().transpose()<<"] ==> jointVelB=["<<(jointVelocity(poseB,linVelB,angVelB,vecB)).transpose()<<"]"<<std::endl;
+        std::cout<<"        initial: linVelA=["<<linVelA.transpose()<<"], angVelA=["<<angVelA.transpose()<<"], vecA=["<<vecA.transpose()<<"] ==> jointVelA=["<<(jointVelocity(poseA,linVelA,angVelA,vecA)).transpose()<<"]"<<std::endl;
+        std::cout<<"                 linVelB=["<<linVelB.transpose()<<"], angVelB=["<<angVelB.transpose()<<"], vecB=["<<vecB.transpose()<<"] ==> jointVelB=["<<(jointVelocity(poseB,linVelB,angVelB,vecB)).transpose()<<"]"<<std::endl;
         std::cout<<"                     ==> vel diff=["<<(jointVelocity(poseA,linVelA,angVelA,vecA)-jointVelocity(poseB,linVelB,angVelB,vecB)).transpose()<<"], norm="<<(jointVelocity(poseA,linVelA,angVelA,vecA)-jointVelocity(poseB,linVelB,angVelB,vecB)).norm()<<std::endl;
-        std::cout<<"        optimized: linVelA=["<<est_linVelA.transpose()<<"], angVelA=["<<est_angVelA.transpose()<<"], vecA=["<<est_vecA.vector().transpose()<<"] ==> jointVelA=["<<(jointVelocity(est_poseA,est_linVelA,est_angVelA,est_vecA)).transpose()<<"]"<<std::endl;
-        std::cout<<"                   linVelB=["<<est_linVelB.transpose()<<"], angVelB=["<<est_angVelB.transpose()<<"], vecB=["<<est_vecB.vector().transpose()<<"] ==> jointVelB=["<<(jointVelocity(est_poseB,est_linVelB,est_angVelB,est_vecB)).transpose()<<"]"<<std::endl;
+        std::cout<<"        optimized: linVelA=["<<est_linVelA.transpose()<<"], angVelA=["<<est_angVelA.transpose()<<"], vecA=["<<est_vecA.transpose()<<"] ==> jointVelA=["<<(jointVelocity(est_poseA,est_linVelA,est_angVelA,est_vecA)).transpose()<<"]"<<std::endl;
+        std::cout<<"                   linVelB=["<<est_linVelB.transpose()<<"], angVelB=["<<est_angVelB.transpose()<<"], vecB=["<<est_vecB.transpose()<<"] ==> jointVelB=["<<(jointVelocity(est_poseB,est_linVelB,est_angVelB,est_vecB)).transpose()<<"]"<<std::endl;
         std::cout<<"                     ==> vel diff=["<<(jointVelocity(est_poseA,est_linVelA,est_angVelA,est_vecA)-jointVelocity(est_poseB,est_linVelB,est_angVelB,est_vecB)).transpose()<<"], norm="<<(jointVelocity(est_poseA,est_linVelA,est_angVelA,est_vecA)-jointVelocity(est_poseB,est_linVelB,est_angVelB,est_vecB)).norm()<<std::endl;
         */
         if(finalError>errorTol){ // if greater than tolerance
@@ -203,20 +203,20 @@ int test_derivative_numerically(const bioslam::HingeJointConstraintNormErrEstAng
     //    I think to call it it's numericalDerivativeXY where X=number of input variables and Y=which Jacobian you want to test
     //    templates are: <output type (typically gtsam::Vector), then the input argument types in order)
     gtsam::Matrix numericalH1=gtsam::numericalDerivative51<gtsam::Vector,gtsam::Pose3,gtsam::Vector3,gtsam::Pose3,gtsam::Vector3,gtsam::Unit3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Unit3&)>
-                    (boost::bind(&bioslam::HingeJointConstraintNormErrEstAngVel::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5)), poseA, angVelA, poseB, angVelB, axisA, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Unit3&)>
+                    (std::bind(&bioslam::HingeJointConstraintNormErrEstAngVel::evaluateErrorNoJacCall, fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4,std::placeholders::_5)), poseA, angVelA, poseB, angVelB, axisA, 1e-5);
     gtsam::Matrix numericalH2=gtsam::numericalDerivative52<gtsam::Vector,gtsam::Pose3,gtsam::Vector3,gtsam::Pose3,gtsam::Vector3,gtsam::Unit3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Unit3&)>
-                    (boost::bind(&bioslam::HingeJointConstraintNormErrEstAngVel::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5)), poseA, angVelA, poseB, angVelB, axisA, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Unit3&)>
+                    (std::bind(&bioslam::HingeJointConstraintNormErrEstAngVel::evaluateErrorNoJacCall, fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4,std::placeholders::_5)), poseA, angVelA, poseB, angVelB, axisA, 1e-5);
     gtsam::Matrix numericalH3=gtsam::numericalDerivative53<gtsam::Vector,gtsam::Pose3,gtsam::Vector3,gtsam::Pose3,gtsam::Vector3,gtsam::Unit3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Unit3&)>
-                    (boost::bind(&bioslam::HingeJointConstraintNormErrEstAngVel::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5)), poseA, angVelA, poseB, angVelB, axisA, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Unit3&)>
+                    (std::bind(&bioslam::HingeJointConstraintNormErrEstAngVel::evaluateErrorNoJacCall, fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4,std::placeholders::_5)), poseA, angVelA, poseB, angVelB, axisA, 1e-5);
     gtsam::Matrix numericalH4=gtsam::numericalDerivative54<gtsam::Vector,gtsam::Pose3,gtsam::Vector3,gtsam::Pose3,gtsam::Vector3,gtsam::Unit3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Unit3&)>
-                    (boost::bind(&bioslam::HingeJointConstraintNormErrEstAngVel::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5)), poseA, angVelA, poseB, angVelB, axisA, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Unit3&)>
+                    (std::bind(&bioslam::HingeJointConstraintNormErrEstAngVel::evaluateErrorNoJacCall, fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4,std::placeholders::_5)), poseA, angVelA, poseB, angVelB, axisA, 1e-5);
     gtsam::Matrix numericalH5=gtsam::numericalDerivative55<gtsam::Vector,gtsam::Pose3,gtsam::Vector3,gtsam::Pose3,gtsam::Vector3,gtsam::Unit3>(
-            boost::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Unit3&)>
-                    (boost::bind(&bioslam::HingeJointConstraintNormErrEstAngVel::evaluateErrorNoJacCall, fac, _1, _2, _3, _4, _5)), poseA, angVelA, poseB, angVelB, axisA, 1e-5);
+            std::function<gtsam::Vector(const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Pose3&, const gtsam::Vector3&, const gtsam::Unit3&)>
+                    (std::bind(&bioslam::HingeJointConstraintNormErrEstAngVel::evaluateErrorNoJacCall, fac,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3,std::placeholders::_4,std::placeholders::_5)), poseA, angVelA, poseB, angVelB, axisA, 1e-5);
     // now test using gtsam::assert_equal()
     bool testH1=gtsam::assert_equal(derivedH1,numericalH1,1e-6);
     bool testH2=gtsam::assert_equal(derivedH2,numericalH2,1e-6);

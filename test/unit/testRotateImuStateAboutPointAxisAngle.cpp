@@ -30,6 +30,8 @@ bool test1(){
     mathutils::rotateImuPoseAboutPointAxisAngle(pnew,rotPointNav,rotAxisNav,rotAngle);
     // check
     pnew.print("p1= ");
-    testutils::runtime_assert(pnew.translation().equals(gtsam::Point3(-1.0*sqrt(2.0)/2.0,sqrt(2.0)/2.0,0.0)));
+    if(!gtsam::assert_equal(pnew.translation(),gtsam::Point3(-1.0*sqrt(2.0)/2.0,sqrt(2.0)/2.0,0.0))){
+        throw std::runtime_error("failed to rotate pose about point axis angle!");
+    }
     return true;
 }

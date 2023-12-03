@@ -51,8 +51,8 @@ namespace bioslam {
             gtsam::Vector3 vA=mathutils::sub(vAProx, vADist, dvA_dvAProx, dvA_dvADist);
             gtsam::Vector3 vB=mathutils::sub(vBProx, vBDist, dvB_dvBProx, dvB_dvBDist);
             gtsam::Matrix13 dnvA_dvA, dnvB_dvB; // deriv of norms w.r.t. vectors
-            double nvA=((gtsam::Point3)vA).norm(dnvA_dvA);
-            double nvB=((gtsam::Point3)vB).norm(dnvB_dvB);
+            double nvA=gtsam::norm3(vA,dnvA_dvA);
+            double nvB=gtsam::norm3(vB,dnvB_dvB);
             // err = normA - normB
             // remember the trivial derivative for subtracting two scalars: f(a,b)=a-b => df/da=1, df/db=-1
             double err=nvA-nvB, derr_dnvA=1.0, derr_dnvB=-1.0;

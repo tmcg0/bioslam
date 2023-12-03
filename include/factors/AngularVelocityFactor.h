@@ -13,7 +13,7 @@
 
 namespace bioslam {
 
-    class AngularVelocityFactor : public gtsam::NoiseModelFactor2<gtsam::Vector3, gtsam::imuBias::ConstantBias> {
+    class AngularVelocityFactor : public gtsam::NoiseModelFactorN<gtsam::Vector3, gtsam::imuBias::ConstantBias> {
 
     public:
         // member variables for gyro measurements
@@ -22,7 +22,7 @@ namespace bioslam {
         typedef boost::shared_ptr<AngularVelocityFactor> shared_ptr;
 
         AngularVelocityFactor(const gtsam::Key &estimatedAngVelKey, const gtsam::Key &imuBiasKey, const gtsam::Vector3& angVelMeas, const gtsam::SharedNoiseModel &model) :
-                NoiseModelFactor2<gtsam::Vector3, gtsam::imuBias::ConstantBias>(model, estimatedAngVelKey, imuBiasKey),
+                NoiseModelFactorN<gtsam::Vector3, gtsam::imuBias::ConstantBias>(model, estimatedAngVelKey, imuBiasKey),
                 m_measuredAngVel(angVelMeas) {};
 
         gtsam::Vector evaluateError(const gtsam::Vector3 &estimatedAngVel, const gtsam::imuBias::ConstantBias &imuBias,

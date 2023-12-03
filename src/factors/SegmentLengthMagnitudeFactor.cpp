@@ -54,7 +54,7 @@ namespace bioslam {
             gtsam::Matrix33 dv_dv1, dv_dv2;
             gtsam::Point3 v=mathutils::sub(v1, v2, dv_dv1, dv_dv2);
             gtsam::Matrix13 dn_dv;
-            double n=v.norm(dn_dv);
+            double n=gtsam::norm3(v,dn_dv);
             if(H_v1){ // dn_dv1=dn_dv*dv_dv1
                 *H_v1=dn_dv*dv_dv1;
             }

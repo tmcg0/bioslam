@@ -104,7 +104,7 @@ namespace bioslam {
         gtsam::Matrix36 ds_dxA, ds_dxB; gtsam::Matrix33 ds_dvA, ds_dvB;
         gtsam::Vector3 s=ConstrainedJointCenterPositionFactor::errorModel(xA, xB, vA, vB, ds_dxA, ds_dxB, ds_dvA, ds_dvB);
         gtsam::Matrix13 dn_ds;
-        double n=((gtsam::Point3) s).norm(dn_ds); // norm of measured pt separation
+        double n=gtsam::norm3(s,dn_ds); // norm of measured pt separation
         gtsam::Matrix11 derr_dn; derr_dn(0,0)=1.0; // trivial derivative of below eq.
         double err=n-expectedDist; // err = measured sep. norm - expected sep norm
         if(H_xA){

@@ -20,7 +20,7 @@
 
 namespace bioslam {
 
-class HingeJointConstraintVecErrEstAngVel : public gtsam::NoiseModelFactor5<gtsam::Pose3, gtsam::Vector3, gtsam::Pose3, gtsam::Vector3, gtsam::Unit3> {
+class HingeJointConstraintVecErrEstAngVel : public gtsam::NoiseModelFactorN<gtsam::Pose3, gtsam::Vector3, gtsam::Pose3, gtsam::Vector3, gtsam::Unit3> {
     // ------------------------------------------------------------------------------------ //
     // This factor constrains hinge-like rotation dynamics between the any two IMUs flanking a joint, for the proximal frame axis.
     // error is function of: Proximal IMU Pose (gtsam::Pose3), angular velocity of proximal IMU frame (gtsam::Vector3), Distal IMU Pose (gtsam::Pose3), angular velocity of distal IMU frame (gtsam::Vector3), hinge axis in proximal IMU frame (gtsam::Unit3)
@@ -31,7 +31,7 @@ class HingeJointConstraintVecErrEstAngVel : public gtsam::NoiseModelFactor5<gtsa
         typedef boost::shared_ptr<HingeJointConstraintVecErrEstAngVel> shared_ptr;
 
         HingeJointConstraintVecErrEstAngVel(const gtsam::Key &xA, const gtsam::Key& omegaA, const gtsam::Key &xB, const gtsam::Key& omegaB, const gtsam::Key &axisA, const gtsam::SharedNoiseModel &model):
-                                                            NoiseModelFactor5<gtsam::Pose3, gtsam::Vector3, gtsam::Pose3, gtsam::Vector3, gtsam::Unit3>(model, xA, omegaA, xB, omegaB, axisA) {};
+                                                            NoiseModelFactorN<gtsam::Pose3, gtsam::Vector3, gtsam::Pose3, gtsam::Vector3, gtsam::Unit3>(model, xA, omegaA, xB, omegaB, axisA) {};
         // override evaluteError()
         gtsam::Vector evaluateError(const gtsam::Pose3 &xA, const gtsam::Vector3& omegaA, const gtsam::Pose3 &xB, const gtsam::Vector3& omegaB, const gtsam::Unit3 &axisA,
                                     boost::optional<gtsam::Matrix &> H1 = boost::none, // <- also include optional derivatives
@@ -62,7 +62,7 @@ class HingeJointConstraintVecErrEstAngVel : public gtsam::NoiseModelFactor5<gtsa
     // ------------------------------------- norm error version of these factors ------------------------------------ //
     // -------------------------------------------------------------------------------------------------------------- //
 
-    class HingeJointConstraintNormErrEstAngVel : public gtsam::NoiseModelFactor5<gtsam::Pose3, gtsam::Vector3, gtsam::Pose3, gtsam::Vector3, gtsam::Unit3> {
+    class HingeJointConstraintNormErrEstAngVel : public gtsam::NoiseModelFactorN<gtsam::Pose3, gtsam::Vector3, gtsam::Pose3, gtsam::Vector3, gtsam::Unit3> {
         // ------------------------------------------------------------------------------------ //
         // This factor constrains hinge-like rotation dynamics between the any two IMUs flanking a joint, for the proximal frame axis.
         // error is function of: Proximal IMU Pose (gtsam::Pose3), angular velocity of proximal IMU frame (gtsam::Vector3), Distal IMU Pose (gtsam::Pose3), angular velocity of distal IMU frame (gtsam::Vector3), hinge axis in proximal IMU frame (gtsam::Unit3)
@@ -73,7 +73,7 @@ class HingeJointConstraintVecErrEstAngVel : public gtsam::NoiseModelFactor5<gtsa
         typedef boost::shared_ptr<HingeJointConstraintNormErrEstAngVel> shared_ptr;
 
         HingeJointConstraintNormErrEstAngVel(const gtsam::Key &xA, const gtsam::Key& omegaA, const gtsam::Key &xB, const gtsam::Key& omegaB, const gtsam::Key &axisA, const gtsam::SharedNoiseModel &model):
-                NoiseModelFactor5<gtsam::Pose3, gtsam::Vector3, gtsam::Pose3, gtsam::Vector3, gtsam::Unit3>(model, xA, omegaA, xB, omegaB, axisA) {};
+                NoiseModelFactorN<gtsam::Pose3, gtsam::Vector3, gtsam::Pose3, gtsam::Vector3, gtsam::Unit3>(model, xA, omegaA, xB, omegaB, axisA) {};
         // override evaluteError()
         gtsam::Vector evaluateError(const gtsam::Pose3 &xA, const gtsam::Vector3& omegaA, const gtsam::Pose3 &xB, const gtsam::Vector3& omegaB, const gtsam::Unit3 &axisA,
                                     boost::optional<gtsam::Matrix &> H1 = boost::none, // <- also include optional derivatives

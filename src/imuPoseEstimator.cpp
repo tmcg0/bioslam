@@ -179,7 +179,7 @@ void imuPoseEstimator::setupCombinedImuFactor(){
     m_time.resize(m_nKeyframes); m_time[0]=m_imu.relTimeSec[0];
     std::cout<<"setup initial states (t="<<m_time[0]<<" sec):"<<std::endl;
     std::cout<<"    orientation: q=["<<initPose[0].rotation().quaternion()[0]<<", "<<initPose[0].rotation().quaternion()[1]<<", "<<initPose[0].rotation().quaternion()[2]<<", "<<initPose[0].rotation().quaternion()[3]<<"]"<<std::endl;
-    std::cout<<"    position: p=["<<initPose[0].translation().vector().transpose()<<"]"<<std::endl;
+    std::cout<<"    position: p=["<<initPose[0].translation().transpose()<<"]"<<std::endl;
     std::cout<<"    velocity: v=["<<initVel.row(0)<<"]"<<std::endl;
     std::cout<<"    imu bias: accel=["<<m_priorAccelBias.transpose()<<"], gyro = ["<<m_priorGyroBias.transpose()<<"]"<<std::endl;
     // setup any priors
@@ -215,7 +215,7 @@ void imuPoseEstimator::setupCombinedImuFactor(){
         m_graph+=gtsam::CombinedImuFactor(m_poseKeys[k], m_velKeys[k],m_poseKeys[k+1], m_velKeys[k+1], m_imuBiasKeys[k],m_imuBiasKeys[k+1], imu_preintegrated_);
         if(m_useMagnetometer) {
             gtsam::Point3 magMeas=gtsam::Point3(gtsamutils::mags_Vector3(m_imu,j)); m_downsampledMagMeas.push_back(magMeas);
-            //std::cout<<"mag meas = "<<magMeas.vector().transpose()<<std::endl;
+            //std::cout<<"mag meas = "<<magMeas.transpose()<<std::endl;
             m_graph += bioslam::MagPose3Factor(m_poseKeys[k+1], magMeas, mag_scale_G, mag_dir_NWU, mag_bias,m_magnetometerNoiseModel);
         }
         // add initial values at k+1 (remember you set everything at k=0 before this loop)
@@ -262,7 +262,7 @@ void imuPoseEstimator::setupImuFactorStaticBias() {
     m_time.resize(m_nKeyframes); m_time[0]=m_imu.relTimeSec[0];
     std::cout<<"setup initial states (t="<<m_time[0]<<" sec):"<<std::endl;
     std::cout<<"    orientation: q=["<<initPose[0].rotation().quaternion()[0]<<", "<<initPose[0].rotation().quaternion()[1]<<", "<<initPose[0].rotation().quaternion()[2]<<", "<<initPose[0].rotation().quaternion()[3]<<"]"<<std::endl;
-    std::cout<<"    position: p=["<<initPose[0].translation().vector().transpose()<<"]"<<std::endl;
+    std::cout<<"    position: p=["<<initPose[0].translation().transpose()<<"]"<<std::endl;
     std::cout<<"    velocity: v=["<<initVel.row(0)<<"]"<<std::endl;
     std::cout<<"    imu bias: accel=["<<m_priorAccelBias.transpose()<<"], gyro = ["<<m_priorGyroBias.transpose()<<"]"<<std::endl;
     // setup any priors
@@ -298,7 +298,7 @@ void imuPoseEstimator::setupImuFactorStaticBias() {
         m_graph+=gtsam::ImuFactor(m_poseKeys[k], m_velKeys[k],m_poseKeys[k+1], m_velKeys[k+1], m_imuBiasKeys[0], imu_preintegrated_);
         if(m_useMagnetometer) {
             gtsam::Point3 magMeas=gtsam::Point3(gtsamutils::mags_Vector3(m_imu,j)); m_downsampledMagMeas.push_back(magMeas);
-            //std::cout<<"mag meas = "<<magMeas.vector().transpose()<<std::endl;
+            //std::cout<<"mag meas = "<<magMeas.transpose()<<std::endl;
             m_graph += bioslam::MagPose3Factor(m_poseKeys[k+1], magMeas, mag_scale_G, mag_dir_NWU, mag_bias,m_magnetometerNoiseModel);
         }
         // add initial values at k+1 (remember you set everything at k=0 before this loop)
@@ -951,7 +951,7 @@ std::vector<gtsam::Vector3> imuPoseEstimator::consistentVelocitySetFromPositions
     std::vector<gtsam::Vector3> vel(pos.size());
     vel[0]=gtsam::Vector3(0.0,0.0,0.0);
     for(uint k=1; k<pos.size(); k++){
-        vel[k]=(pos[k].vector()-pos[k-1].vector())/dt;
+        vel[k]=(pos[k]-pos[k-1])/dt;
     }
     return vel;
 }
