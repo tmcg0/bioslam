@@ -1892,7 +1892,7 @@ void lowerBodyPoseEstimator::adjustDistalImuTrajectoryForInboundJointAngles(cons
     // () calculate original joint angles
     std::vector<gtsam::Rot3> R_DistalSeg_to_N_orig = bioutils::get_R_Segment_to_N(gtsamutils::Pose3VectorToRot3Vector(distalImuPose), rightAxisDist, distalImuToProxJointCtr,distalImuToDistalJointCtr);
     Eigen::MatrixXd origJointAngles=bioutils::consistent3DofJcsAngles(R_ProxSeg_to_N,R_DistalSeg_to_N_orig); // [flexion,adduction,externalRot]
-    gtsam::Rot3 R_B_to_B2=gtsam::Rot3::identity(),R_DistalSeg_to_N_k=gtsam::Rot3::identity();
+    gtsam::Rot3 R_B_to_B2=gtsam::Rot3::Identity(),R_DistalSeg_to_N_k=gtsam::Rot3::Identity();
     // () apriori centering of median int/ext rotation angle to zero
     if(zeroMedianCenterIntExtRot){
         Eigen::VectorXd intExtRotAngs=origJointAngles.col(2);
