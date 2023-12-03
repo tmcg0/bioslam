@@ -1,4 +1,4 @@
-name: v1.0.1 Dockerfile
+name: v1.1 Dockerfile
 
 on: [push, pull_request, workflow_dispatch]
 
