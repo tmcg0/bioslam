@@ -17,8 +17,8 @@
 imuPoseEstimator test_posthoc_smoother(const std::string& dataFileToUse, const std::string& imuLabel);
 
 int main(){
+    
     // (1) attempt to construct imu object
-
     std::string dataFileToUse=testutils::getTestDataFile("20170411-154746-Y1_TUG_6.h5");
     std::map<std::string,imu> ImuMap=imu::getImuMapFromDataFile(testutils::getTestDataFile("20170411-154746-Y1_TUG_6.h5"));
     imu::printLabelsInFile(dataFileToUse);
