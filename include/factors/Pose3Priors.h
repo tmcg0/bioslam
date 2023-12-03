@@ -17,7 +17,7 @@ namespace bioslam {
     // class to put a simple translation prior on a gtsam::Pose3
     // -------------------------------------------------------------------------------------------------------------- //
 
-    class Pose3TranslationPrior : public gtsam::NoiseModelFactor1<gtsam::Pose3> {
+    class Pose3TranslationPrior : public gtsam::NoiseModelFactorN<gtsam::Pose3> {
 
     public:
         gtsam::Vector3 m_priorTranslation;
@@ -25,7 +25,7 @@ namespace bioslam {
         typedef boost::shared_ptr<Pose3TranslationPrior> shared_ptr;
 
         Pose3TranslationPrior(const gtsam::Key &poseKey, const gtsam::Vector3& priorTranslation, const gtsam::SharedNoiseModel &model) :
-                NoiseModelFactor1<gtsam::Pose3>(model, poseKey), m_priorTranslation(priorTranslation) {};
+                NoiseModelFactorN<gtsam::Pose3>(model, poseKey), m_priorTranslation(priorTranslation) {};
 
         static gtsam::Vector3 errorModel(const gtsam::Pose3& pose, const gtsam::Vector3& priorTranslation, boost::optional<gtsam::Matrix36&> H_1 = boost::none);
 
@@ -51,7 +51,7 @@ namespace bioslam {
     //     refVecNav and upVecNav should be orthogonal
     // -------------------------------------------------------------------------------------------------------------- //
 
-    class Pose3CompassPrior : public gtsam::NoiseModelFactor1<gtsam::Pose3> {
+    class Pose3CompassPrior : public gtsam::NoiseModelFactorN<gtsam::Pose3> {
 
     public:
         gtsam::Vector3 m_refVecLocal;
@@ -63,7 +63,7 @@ namespace bioslam {
         typedef boost::shared_ptr<Pose3CompassPrior> shared_ptr;
 
         Pose3CompassPrior(const gtsam::Key &poseKey, const gtsam::Vector3& refVecLocal, const gtsam::Vector3& refVecNav, const gtsam::Vector3& upVecNav, double expectedAng, const gtsam::SharedNoiseModel &model) :
-                NoiseModelFactor1<gtsam::Pose3>(model, poseKey), m_refVecLocal(refVecLocal), m_refVecNav(refVecNav), m_upVecNav(upVecNav), m_expectedAng(expectedAng) {
+                NoiseModelFactorN<gtsam::Pose3>(model, poseKey), m_refVecLocal(refVecLocal), m_refVecNav(refVecNav), m_upVecNav(upVecNav), m_expectedAng(expectedAng) {
             if(expectedAng>M_PI || expectedAng<-M_PI){
                 throw std::runtime_error("Pose3CompassPrior: prior angle "+std::to_string(expectedAng)+" out of bounds. angle should be in [-pi,pi]");
             }
