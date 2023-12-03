@@ -2079,22 +2079,21 @@ void lowerBodyPoseEstimator::setValuesFromFile(gtsam::Values& vals, const std::s
     rootGroup.getDataSet("Time").read(time);
     if(time.empty()){  throw std::runtime_error("could not read /Time dataset (size is zero)"); }
     // read positions and quaternions. remember that the measured Vicon positions were in mm!
-    Eigen::MatrixXd p_SacrumImu, p_RThighImu, p_RShankImu, p_RFootImu, p_LThighImu, p_LShankImu, p_LFootImu;
-    Eigen::MatrixXd q_SacrumImu_to_N, q_RThighImu_to_N, q_RShankImu_to_N, q_RFootImu_to_N, q_LThighImu_to_N, q_LShankImu_to_N, q_LFootImu_to_N;
-    rootGroup.getDataSet("p_SacrumImu").read(p_SacrumImu);
-    rootGroup.getDataSet("p_RThighImu").read(p_RThighImu);
-    rootGroup.getDataSet("p_RShankImu").read(p_RShankImu);
-    rootGroup.getDataSet("p_RFootImu").read(p_RFootImu);
-    rootGroup.getDataSet("p_LThighImu").read(p_LThighImu);
-    rootGroup.getDataSet("p_LShankImu").read(p_LShankImu);
-    rootGroup.getDataSet("p_LFootImu").read(p_LFootImu);
-    rootGroup.getDataSet("q_SacrumImu_to_N").read(q_SacrumImu_to_N);
-    rootGroup.getDataSet("q_RThighImu_to_N").read(q_RThighImu_to_N);
-    rootGroup.getDataSet("q_RShankImu_to_N").read(q_RShankImu_to_N);
-    rootGroup.getDataSet("q_RFootImu_to_N").read(q_RFootImu_to_N);
-    rootGroup.getDataSet("q_LThighImu_to_N").read(q_LThighImu_to_N);
-    rootGroup.getDataSet("q_LShankImu_to_N").read(q_LShankImu_to_N);
-    rootGroup.getDataSet("q_LFootImu_to_N").read(q_LFootImu_to_N);
+    Eigen::MatrixXd p_SacrumImu = H5Easy::load<Eigen::MatrixXd>(calH5File, "/p_SacrumImu");
+    Eigen::MatrixXd p_RThighImu = H5Easy::load<Eigen::MatrixXd>(calH5File, "/p_RThighImu");
+    Eigen::MatrixXd p_RShankImu = H5Easy::load<Eigen::MatrixXd>(calH5File, "/p_RShankImu");
+    Eigen::MatrixXd p_RFootImu = H5Easy::load<Eigen::MatrixXd>(calH5File, "/p_RFootImu");
+    Eigen::MatrixXd p_LThighImu = H5Easy::load<Eigen::MatrixXd>(calH5File, "/p_LThighImu");
+    Eigen::MatrixXd p_LShankImu = H5Easy::load<Eigen::MatrixXd>(calH5File, "/p_LShankImu");
+    Eigen::MatrixXd p_LFootImu = H5Easy::load<Eigen::MatrixXd>(calH5File, "/p_LFootImu");
+    Eigen::MatrixXd q_SacrumImu_to_N = H5Easy::load<Eigen::MatrixXd>(calH5File, "/q_SacrumImu_to_N");
+    Eigen::MatrixXd q_RThighImu_to_N = H5Easy::load<Eigen::MatrixXd>(calH5File, "/q_RThighImu_to_N");
+    Eigen::MatrixXd q_RShankImu_to_N = H5Easy::load<Eigen::MatrixXd>(calH5File, "/q_RShankImu_to_N");
+    Eigen::MatrixXd q_RFootImu_to_N = H5Easy::load<Eigen::MatrixXd>(calH5File, "/q_RFootImu_to_N");
+    Eigen::MatrixXd q_LThighImu_to_N = H5Easy::load<Eigen::MatrixXd>(calH5File, "/q_LThighImu_to_N");
+    Eigen::MatrixXd q_LShankImu_to_N = H5Easy::load<Eigen::MatrixXd>(calH5File, "/q_LShankImu_to_N");
+    Eigen::MatrixXd q_LFootImu_to_N = H5Easy::load<Eigen::MatrixXd>(calH5File, "/q_LFootImu_to_N");
+
     if(p_SacrumImu.rows()!=3){ throw std::runtime_error("was expecting input position data to be a 3xN matrix"); }
     if(q_SacrumImu_to_N.rows()!=4){ throw std::runtime_error("was expecting input quat data to be a 4xN matrix"); }
     if(q_SacrumImu_to_N.cols()!=p_SacrumImu.cols()){ throw std::runtime_error("pos and quat matrices don't have same length (number of columns)"); }
