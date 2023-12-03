@@ -14,11 +14,11 @@
 #include <gtsamutils.h>
 
 namespace bioslam {
-class ConstrainedJointCenterVelocityFactor : public gtsamutils::NoiseModelFactor8<gtsam::Pose3, gtsam::Vector3, gtsam::Vector3, gtsam::Point3, gtsam::Pose3, gtsam::Vector3, gtsam::Vector3, gtsam::Point3> {
+class ConstrainedJointCenterVelocityFactor : public gtsamutils::NoiseModelFactorN<gtsam::Pose3, gtsam::Vector3, gtsam::Vector3, gtsam::Point3, gtsam::Pose3, gtsam::Vector3, gtsam::Vector3, gtsam::Point3> {
     public:
         /* Constructor */
         ConstrainedJointCenterVelocityFactor(const gtsam::Key& poseA, const gtsam::Key& linVelA, const gtsam::Key& angVelA, const gtsam::Key& sA, const gtsam::Key& poseB, const gtsam::Key& linVelB, const gtsam::Key& angVelB, const gtsam::Key& sB, const gtsam::SharedNoiseModel &model) :
-                gtsamutils::NoiseModelFactor8<gtsam::Pose3, gtsam::Vector3, gtsam::Vector3, gtsam::Point3, gtsam::Pose3, gtsam::Vector3, gtsam::Vector3, gtsam::Point3>(model, poseA, linVelA, angVelA, sA, poseB, linVelB, angVelB, sB) {};
+                gtsamutils::NoiseModelFactorN<gtsam::Pose3, gtsam::Vector3, gtsam::Vector3, gtsam::Point3, gtsam::Pose3, gtsam::Vector3, gtsam::Vector3, gtsam::Point3>(model, poseA, linVelA, angVelA, sA, poseB, linVelB, angVelB, sB) {};
 
         gtsam::Vector evaluateError(const gtsam::Pose3& poseA, const gtsam::Vector3& linVelA, const gtsam::Vector3& angVelA, const gtsam::Point3& sA, const gtsam::Pose3& poseB, const gtsam::Vector3& linVelB, const gtsam::Vector3& angVelB, const gtsam::Point3& sB,
                                     boost::optional<gtsam::Matrix &> H1 = boost::none, // include optional jacobians H
@@ -60,11 +60,11 @@ class ConstrainedJointCenterVelocityFactor : public gtsamutils::NoiseModelFactor
     // ------------------------------------------------------------------------------------------------------------------ //
     // ------------------------------------ norm error model version of this factor ------------------------------------- //
     // ------------------------------------------------------------------------------------------------------------------ //
-    class ConstrainedJointCenterNormVelocityFactor : public gtsamutils::NoiseModelFactor8<gtsam::Pose3, gtsam::Vector3, gtsam::Vector3, gtsam::Point3, gtsam::Pose3, gtsam::Vector3, gtsam::Vector3, gtsam::Point3> {
+    class ConstrainedJointCenterNormVelocityFactor : public gtsamutils::NoiseModelFactorN<gtsam::Pose3, gtsam::Vector3, gtsam::Vector3, gtsam::Point3, gtsam::Pose3, gtsam::Vector3, gtsam::Vector3, gtsam::Point3> {
     public:
         /* Constructor */
         ConstrainedJointCenterNormVelocityFactor(const gtsam::Key& poseA, const gtsam::Key& linVelA, const gtsam::Key& angVelA, const gtsam::Key& sA, const gtsam::Key& poseB, const gtsam::Key& linVelB, const gtsam::Key& angVelB, const gtsam::Key& sB, const gtsam::SharedNoiseModel &model) :
-                gtsamutils::NoiseModelFactor8<gtsam::Pose3, gtsam::Vector3, gtsam::Vector3, gtsam::Point3, gtsam::Pose3, gtsam::Vector3, gtsam::Vector3, gtsam::Point3>(model, poseA, linVelA, angVelA, sA, poseB, linVelB, angVelB, sB) {};
+                gtsamutils::NoiseModelFactorN<gtsam::Pose3, gtsam::Vector3, gtsam::Vector3, gtsam::Point3, gtsam::Pose3, gtsam::Vector3, gtsam::Vector3, gtsam::Point3>(model, poseA, linVelA, angVelA, sA, poseB, linVelB, angVelB, sB) {};
 
         gtsam::Vector evaluateError(const gtsam::Pose3& poseA, const gtsam::Vector3& linVelA, const gtsam::Vector3& angVelA, const gtsam::Point3& sA, const gtsam::Pose3& poseB, const gtsam::Vector3& linVelB, const gtsam::Vector3& angVelB, const gtsam::Point3& sB,
                                     boost::optional<gtsam::Matrix &> H1 = boost::none, // include optional jacobians H
