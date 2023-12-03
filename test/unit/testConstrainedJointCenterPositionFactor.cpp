@@ -228,8 +228,8 @@ int assertJointCtrCalcMethodsSame(){
     gtsam::Matrix33 dp1, dp2;
     gtsam::Point3 calc1=jointCtrFromImuPoseAndVec_SO3_R3(T,p,dt1,dp1);
     gtsam::Point3 calc2=jointCtrFromImuPoseAndVec_SE3(T,p,dt2,dp2);
-    // test that their results are the same
-    if(!calc1.equals(calc2)){
+    // compare if calc1 and calc2 are equal
+    if(!gtsam::assert_equal(calc1,calc2)){
         throw std::runtime_error("expected calculation methods to be the same");
     }
     // test that their jacobians are the same

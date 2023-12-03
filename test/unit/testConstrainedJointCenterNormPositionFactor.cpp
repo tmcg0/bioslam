@@ -231,7 +231,12 @@ int assertJointCtrCalcMethodsSame(){
     gtsam::Point3 p=testutils::randomPoint3();
     gtsam::Point3 calc1=jointCtrFromImuPoseAndVec_SO3_R3(T,p);
     gtsam::Point3 calc2=jointCtrFromImuPoseAndVec_SE3(T,p);
-    testutils::runtime_assert(calc1.equals(calc2));
+    if(!gtsam::assert_equal(calc1,calc2)){
+        std::cerr<<"ERROR: joint ctr calc methods are not the same!"<<std::endl;
+        std::cerr<<"calc1="<<calc1.transpose()<<std::endl;
+        std::cerr<<"calc2="<<calc2.transpose()<<std::endl;
+        return 1;
+    }
     return 0;
 }
 
