@@ -3,7 +3,7 @@ name: v1.0.1 Dockerfile
 on: [push, pull_request, workflow_dispatch]
 
 env:
-  DOCKERFILE_NAME: bioslam1.0.1-gtsam4.0.3-ubu20.Dockerfile
+  DOCKERFILE_NAME: "bioslam1.0.1-gtsam4.0.3-ubu20.Dockerfile"
 
 jobs:
   duplicate_job_check:
@@ -36,18 +36,26 @@ jobs:
       with:
         # Checkout as many commits as needed for the diff
         fetch-depth: 2
-    - shell: pwsh
-      id: check_file_changed
+
+    - id: check_file_changed
+      name: Check if Dockerfile changed
       run: |
-        # Diff HEAD with the previous commit
-        $diff = git diff --name-only HEAD^ HEAD
+        # Diff HEAD with the previous commit (a list of changed files)
+        diff=$(git diff --name-only HEAD^ HEAD)
+        # check if the Dockerfile at docker/$DOCKERFILE_NAME is in the diff
+        # Use || true to prevent failure if grep doesn't find a match
+        DockerfileDiff=$(echo "$diff" | grep "docker/$DOCKERFILE_NAME" || true)
+        # if the Dockerfile is in the diff, then set HasDiff to True
+        if [ -z "$DockerfileDiff" ]; then
+          HasDiff="False"
+        else
+          HasDiff="True"
+        fi
+        # echo the output to $GITHUB_OUTPUT
+        echo "file_changed=$HasDiff" >> "$GITHUB_OUTPUT"
 
-        # check if the Dockerfile has changed (added, modified, deleted) at /docker/$DOCKERFILE_NAME
-        $DockerfileDiff = $diff | Where-Object { $_ -match '^docker/$env:DOCKERFILE_NAME' }
-        $HasDiff = $DockerfileDiff.Length -gt 0
-
-        # Set the output named "file_changed"
-        Write-Host "::set-output name=file_changed::$HasDiff"
+    - name: print if file changed
+      run: echo "file_changed=${{ steps.check_file_changed.outputs.file_changed }}"
 
   test:
     name: Test Dockerfile 
@@ -61,7 +69,7 @@ jobs:
 
     - name: Build and run docker image
       run: |
-        docker build -t bioslam -f ./docker/bioslam1.0.1-gtsam4.0.3-ubu20.Dockerfile ./docker
+        docker build -t bioslam -f ./docker/$DOCKERFILE_NAME ./docker
         docker run -id --name bioslam bioslam
 
     - name: Run tests

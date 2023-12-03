@@ -26,6 +26,10 @@ LABEL maintainer="Tim McGrath <t.mike.mcgrath@gmail.com>"
 ARG N_JOBS=4
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV eigen_version=3.3.9
+ENV gtsam_version=4.0.3
+ENV highfive_version=v2.3.1
+ENV bioslam_version=v1.0.1
 
 # install package dependencies
 RUN apt-get update && \
@@ -41,14 +45,14 @@ RUN apt-get update && \
 
 # install Eigen
 WORKDIR /usr/src/
-RUN git clone --single-branch --branch 3.3.9 https://gitlab.com/libeigen/eigen eigen3
+RUN git clone --single-branch --branch ${eigen_version} https://gitlab.com/libeigen/eigen eigen3
 WORKDIR /usr/src/eigen3/build/
 RUN cmake ..
 RUN make install -j${N_JOBS}
 
 # Install GTSAM
 WORKDIR /usr/src/
-RUN git clone --depth 1 --branch 4.0.3 https://github.com/borglab/gtsam.git
+RUN git clone --depth 1 --branch ${gtsam_version} https://github.com/borglab/gtsam.git
 WORKDIR /usr/src/gtsam/build
 RUN cmake \
     -DCMAKE_BUILD_TYPE=Release \
