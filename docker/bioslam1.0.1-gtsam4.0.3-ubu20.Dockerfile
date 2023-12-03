@@ -73,9 +73,9 @@ RUN make install -j${N_JOBS} && make clean
 # add /usr/local/lib to LD_LIBRARY_PATH for dynamic linking (in bash only!)
 RUN echo "export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:/usr/local/lib" >> /root/.bashrc
 
-# install HighFive v2.3.1
+# install HighFive
 WORKDIR /usr/src/
-RUN git clone --depth 1 --branch v2.3.1 https://github.com/BlueBrain/HighFive
+RUN git clone --depth 1 --branch ${highfive_version} https://github.com/BlueBrain/HighFive
 WORKDIR /usr/src/HighFive/build/
 RUN cmake ..
 RUN make install -j${N_JOBS}
@@ -89,7 +89,7 @@ RUN make install -j${N_JOBS}
 
 # install bioslam
 WORKDIR /usr/src/
-RUN git clone --depth 1 --branch v1.0.1 https://github.com/tmcg0/bioslam
+RUN git clone --depth 1 --branch ${bioslam_version} https://github.com/tmcg0/bioslam
 WORKDIR /usr/src/bioslam/build/
 RUN cmake \
     -DBIOSLAM_BUILD_MATLAB_WRAPPER=OFF \
