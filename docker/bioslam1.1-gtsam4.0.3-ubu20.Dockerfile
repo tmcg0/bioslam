@@ -71,13 +71,6 @@ WORKDIR /usr/src/HighFive/build/
 RUN cmake ..
 RUN make install -j${N_JOBS}
 
-# install imuDataUtils
-WORKDIR /usr/src/
-RUN git clone --depth 1 --branch v0.0-alpha https://github.com/tmcg0/imuDataUtils
-WORKDIR /usr/src/imuDataUtils/build/
-RUN cmake ..
-RUN make install -j${N_JOBS}
-
 # install bioslam
 WORKDIR /usr/src/
 RUN git clone --depth 1 --branch v1.1 https://github.com/tmcg0/bioslam
