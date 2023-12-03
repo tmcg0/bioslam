@@ -147,7 +147,7 @@ namespace gtsamutils{
 
     // --- 7-argument numerical derivatives --- //
     // 7 argument derivative, argument #1
-    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7>
+    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, int N = gtsam::traits<X1>::dimension>
     typename internal::FixedSizeMatrix<Y,X1>::type numericalDerivative71(
             std::function<Y(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&)> h, const X1& x1,
             const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, double delta = 1e-5) {
@@ -164,7 +164,7 @@ namespace gtsamutils{
     }
 
     // 7 argument derivative, argument #2
-    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7>
+    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, int N = gtsam::traits<X2>::dimension>
     typename internal::FixedSizeMatrix<Y,X2>::type numericalDerivative72(
             std::function<Y(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&)> h, const X1& x1,
             const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, double delta = 1e-5) {
@@ -181,7 +181,7 @@ namespace gtsamutils{
     }
 
     // 7 argument derivative, argument #3
-    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7>
+    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, int N = gtsam::traits<X3>::dimension>
     typename internal::FixedSizeMatrix<Y,X3>::type numericalDerivative73(
             std::function<Y(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&)> h, const X1& x1,
             const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, double delta = 1e-5) {
@@ -198,7 +198,7 @@ namespace gtsamutils{
     }
 
     // 7 argument derivative, argument #4
-    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7>
+    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, int N = gtsam::traits<X4>::dimension>
     typename internal::FixedSizeMatrix<Y,X4>::type numericalDerivative74(
             std::function<Y(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&)> h, const X1& x1,
             const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, double delta = 1e-5) {
@@ -215,7 +215,7 @@ namespace gtsamutils{
     }
 
     // 7 argument derivative, argument #5
-    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7>
+    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, int N = gtsam::traits<X5>::dimension>
     typename internal::FixedSizeMatrix<Y,X5>::type numericalDerivative75(
             std::function<Y(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&)> h, const X1& x1,
             const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, double delta = 1e-5) {
@@ -232,7 +232,7 @@ namespace gtsamutils{
     }
 
     // 7 argument derivative, argument #6
-    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7>
+    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, int N = gtsam::traits<X6>::dimension>
     typename internal::FixedSizeMatrix<Y,X6>::type numericalDerivative76(
             std::function<Y(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&)> h, const X1& x1,
             const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, double delta = 1e-5) {
@@ -249,7 +249,7 @@ namespace gtsamutils{
     }
 
     // 7 argument derivative, argument #7
-    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7>
+    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, int N = gtsam::traits<X7>::dimension>
     typename internal::FixedSizeMatrix<Y,X7>::type numericalDerivative77(
             std::function<Y(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&)> h, const X1& x1,
             const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, double delta = 1e-5) {
@@ -269,7 +269,7 @@ namespace gtsamutils{
 
 // --- 8-argument numerical derivatives --- //
     // 8 argument derivative, argument #1
-    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
+    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8, int N = gtsam::traits<X1>::dimension>
     typename internal::FixedSizeMatrix<Y,X1>::type numericalDerivative81(
             std::function<Y(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&)> h, const X1& x1,
             const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, const X8& x8, double delta = 1e-5) {
@@ -286,7 +286,7 @@ namespace gtsamutils{
     }
 
     // 8 argument derivative, argument #2
-    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
+    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8, int N = gtsam::traits<X2>::dimension>
     typename internal::FixedSizeMatrix<Y,X2>::type numericalDerivative82(
             std::function<Y(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&)> h, const X1& x1,
             const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, const X8& x8, double delta = 1e-5) {
@@ -303,7 +303,7 @@ namespace gtsamutils{
     }
 
     // 8 argument derivative, argument #3
-    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
+    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8, int N = gtsam::traits<X3>::dimension>
     typename internal::FixedSizeMatrix<Y,X3>::type numericalDerivative83(
             std::function<Y(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&)> h, const X1& x1,
             const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, const X8& x8, double delta = 1e-5) {
@@ -320,7 +320,7 @@ namespace gtsamutils{
     }
 
     // 8 argument derivative, argument #4
-    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
+    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8, int N = gtsam::traits<X4>::dimension>
     typename internal::FixedSizeMatrix<Y,X4>::type numericalDerivative84(
             std::function<Y(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&)> h, const X1& x1,
             const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, const X8& x8, double delta = 1e-5) {
@@ -337,7 +337,7 @@ namespace gtsamutils{
     }
 
     // 8 argument derivative, argument #5
-    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
+    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8, int N = gtsam::traits<X5>::dimension>
     typename internal::FixedSizeMatrix<Y,X5>::type numericalDerivative85(
             std::function<Y(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&)> h, const X1& x1,
             const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, const X8& x8, double delta = 1e-5) {
@@ -354,7 +354,7 @@ namespace gtsamutils{
     }
 
     // 8 argument derivative, argument #6
-    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
+    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8, int N = gtsam::traits<X6>::dimension>
     typename internal::FixedSizeMatrix<Y,X6>::type numericalDerivative86(
             std::function<Y(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&)> h, const X1& x1,
             const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, const X8& x8, double delta = 1e-5) {
@@ -371,7 +371,7 @@ namespace gtsamutils{
     }
 
     // 8 argument derivative, argument #7
-    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
+    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8, int N = gtsam::traits<X7>::dimension>
     typename internal::FixedSizeMatrix<Y,X7>::type numericalDerivative87(
             std::function<Y(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&)> h, const X1& x1,
             const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, const X8& x8, double delta = 1e-5) {
@@ -388,7 +388,7 @@ namespace gtsamutils{
     }
 
     // 8 argument derivative, argument #8
-    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8>
+    template<class Y, class X1, class X2, class X3, class X4, class X5, class X6, class X7, class X8, int N = gtsam::traits<X8>::dimension>
     typename internal::FixedSizeMatrix<Y,X8>::type numericalDerivative88(
             std::function<Y(const X1&, const X2&, const X3&, const X4&, const X5&, const X6&, const X7&, const X8&)> h, const X1& x1,
             const X2& x2, const X3& x3, const X4& x4, const X5& x5, const X6& x6, const X7& x7, const X8& x8, double delta = 1e-5) {
