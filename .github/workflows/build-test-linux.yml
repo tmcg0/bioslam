@@ -138,7 +138,19 @@ jobs:
           cd ${{runner.workspace}} # cd to runner home
           git clone --depth 1 --branch ${{ matrix.gtsam-version }} https://github.com/borglab/gtsam.git gtsam
           cd gtsam && mkdir build && cd build # move into build dir for gtsam
-          cmake -DCMAKE_BUILD_TYPE=Release -DGTSAM_WITH_EIGEN_MKL=OFF -DGTSAM_BUILD_EXAMPLES_ALWAYS=OFF -DGTSAM_BUILD_TIMING_ALWAYS=OFF -DGTSAM_BUILD_TESTS=OFF -DGTSAM_BUILD_UNSTABLE=OFF -DGTSAM_UNSTABLE_BUILD_PYTHON=OFF ..
+          RUN cmake \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DGTSAM_BUILD_PYTHON=OFF \
+            -DGTSAM_WITH_EIGEN_MKL=OFF \
+            -DGTSAM_BUILD_EXAMPLES_ALWAYS=OFF \
+            -DGTSAM_BUILD_TIMING_ALWAYS=OFF \
+            -DGTSAM_BUILD_TESTS=OFF \
+            -DGTSAM_BUILD_UNSTABLE=OFF \
+            -DGTSAM_UNSTABLE_BUILD_PYTHON=OFF \
+            -DGTSAM_BUILD_WITH_MARCH_NATIVE=ON \
+            -DGTSAM_WITH_TBB=OFF \
+            -DGTSAM_INSTALL_CPPUNITLITE=OFF \
+            ..
           sudo make -j$(nproc) install
 
       - name: Install hdf5
@@ -160,7 +172,11 @@ jobs:
         run: |
           cd ${{github.workspace}} # cd to repo root
           mkdir build && cd build # move into bioslam build dir
-          cmake -DBIOSLAM_BUILD_MATLAB_WRAPPER=OFF ..
+          cmake \
+            -DBIOSLAM_BUILD_MATLAB_WRAPPER=OFF \
+            -DBIOSLAM_BUILD_WITH_MARCH_NATIVE=ON \
+            -DBIOSLAM_USE_TBB=OFF \
+            ..
           sudo make -j$(nproc) install
 
       - name: Test bioslam
