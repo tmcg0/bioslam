@@ -30,7 +30,6 @@ jobs:
       CTEST_OUTPUT_ON_FAILURE: ON
       CTEST_PARALLEL_LEVEL: 2
       CMAKE_BUILD_TYPE: ${{ matrix.build_type }}
-      BOOST_VERSION: 1.67.0
 
     strategy:
       fail-fast: false
@@ -47,21 +46,27 @@ jobs:
             os: ubuntu-20.04
             compiler: gcc
             version: "7"
-            gtsam-version: "4.0.3"
+            boost-version: "1.74.0"
+            eigen-version: "3.3.9"
+            gtsam-version: "4.2"
             highfive-version: "v2.8.0"
 
           - name: ubuntu-20.04-gcc-9
             os: ubuntu-20.04
             compiler: gcc
             version: "9"
-            gtsam-version: "4.0.3"
+            boost-version: "1.74.0"
+            eigen-version: "3.3.9"
+            gtsam-version: "4.2"
             highfive-version: "v2.8.0"
 
           - name: ubuntu-20.04-clang-9
             os: ubuntu-20.04
             compiler: clang
             version: "9"
-            gtsam-version: "4.0.3"
+            boost-version: "1.74.0"
+            eigen-version: "3.3.9"
+            gtsam-version: "4.2"
             highfive-version: "v2.8.0"
 
     steps:
@@ -78,10 +83,10 @@ jobs:
           echo "matrix name: '${{matrix.name}}"
           echo "build type: '${{ matrix.build_type }}'"
 
-      - name: Install Eigen 3.3.9
+      - name: Install Eigen ${{ matrix.eigen-version }}
         run: |
           cd ${{runner.workspace}} # cd to runner home
-          git clone --depth 1 --branch 3.3.9 https://gitlab.com/libeigen/eigen eigen3 # clone Eigen
+          git clone --depth 1 --branch ${{ matrix.eigen-version }} https://gitlab.com/libeigen/eigen eigen3
           cd eigen3 && mkdir build && cd build # move into build dir for eigen3
           cmake ..
           sudo make -j$(nproc) install
@@ -119,10 +124,10 @@ jobs:
             echo "CXX=clang++-${{ matrix.version }}" >> $GITHUB_ENV
           fi
 
-      - name: Install Boost
+      - name: Install Boost ${{ matrix.boost-version }}
         run: |
-          BOOST_FOLDER=boost_${BOOST_VERSION//./_}
-          wget https://boostorg.jfrog.io/artifactory/main/release/${BOOST_VERSION}/source/${BOOST_FOLDER}.tar.gz
+          BOOST_FOLDER=$(echo "boost_${{ matrix.boost-version }}" | tr '.' '_')
+          wget https://boostorg.jfrog.io/artifactory/main/release/${{ matrix.boost-version }}/source/${BOOST_FOLDER}.tar.gz
           tar -zxf ${BOOST_FOLDER}.tar.gz
           cd ${BOOST_FOLDER}/
           ./bootstrap.sh --with-libraries=serialization,filesystem,thread,system,atomic,date_time,timer,chrono,program_options,regex
@@ -133,7 +138,19 @@ jobs:
           cd ${{runner.workspace}} # cd to runner home
           git clone --depth 1 --branch ${{ matrix.gtsam-version }} https://github.com/borglab/gtsam.git gtsam
           cd gtsam && mkdir build && cd build # move into build dir for gtsam
-          cmake -DCMAKE_BUILD_TYPE=Release -DGTSAM_WITH_EIGEN_MKL=OFF -DGTSAM_BUILD_EXAMPLES_ALWAYS=OFF -DGTSAM_BUILD_TIMING_ALWAYS=OFF -DGTSAM_BUILD_TESTS=OFF -DGTSAM_BUILD_UNSTABLE=OFF -DGTSAM_UNSTABLE_BUILD_PYTHON=OFF ..
+          cmake \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DGTSAM_BUILD_PYTHON=OFF \
+            -DGTSAM_WITH_EIGEN_MKL=OFF \
+            -DGTSAM_BUILD_EXAMPLES_ALWAYS=OFF \
+            -DGTSAM_BUILD_TIMING_ALWAYS=OFF \
+            -DGTSAM_BUILD_TESTS=OFF \
+            -DGTSAM_BUILD_UNSTABLE=OFF \
+            -DGTSAM_UNSTABLE_BUILD_PYTHON=OFF \
+            -DGTSAM_BUILD_WITH_MARCH_NATIVE=ON \
+            -DGTSAM_WITH_TBB=OFF \
+            -DGTSAM_INSTALL_CPPUNITLITE=OFF \
+            ..
           sudo make -j$(nproc) install
 
       - name: Install hdf5
@@ -155,7 +172,11 @@ jobs:
         run: |
           cd ${{github.workspace}} # cd to repo root
           mkdir build && cd build # move into bioslam build dir
-          cmake -DBIOSLAM_BUILD_MATLAB_WRAPPER=OFF ..
+          cmake \
+            -DBIOSLAM_BUILD_MATLAB_WRAPPER=OFF \
+            -DBIOSLAM_BUILD_WITH_MARCH_NATIVE=ON \
+            -DBIOSLAM_USE_TBB=OFF \
+            ..
           sudo make -j$(nproc) install
 
       - name: Test bioslam
