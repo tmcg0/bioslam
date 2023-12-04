@@ -138,7 +138,7 @@ jobs:
           cd ${{runner.workspace}} # cd to runner home
           git clone --depth 1 --branch ${{ matrix.gtsam-version }} https://github.com/borglab/gtsam.git gtsam
           cd gtsam && mkdir build && cd build # move into build dir for gtsam
-          RUN cmake \
+          cmake \
             -DCMAKE_BUILD_TYPE=Release \
             -DGTSAM_BUILD_PYTHON=OFF \
             -DGTSAM_WITH_EIGEN_MKL=OFF \
