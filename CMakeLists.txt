@@ -9,7 +9,7 @@ set (BIOSLAM_VERSION_STRING "${BIOSLAM_VERSION_MAJOR}.${BIOSLAM_VERSION_MINOR}.$
 
 project(bioslam VERSION ${BIOSLAM_VERSION_STRING} LANGUAGES CXX C) # added C because some HDF5 tests were .c
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -153,7 +153,7 @@ message(STATUS "Libs that we have for bioslam are ${BIOSLAMLIBS} ")
 message("bioslam sources are ${SOURCES_BIOSLAM}")
 add_library(bioslam SHARED ${SOURCES_BIOSLAM})
 set_target_properties(bioslam PROPERTIES
-  CXX_STANDARD 11
+  CXX_STANDARD 20
   CXX_STANDARD_REQUIRED ON
   CXX_EXTENSIONS OFF
 )
