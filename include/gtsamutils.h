@@ -22,16 +22,6 @@ namespace gtsamutils{
     Eigen::MatrixXd Vector3VectorToEigenMatrix(const std::vector<gtsam::Vector3>& v);
     std::vector<gtsam::Rot3> Pose3VectorToRot3Vector(const std::vector<gtsam::Pose3>& poses);
     std::vector<gtsam::Point3> Pose3VectorToPoint3Vector(const std::vector<gtsam::Pose3>& poses);
-    std::vector<double> vectorizePoint3x(std::vector<gtsam::Point3>);
-    std::vector<double> vectorizePoint3y(std::vector<gtsam::Point3>);
-    std::vector<double> vectorizePoint3z(std::vector<gtsam::Point3>);
-    std::vector<double> vectorizeVector3X(std::vector<gtsam::Vector3>);
-    std::vector<double> vectorizeVector3Y(std::vector<gtsam::Vector3>);
-    std::vector<double> vectorizeVector3Z(std::vector<gtsam::Vector3>);
-    std::vector<double> vectorizeQuaternionS(std::vector<Eigen::Vector4d,Eigen::aligned_allocator<Eigen::Vector4d>>);
-    std::vector<double> vectorizeQuaternionX(std::vector<Eigen::Vector4d,Eigen::aligned_allocator<Eigen::Vector4d>>);
-    std::vector<double> vectorizeQuaternionY(std::vector<Eigen::Vector4d,Eigen::aligned_allocator<Eigen::Vector4d>>);
-    std::vector<double> vectorizeQuaternionZ(std::vector<Eigen::Vector4d,Eigen::aligned_allocator<Eigen::Vector4d>>);
     std::vector<double> vectorSetMagnitudes(const std::vector<Eigen::Vector3d>& v);
     Eigen::MatrixXd vectorRot3ToYprMatrix(const std::vector<gtsam::Rot3>& R);
     std::vector<gtsam::Rot3> imuOrientation(const imu& myImu); // pull out stored quaternion as a vector<Rot3>
