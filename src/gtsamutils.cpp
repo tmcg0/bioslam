@@ -154,27 +154,7 @@ namespace gtsamutils{
         }
         return accels;
     }
-
-    double median(std::vector<double> len){
-        assert(!len.empty());
-        if (len.size() % 2 == 0) {
-            const auto median_it1 = len.begin() + len.size() / 2 - 1;
-            const auto median_it2 = len.begin() + len.size() / 2;
-
-            std::nth_element(len.begin(), median_it1 , len.end());
-            const auto e1 = *median_it1;
-
-            std::nth_element(len.begin(), median_it2 , len.end());
-            const auto e2 = *median_it2;
-
-            return (e1 + e2) / 2;
-
-        } else {
-            const auto median_it = len.begin() + len.size() / 2;
-            std::nth_element(len.begin(), median_it , len.end());
-            return *median_it;
-        }
-    }
+    
 
     uint nearestIdxToVal(std::vector<double> v, double val){
         // this is gonna be ugly. copies entire vector and brute force searches for index nearest to value val.
@@ -189,76 +169,6 @@ namespace gtsamutils{
         return nearestIdx;
     }
 
-    std::vector<double> vectorizePoint3x(std::vector<gtsam::Point3> p){
-        std::vector<double> x(p.size());
-        for(uint i=0; i<p.size(); i++){
-            x[i]=p[i].x();
-        }
-        return x;
-    }
-    std::vector<double> vectorizePoint3y(std::vector<gtsam::Point3> p){
-        std::vector<double> y(p.size());
-        for(uint i=0; i<p.size(); i++){
-            y[i]=p[i].y();
-        }
-        return y;
-    }
-    std::vector<double> vectorizePoint3z(std::vector<gtsam::Point3> p){
-        std::vector<double> z(p.size());
-        for(uint i=0; i<p.size(); i++){
-            z[i]=p[i].z();
-        }
-        return z;
-    }
-    std::vector<double> vectorizeVector3X(std::vector<gtsam::Vector3> v){
-        std::vector<double> a(v.size());
-        for(uint i=0; i<v.size(); i++){
-            a[i]=v[i](0);
-        }
-        return a;
-    }
-    std::vector<double> vectorizeVector3Y(std::vector<gtsam::Vector3> v){
-        std::vector<double> a(v.size());
-        for(uint i=0; i<v.size(); i++){
-            a[i]=v[i](1);
-        }
-        return a;
-    }
-    std::vector<double> vectorizeVector3Z(std::vector<gtsam::Vector3> v){
-        std::vector<double> a(v.size());
-        for(uint i=0; i<v.size(); i++){
-            a[i]=v[i](2);
-        }
-        return a;
-    }
-    std::vector<double> vectorizeQuaternionS(std::vector<Eigen::Vector4d,Eigen::aligned_allocator<Eigen::Vector4d>> q){
-        std::vector<double> a(q.size());
-        for(uint i=0; i<q.size(); i++){
-            a[i]=q[i](0);
-        }
-        return a;
-    }
-    std::vector<double> vectorizeQuaternionX(std::vector<Eigen::Vector4d,Eigen::aligned_allocator<Eigen::Vector4d>> q){
-        std::vector<double> a(q.size());
-        for(uint i=0; i<q.size(); i++){
-            a[i]=q[i](1);
-        }
-        return a;
-    }
-    std::vector<double> vectorizeQuaternionY(std::vector<Eigen::Vector4d,Eigen::aligned_allocator<Eigen::Vector4d>> q){
-        std::vector<double> a(q.size());
-        for(uint i=0; i<q.size(); i++){
-            a[i]=q[i](2);
-        }
-        return a;
-    }
-    std::vector<double> vectorizeQuaternionZ(std::vector<Eigen::Vector4d,Eigen::aligned_allocator<Eigen::Vector4d>> q){
-        std::vector<double> a(q.size());
-        for(uint i=0; i<q.size(); i++){
-            a[i]=q[i](3);
-        }
-        return a;
-    }
     void saveMatrixToFile(const gtsam::Matrix& A, const std::string &s, const std::string& filename) {
         std::fstream stream(filename.c_str(), std::fstream::out | std::fstream::app);
         print(A, s + "=", stream);
