@@ -30,7 +30,6 @@ namespace gtsamutils{
     gtsam::Vector3 gyros_Vector3(const imu& myImu, const int& idx);
     Eigen::MatrixXd gyroMatrix(const imu& myImu);
     Eigen::MatrixXd accelMatrix(const imu& myImu);
-    double median(std::vector<double> v);
     uint nearestIdxToVal(std::vector<double> v, double val);
     void saveMatrixToFile(const gtsam::Matrix& A, const std::string &s, const std::string& filename);
     void writeEigenMatrixToCsvFile(const std::string& name, const Eigen::MatrixXd& matrix, const Eigen::IOFormat& CSVFormat=Eigen::IOFormat(Eigen::StreamPrecision, Eigen::DontAlignCols, ", ", "\n"));

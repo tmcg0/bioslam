@@ -1897,7 +1897,7 @@ void lowerBodyPoseEstimator::adjustDistalImuTrajectoryForInboundJointAngles(cons
     if(zeroMedianCenterIntExtRot){
         Eigen::VectorXd intExtRotAngs=origJointAngles.col(2);
         std::vector<double> vec(intExtRotAngs.data(), intExtRotAngs.data() + intExtRotAngs.rows() * intExtRotAngs.cols()); // cast as std::vector
-        double myMedian=gtsamutils::median(vec);
+        double myMedian=mathutils::median(vec);
         uint medIdx=gtsamutils::nearestIdxToVal(vec, myMedian);
         //std::cout<<std::endl<<"int/ext rot median is "<<myMedian<<" and occurs at index "<<medIdx<<" (true val in array = "<<vec[medIdx]<<")"<<std::endl;
         R_B_to_B2 = lowerBodyPoseEstimator::getDistalImuOrientationAdjustmentGivenDesiredIntExtRotAngle(R_ProxSeg_to_N[medIdx],distalImuPose[medIdx].rotation(),0.0,rightAxisDist,distalImuToProxJointCtr,distalImuToDistalJointCtr); // R[B->B2]
@@ -1911,7 +1911,7 @@ void lowerBodyPoseEstimator::adjustDistalImuTrajectoryForInboundJointAngles(cons
     if(zeroMedianCenterAbAd){
         Eigen::VectorXd abAdAngs=origJointAngles.col(1);
         std::vector<double> vec(abAdAngs.data(), abAdAngs.data() + abAdAngs.rows() * abAdAngs.cols()); // cast as std::vector
-        double myMedian=gtsamutils::median(vec);
+        double myMedian=mathutils::median(vec);
         uint medIdx=gtsamutils::nearestIdxToVal(vec, myMedian);
         //std::cout<<std::endl<<"ab/ad rot median is "<<myMedian<<" and occurs at index "<<medIdx<<" (true val in array = "<<vec[medIdx]<<")"<<std::endl;
         R_B_to_B2 = lowerBodyPoseEstimator::getDistalImuOrientationAdjustmentGivenDesiredAbAdAngle(R_ProxSeg_to_N[medIdx],distalImuPose[medIdx].rotation(),0.0,rightAxisDist,distalImuToProxJointCtr,distalImuToDistalJointCtr); // R[B->B2]

@@ -154,27 +154,7 @@ namespace gtsamutils{
         }
         return accels;
     }
-
-    double median(std::vector<double> len){
-        assert(!len.empty());
-        if (len.size() % 2 == 0) {
-            const auto median_it1 = len.begin() + len.size() / 2 - 1;
-            const auto median_it2 = len.begin() + len.size() / 2;
-
-            std::nth_element(len.begin(), median_it1 , len.end());
-            const auto e1 = *median_it1;
-
-            std::nth_element(len.begin(), median_it2 , len.end());
-            const auto e2 = *median_it2;
-
-            return (e1 + e2) / 2;
-
-        } else {
-            const auto median_it = len.begin() + len.size() / 2;
-            std::nth_element(len.begin(), median_it , len.end());
-            return *median_it;
-        }
-    }
+    
 
     uint nearestIdxToVal(std::vector<double> v, double val){
         // this is gonna be ugly. copies entire vector and brute force searches for index nearest to value val.
